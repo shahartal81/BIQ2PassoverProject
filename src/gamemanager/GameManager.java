@@ -44,6 +44,7 @@ public class GameManager {
 
     private void createMaze(){
         mazeDimensions = new Position(NUMBER_OF_ROWS,NUMBER_OF_COLUMNS);
+        maze = new char[NUMBER_OF_ROWS][NUMBER_OF_COLUMNS];
         for (int i = 0; i < 4; i++){
             maze[0][i] = WALL;
         }
