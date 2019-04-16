@@ -13,8 +13,13 @@ public class PlayerSimple implements Player {
         System.out.println("Hit Wall");
     }
 
+    @Override
+    public void hitBookmark(int seq) {
+        System.out.println("Hit Bookmark");
+    }
+
     private Move randomMove(){
-        int pick = new Random().nextInt(Move.values().length);
+        int pick = new Random().nextInt(Move.values().length-1);
         return Move.values()[pick];
     }
 }

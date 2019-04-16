@@ -4,7 +4,12 @@ import additionalclasses.MazeElement;
 import additionalclasses.Position;
 import enums.Move;
 import player.Player;
+import player.PlayerAdvanced;
 import player.PlayerSimple;
+import player.PlayerVeryAdvanced;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class GameManager {
     private Player player;
@@ -14,18 +19,29 @@ public class GameManager {
     private static final char WALL = MazeElement.WALL.getValue();
     private static final char PASS = MazeElement.PASS.getValue();
 
+    private Position mazeDimensions;
     private char[][] maze;
     private Position playerPosition;
     private Position endPosition;
     private int usedSteps = 0;
     private boolean isSolved = false;
+    private int bookmarkSeqNumber = 0;
+    private Map<Position, Integer> bookmarksMap = new HashMap<>();
 
     public GameManager(){
-        this.player = new PlayerSimple();
         createMaze();
+        if (mazeDimensions.getColumn() <= 3 && mazeDimensions.getRow() <= 3) {
+            this.player = new PlayerSimple();
+        } else if (mazeDimensions.getColumn() <= 5 && mazeDimensions.getRow() <= 5) {
+            this.player = new PlayerAdvanced();
+        } else {
+            this.player = new PlayerVeryAdvanced();
+        }
+
     }
 
     private void createMaze(){
+        mazeDimensions = new Position(4,6);
         maze = new char[4][6];
         for (int i = 0; i < 4; i++){
             maze[0][i] = WALL;
@@ -92,14 +108,19 @@ public class GameManager {
     private void changePosition(Position next) {
         maze[playerPosition.getRow()][playerPosition.getColumn()] = PASS;
         maze[next.getRow()][next.getColumn()] = PLAYER;
-
         playerPosition = next;
     }
 
     public void playGame(){
         while (usedSteps < MAX_STEPS && !isSolved) {
             Move move = player.move();
-            movePlayer(move);
+            if (move.equals(Move.BOOKMARK)) {
+                bookmarkSeqNumber++;
+                bookmarksMap.put(playerPosition, bookmarkSeqNumber);
+                player.hitBookmark(bookmarkSeqNumber);
+            } else {
+                movePlayer(move);
+            }
         }
     }
 }
