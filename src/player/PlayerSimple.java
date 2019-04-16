@@ -4,7 +4,7 @@ import enums.Move;
 
 import java.util.Random;
 
-public class PlayerSimple extends Player {
+public class PlayerSimple implements Player {
     public Move move() {
         return randomMove();
     }
