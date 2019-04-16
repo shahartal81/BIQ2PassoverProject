@@ -15,10 +15,15 @@ to the requirements below.
 
 # Input File
 The maze input file is a text file in the following format:
-Line 1 : maze name / description - internal for the file, not used by the program
-Line 2 : MaxSteps=<num> MaxSteps for solving this maze. We assume different mazes may require different MaxSteps.
-Line 3 : Rows=<num> Number of Rows in maze
-Line 4 : Cols=<num> Number of Cols in maze
+
+Line 1: maze name / description - internal for the file, not used by the program
+
+Line 2: MaxSteps=<num> MaxSteps for solving this maze. We assume different mazes may require different MaxSteps.
+
+Line 3: Rows=<num> Number of Rows in maze
+
+Line 4: Cols=<num> Number of Cols in maze
+
 Lines 5 and on : the maze itself, as described below
 
 Allow spaces in lines 2,3,4 - everywhere except inside word or number.
@@ -31,7 +36,7 @@ In case the file contains additional rows and/or cols beyond the required number
 lines 3 and 4, program shall ignore the redundant lines / cols.
 
 # Chars in the maze file and their meaning:
-- # -- represents a wall
+- "#" -- represents a wall
 - space -- represents a pass
 - @ -- represents the player in the maze (initial position of the player)
 - $ -- represents the end of the maze (the treasure that we seek)
@@ -42,27 +47,6 @@ All other chars not listed above are forbidden and wrong!
 The player in the maze doesn’t know its location or the borders of the maze, when the player
 tries to cross one of the borders of the maze it simply appears on the other side without
 knowing that it just “circled” or “tunneled” through the maze border.
-
-Example of a valid maze:
-
-Nice simple maze
-MaxSteps = 10
-Rows = 4
-Cols = 10
-
-#####
-# @ # #
-# # $ #
-#####
-
-A possible solution for above maze, one of several possible shortest path, would be (steps
-described as arrows just for illustration):
-
-# 0123456789
-# 0 ##### ↓←←
-# 1 # @ # ↓ #
-# 2 # ↓ # $ #
-# 3 ←←← #####↓
 
 # Player Movement in the Maze
 # Note : the player doesn’t know the dimensions of the maze nor its own ‘location’!
