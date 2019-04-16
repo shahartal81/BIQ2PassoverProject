@@ -9,13 +9,11 @@ Shahar Tal
 # Project Guidelines
 
 # Requirements and Guidelines
-# ---------------------------
 The project requires you to implement a search in a maze. The program should get an input
 file which represents a maze and run an algorithm that attempts to solve the maze according
 to the requirements below.
 
 # Input File
-# ----------
 The maze input file is a text file in the following format:
 Line 1 : maze name / description - internal for the file, not used by the program
 Line 2 : MaxSteps=<num> MaxSteps for solving this maze. We assume different mazes may require different MaxSteps.
@@ -67,7 +65,6 @@ described as arrows just for illustration):
 # 3 ←←← #####↓
 
 # Player Movement in the Maze
-# ---------------------------
 # Note : the player doesn’t know the dimensions of the maze nor its own ‘location’!
 The player can move in any of the four directions: UP, RIGHT, DOWN, LEFT.
 The player can also choose to set a BOOKMARK in the current position. This helps the
@@ -86,7 +83,6 @@ the first (zero indexed) line / column respectively, without any special notice,
 is no wall preventing this “tunneling”. Same goes for getting “back” beyond line/column 0.
 
 # The Flow of the Game
-# --------------------
 1. The game manager creates an object of class Player
 2. Loop while steps <= MaxSteps
 a. The game manager calls player’s move() method which should return enum
@@ -109,7 +105,6 @@ The program gets the maze file as a first command line argument , you should sup
 options: relative path or absolute path.
 
 # Output File
-# --------------------
 The second command line argument is the name of an output file to create, you should
 support both options: relative path or absolute path.
 You should create the output file according to the path+name given in the second command
@@ -122,24 +117,20 @@ Or: ! -- in case the maze was solved
 (Thus total number of lines in output file would always be number of steps + 1).
 
 # Errors
-# ------
 If there were errors while reading or analyzing the input file, you should print to screen the
 following errors. Note that since the check is automatic, printouts must be exact.
 
 # - Possible maze file argument errors (one of the below):
-# --------------------------------------------------------
 Missing maze file argument in command line
 Command line argument for maze: <arg> doesn't lead to a maze file or
 leads to a file that cannot be opened
 
 # - Possible output file argument errors:
-# ---------------------------------------
 Missing output file argument in command line
 Command line argument for output file: <arg> points to a bad path or to
 a file that already exists
 
 # Note
-# ----
 1. In case of a problem with the maze file, check also the output file to report both errors if
 exist.
 2. In case of a problem with the output file - don’t run the player, BUT check errors below to
@@ -155,10 +146,8 @@ report additional errors inside the maze file itself, if such exist.
   got: <line 2 content>
 
   # Above is an example, report ONLY actual errors, but collect all errors and print them in the order in this document!
-  # --------------------------------------------------------------------------------------------------------------------
 
   # Note
-  # ----
   You can decide if “strange” input like: Cols=010 (as 10 columns) is OK or not,
   however: Cols = a or Cols = 10 a or Cols = 10a -- are all bad
 
@@ -172,7 +161,6 @@ report additional errors inside the maze file itself, if such exist.
   Wrong character in maze: <char> in row <row>, col <col>
 
   # Above is an example, report ONLY actual errors, but collect all and in order!
-  # -----------------------------------------------------------------------------
 
   The last error, reporting wrong characters:
   1. should appear as a full line per each wrong character
@@ -184,7 +172,6 @@ report additional errors inside the maze file itself, if such exist.
 In case of any error, don’t run the player - no output file should be created.
 
 # Extra notes and clarifications
-# ------------------------------
 You should replace triangle brackets (<>) with relevant string according to their content.
 For example: in case of an illegal character ‘+’ in line 3 column 6 of the input file, the
 following message should print:
@@ -197,5 +184,4 @@ output we expect the lines to be exactly as appears in this doc, spaces included
 # No need to use any external library
 
 # Required tests:
-# ---------------
 Your unit tests should test both GameManager and your algorithm (probably in separate).
