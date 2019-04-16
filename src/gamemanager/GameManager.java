@@ -16,8 +16,9 @@ public class GameManager {
 
     private char[][]maze;
     private Position playerPosition;
+    private Position endPosition;
     private int usedSteps = 0;
-    boolean isSolved = false;
+    private boolean isSolved = false;
 
     public GameManager(){
         this.player = new PlayerSimple();
@@ -54,6 +55,7 @@ public class GameManager {
         maze[3][0] = ' ';
         maze[3][1] = ' ';
         maze[3][2] = '$';
+        endPosition = new Position(3,2);
         maze[3][3] = '#';
         maze[3][4] = '#';
 
