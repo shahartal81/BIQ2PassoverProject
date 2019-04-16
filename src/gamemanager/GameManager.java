@@ -14,7 +14,7 @@ public class GameManager {
     private static final char WALL = MazeElement.WALL.getValue();
     private static final char PASS = MazeElement.PASS.getValue();
 
-    private char[][]maze;
+    private char[][] maze;
     private Position playerPosition;
     private Position endPosition;
     private int usedSteps = 0;
@@ -25,39 +25,35 @@ public class GameManager {
         createMaze();
     }
 
-    public char[][] getMaze() {
-        return maze;
-    }
-
     private void createMaze(){
         maze = new char[4][6];
         for (int i = 0; i < 4; i++){
-            maze[0][i] = '#';
+            maze[0][i] = WALL;
         }
-        maze[0][4] = ' ';
-        maze[0][5] = ' ';
+        maze[0][4] = PASS;
+        maze[0][5] = PASS;
 
-        maze[1][0] = '#';
-        maze[1][1] = ' ';
-        maze[1][2] = '@';
+        maze[1][0] = WALL;
+        maze[1][1] = PASS;
+        maze[1][2] = PLAYER;
         playerPosition = new Position(1,2);
-        maze[1][3] = '#';
-        maze[1][4] = ' ';
-        maze[1][5] = ' ';
+        maze[1][3] = WALL;
+        maze[1][4] = PASS;
+        maze[1][5] = PASS;
 
-        maze[2][0] = '#';
-        maze[2][1] = ' ';
-        maze[2][2] = ' ';
-        maze[2][3] = '#';
-        maze[2][4] = ' ';
-        maze[2][5] = ' ';
+        maze[2][0] = WALL;
+        maze[2][1] = PASS;
+        maze[2][2] = PASS;
+        maze[2][3] = WALL;
+        maze[2][4] = PASS;
+        maze[2][5] = PASS;
 
-        maze[3][0] = ' ';
-        maze[3][1] = ' ';
-        maze[3][2] = '$';
+        maze[3][0] = PASS;
+        maze[3][1] = PASS;
+        maze[3][2] = END;
         endPosition = new Position(3,2);
-        maze[3][3] = '#';
-        maze[3][4] = '#';
+        maze[3][3] = WALL;
+        maze[3][4] = WALL;
 
     }
 
@@ -74,13 +70,11 @@ public class GameManager {
 
     private void movePlayer(Move move){
         Position next = playerPosition.byMove(move);
-
         try {
-            char c = maze[next.getRow()][next.getColumn()];
-            if (c == WALL){
+            if (maze[next.getRow()][next.getColumn()] == WALL){
                 System.out.println("Wanted to move " + move + " but..."); //for console only
                 player.hitWall();
-            } else if (c == END) {
+            } else if (next.equals(endPosition)) {
                 System.out.println("You won!");
                 isSolved = true;
             } else {
