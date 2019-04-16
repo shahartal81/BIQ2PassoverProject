@@ -21,15 +21,15 @@ public class GameManager {
 
     public GameManager(){
         this.player = new PlayerSimple();
-        maze = createMaze();
+        createMaze();
     }
 
     public char[][] getMaze() {
         return maze;
     }
 
-    private char[][] createMaze(){
-        char[][]maze = new char[4][6];
+    private void createMaze(){
+        maze = new char[4][6];
         for (int i = 0; i < 4; i++){
             maze[0][i] = '#';
         }
@@ -57,7 +57,6 @@ public class GameManager {
         maze[3][3] = '#';
         maze[3][4] = '#';
 
-        return maze;
     }
 
     public void printMaze(char[][] maze){
