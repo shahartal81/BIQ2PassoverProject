@@ -61,7 +61,7 @@ public class GameManager {
 
     }
 
-    public void printMaze(char[][] maze){
+    public void printMaze(){
         for (int row = 0; row < maze.length; row++){
             for (int col = 0; col < maze[row].length; col++) {
                 System.out.print(maze[row][col] + " ");
@@ -89,7 +89,7 @@ public class GameManager {
             }
             usedSteps ++;
             System.out.println("Used steps: " + usedSteps); //for console only
-            printMaze(maze); //for console only
+            printMaze(); //for console only
         } catch (Exception e) {
             System.out.println("enums.Move is out of bounds");
         }
