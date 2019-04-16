@@ -1,6 +1,7 @@
 package player;
 
 import enums.Move;
+import player.Player;
 
 import java.util.Random;
 

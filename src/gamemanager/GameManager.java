@@ -1,37 +1,31 @@
 package gamemanager;
 
+import additionalclasses.MazeElement;
 import additionalclasses.Position;
 import enums.Move;
 import player.Player;
 import player.PlayerSimple;
 
 public class GameManager {
-    private Player p;
+    private Player player;
     private static final int MAX_STEPS = 20;
+    private static final char PLAYER = MazeElement.PLAYER.getValue();
+    private static final char END = MazeElement.END.getValue();
+    private static final char WALL = MazeElement.WALL.getValue();
+    private static final char PASS = MazeElement.PASS.getValue();
+
     private char[][]maze;
     private Position playerPosition;
     private int usedSteps = 0;
     boolean isSolved = false;
 
-    public GameManager(PlayerSimple p){
-        this.p = p;
+    public GameManager(){
+        this.player = new PlayerSimple();
         maze = createMaze();
-        playerPosition = getPlayerPosition();
     }
 
     public char[][] getMaze() {
         return maze;
-    }
-
-    private Position getPlayerPosition(){
-        for (int row = 0; row < maze.length; row++){
-            for (int col = 0; col < maze[row].length; col++) {
-                if (maze[row][col] == '@'){
-                    return new Position(row,col);
-                }
-            }
-        }
-        return null;
     }
 
     private char[][] createMaze(){
@@ -45,6 +39,7 @@ public class GameManager {
         maze[1][0] = '#';
         maze[1][1] = ' ';
         maze[1][2] = '@';
+        playerPosition = new Position(1,2);
         maze[1][3] = '#';
         maze[1][4] = ' ';
         maze[1][5] = ' ';
@@ -76,20 +71,20 @@ public class GameManager {
         System.out.println("----------------------------------");
     }
 
-    private void movePlayer(Move move, int row, int col){
+    private void movePlayer(Move move){
+        Position next = playerPosition.byMove(move);
+
         try {
-            char c = maze[row][col];
-            if (c == '#'){
+            char c = maze[next.getRow()][next.getColumn()];
+            if (c == WALL){
                 System.out.println("Wanted to move " + move + " but..."); //for console only
-                p.hitWall();
-            } else if (c == '$') {
+                player.hitWall();
+            } else if (c == END) {
                 System.out.println("You won!");
                 isSolved = true;
             } else {
                 System.out.println("Moved " + move);
-                changePositionInMaze(move); //for console only
-                playerPosition.setRow(row);
-                playerPosition.setColumn(col);
+                changePosition(next);
             }
             usedSteps ++;
             System.out.println("Used steps: " + usedSteps); //for console only
@@ -99,45 +94,17 @@ public class GameManager {
         }
     }
 
-    private void changePositionInMaze(Move move) {
-        int row = playerPosition.getRow();
-        int col = playerPosition.getColumn();
+    private void changePosition(Position next) {
+        maze[playerPosition.getRow()][playerPosition.getColumn()] = PASS;
+        maze[next.getRow()][next.getColumn()] = PLAYER;
 
-        maze[row][col] = ' ';
-
-        if (move.equals(Move.UP)){
-            maze[row - 1][col] = '@';
-        } else if (move.equals(Move.DOWN)){
-            maze[row + 1][col] = '@';
-        } else if (move.equals(Move.LEFT)){
-            maze[row][col - 1] = '@';
-        } else {
-            maze[row][col + 1] = '@';
-        }
+        playerPosition = next;
     }
 
     public void playGame(){
         while (usedSteps < MAX_STEPS && !isSolved) {
-            Move move = p.move();
-            int row = playerPosition.getRow();
-            int col = playerPosition.getColumn();
-
-            switch (move){
-                case UP:
-                    movePlayer(Move.UP, row - 1, col);
-                    break;
-                case DOWN:
-                    movePlayer(Move.DOWN, row + 1, col);
-                    break;
-                case LEFT:
-                    movePlayer(Move.LEFT, row, col - 1);
-                    break;
-                case RIGHT:
-                    movePlayer(Move.RIGHT, row , col + 1);
-                    break;
-            }
+            Move move = player.move();
+            movePlayer(move);
         }
     }
-
-
 }
