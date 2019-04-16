@@ -88,15 +88,15 @@ Same goes for getting “back” beyond line/column 0.
 
 2. Loop while steps <= MaxSteps
 
-a. The game manager calls player’s move() method which should return enum value from the options: UP, RIGHT, DOWN, LEFT, BOOKMARK
+  a. The game manager calls player’s move() method which should return enum value from the options: UP, RIGHT, DOWN, LEFT, BOOKMARK
 
-b. If the move brings the player to the $, stop the loop and print to screen: “Succeeded in <num> steps”
+  b. If the move brings the player to the $, stop the loop and print to screen: “Succeeded in <num> steps”
 
-c. If the move is into a wall, manager calls player’s method hitWall();
+  c. If the move is into a wall, manager calls player’s method hitWall();
 
-d. If the move is into a preset bookemark (not including bookmark that was currently set in this turn!),
+  d. If the move is into a preset bookemark (not including bookmark that was currently set in this turn!),
 
-manager calls player’s method hitBookmark(int seq); indicating the sequence number of the bookmark that was just met.
+  manager calls player’s method hitBookmark(int seq); indicating the sequence number of the bookmark that was just met.
 
 3. If maze was not solved print to screen: “Failed to solve maze in <MaxSteps> steps”
 
