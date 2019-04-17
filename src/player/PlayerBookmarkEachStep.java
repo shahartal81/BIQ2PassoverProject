@@ -7,21 +7,22 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
-public class PlayerVeryAdvanced implements Player {
+public class PlayerBookmarkEachStep implements Player {
 
     private Map<Integer, ArrayList<Move>> bookmarksMap = new HashMap<>();
-    private int seqNumber = 0;
+    private Integer seqNumber = 0;
     private Move lastMove;
-    private boolean usedBookmark = false;
+    private boolean nextTurnBookmark = false;
     private int hitBookmarkSeqNumber = 0;
 
     @Override
     public Move move() {
-        if (usedBookmark) {
-            usedBookmark = false;
+        if (nextTurnBookmark) {
+            nextTurnBookmark = false;
             return Move.BOOKMARK;
         } else {
             lastMove = randomMove();
+            nextTurnBookmark = true;
             return lastMove;
         }
     }
@@ -30,7 +31,7 @@ public class PlayerVeryAdvanced implements Player {
     public void hitWall() {
         seqNumber++;
         addBookmark(seqNumber);
-        usedBookmark = true;
+        nextTurnBookmark = false;
         System.out.println("Hit Wall");
     }
 

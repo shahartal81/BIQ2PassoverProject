@@ -1,13 +1,17 @@
 package gamemanager;
 
 import additionalclasses.MazeElement;
+import additionalclasses.OutputFile;
 import additionalclasses.Position;
 import enums.Move;
 import player.Player;
 import player.PlayerAdvanced;
+import player.PlayerBookmarkEachStep;
 import player.PlayerSimple;
 import player.PlayerVeryAdvanced;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -30,16 +34,24 @@ public class GameManager {
     private int bookmarkSeqNumber = 0;
     private Map<Position, Integer> bookmarksMap = new HashMap<>();
 
-    public GameManager(){
+    private OutputFile outputFile;
+
+    public GameManager(File outPutFile){
         createMaze();
         if (mazeDimensions.getColumn() <= 3 && mazeDimensions.getRow() <= 3) {
+            System.out.println("Using PlayerSimple");
             this.player = new PlayerSimple();
         } else if (mazeDimensions.getColumn() <= 5 && mazeDimensions.getRow() <= 5) {
+            System.out.println("Using PlayerAdvanced");
             this.player = new PlayerAdvanced();
-        } else {
+        } else if ((mazeDimensions.getColumn() * mazeDimensions.getRow()) * 3 >= MAX_STEPS){
+            System.out.println("Using PlayerVeryAdvanced");
             this.player = new PlayerVeryAdvanced();
+        } else {
+            System.out.println("Using PlayerBookmarkEachStep");
+            this.player = new PlayerBookmarkEachStep();
         }
-
+        outputFile = new OutputFile(outPutFile);
     }
 
     private void createMaze(){
@@ -96,10 +108,18 @@ public class GameManager {
                 System.out.println("Moved " + move);
                 isSolved = true;
             } else {
-                System.out.println("Moved " + move);
-                changePosition(next);
+                if (move.equals(Move.BOOKMARK)) {
+                    bookmarkSeqNumber++;
+                    bookmarksMap.put(playerPosition, bookmarkSeqNumber);
+                } else {
+                    if (bookmarksMap.containsKey(next)) {
+                        player.hitBookmark(bookmarksMap.get(next));
+                    }
+                    System.out.println("Moved " + move);
+                    changePosition(next);
+                }
             }
-            usedSteps ++;
+            usedSteps++;
             System.out.println("Used steps: " + usedSteps); //for console only
             printMaze(); //for console only
         } catch (Exception e) {
@@ -117,6 +137,8 @@ public class GameManager {
                 return new Position(playerPosition.getRow(), Math.floorMod(playerPosition.getColumn() - 1, NUMBER_OF_COLUMNS));
             case RIGHT:
                 return new Position(playerPosition.getRow(), Math.floorMod(playerPosition.getColumn() + 1, NUMBER_OF_COLUMNS));
+            case BOOKMARK:
+                return playerPosition;
         }
 
         throw new IllegalArgumentException("");
@@ -132,19 +154,24 @@ public class GameManager {
     public void playGame(){
         while (usedSteps < MAX_STEPS && !isSolved) {
             Move move = player.move();
-            if (move.equals(Move.BOOKMARK)) {
-                bookmarkSeqNumber++;
-                bookmarksMap.put(playerPosition, bookmarkSeqNumber);
-                player.hitBookmark(bookmarkSeqNumber);
-            } else {
-                movePlayer(move);
-            }
+            movePlayer(move);
+
+            outputFile.updateMovesMap(move);
         }
         if(isSolved){
+            outputFile.setEndGame('!');
             System.out.println("You won!");
         } else {
+            outputFile.setEndGame('X');
             System.out.println("Loser!");
             System.out.println("Used steps: " + usedSteps + " reached the limit of allowed steps: " + MAX_STEPS);
+        }
+        outputFile.printAllMoves();
+        try {
+            outputFile.exportToFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("Error while exporting to file");
         }
     }
 }
