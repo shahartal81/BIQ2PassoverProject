@@ -39,8 +39,7 @@ public class GameManagerTest {
     public void setUp() throws IOException {
         fileWriter = new BufferedWriter(new FileWriter(new File("test.txt")));
 
-        //TODO think how to send other maxSteps
-        when(playerFactory.createPlayer(any(), 300)).thenReturn(player);
+        when(playerFactory.createPlayer(any(), any())).thenReturn(player);
 
         gameManager = new GameManager(fileWriter, playerFactory);
     }
