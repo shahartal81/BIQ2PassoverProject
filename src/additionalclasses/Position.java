@@ -30,21 +30,6 @@ public class Position {
         this.column = column;
     }
 
-    public Position byMove(Move move) {
-        switch (move){
-            case UP:
-                return new Position(row - 1, column);
-            case DOWN:
-                return new Position(row + 1, column);
-            case LEFT:
-                return new Position(row, column - 1);
-            case RIGHT:
-                return new Position(row, column + 1);
-        }
-
-        throw new IllegalArgumentException("");
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

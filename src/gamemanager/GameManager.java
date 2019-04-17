@@ -13,7 +13,9 @@ import java.util.Map;
 
 public class GameManager {
     private Player player;
-    private static final int MAX_STEPS = 20;
+    private static final int MAX_STEPS = 30;
+    private static final int NUMBER_OF_ROWS = 4;
+    private static final int NUMBER_OF_COLUMNS = 6;
     private static final char PLAYER = MazeElement.PLAYER.getValue();
     private static final char END = MazeElement.END.getValue();
     private static final char WALL = MazeElement.WALL.getValue();
@@ -41,20 +43,21 @@ public class GameManager {
     }
 
     private void createMaze(){
-        mazeDimensions = new Position(4,6);
-        maze = new char[4][6];
+        mazeDimensions = new Position(NUMBER_OF_ROWS,NUMBER_OF_COLUMNS);
+        maze = new char[NUMBER_OF_ROWS][NUMBER_OF_COLUMNS];
         for (int i = 0; i < 4; i++){
             maze[0][i] = WALL;
         }
         maze[0][4] = PASS;
         maze[0][5] = PASS;
 
-        maze[1][0] = WALL;
+        maze[1][0] = PASS;
         maze[1][1] = PASS;
         maze[1][2] = PLAYER;
         playerPosition = new Position(1,2);
         maze[1][3] = WALL;
-        maze[1][4] = PASS;
+        maze[1][4] = END;
+        endPosition = new Position(1,4);
         maze[1][5] = PASS;
 
         maze[2][0] = WALL;
@@ -66,10 +69,9 @@ public class GameManager {
 
         maze[3][0] = PASS;
         maze[3][1] = PASS;
-        maze[3][2] = END;
-        endPosition = new Position(3,2);
+        maze[3][2] = PASS;
         maze[3][3] = WALL;
-        maze[3][4] = WALL;
+        maze[3][4] = PASS;
 
     }
 
@@ -85,13 +87,13 @@ public class GameManager {
     }
 
     private void movePlayer(Move move){
-        Position next = playerPosition.byMove(move);
+        Position next = byMove(move);
         try {
             if (maze[next.getRow()][next.getColumn()] == WALL){
                 System.out.println("Wanted to move " + move + " but..."); //for console only
                 player.hitWall();
             } else if (next.equals(endPosition)) {
-                System.out.println("You won!");
+                System.out.println("Moved " + move);
                 isSolved = true;
             } else {
                 System.out.println("Moved " + move);
@@ -103,6 +105,22 @@ public class GameManager {
         } catch (Exception e) {
             System.out.println("enums.Move is out of bounds");
         }
+    }
+
+    private Position byMove(Move move) {
+        switch (move){
+            case UP:
+                return new Position(Math.floorMod(playerPosition.getRow() - 1, NUMBER_OF_ROWS), playerPosition.getColumn());
+            case DOWN:
+                return new Position(Math.floorMod(playerPosition.getRow() + 1,NUMBER_OF_ROWS ), playerPosition.getColumn());
+            case LEFT:
+                return new Position(playerPosition.getRow(), Math.floorMod(playerPosition.getColumn() - 1, NUMBER_OF_COLUMNS));
+            case RIGHT:
+                return new Position(playerPosition.getRow(), Math.floorMod(playerPosition.getColumn() + 1, NUMBER_OF_COLUMNS));
+        }
+
+        throw new IllegalArgumentException("");
+
     }
 
     private void changePosition(Position next) {
@@ -121,6 +139,12 @@ public class GameManager {
             } else {
                 movePlayer(move);
             }
+        }
+        if(isSolved){
+            System.out.println("You won!");
+        } else {
+            System.out.println("Loser!");
+            System.out.println("Used steps: " + usedSteps + " reached the limit of allowed steps: " + MAX_STEPS);
         }
     }
 }
