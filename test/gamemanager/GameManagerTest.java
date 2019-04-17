@@ -1,6 +1,7 @@
 package gamemanager;
 
 import enums.Move;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
@@ -12,12 +13,18 @@ import org.mockito.junit.MockitoRule;
 import player.Player;
 import player.PlayerFactory;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.when;
 
 public class GameManagerTest {
 
     private GameManager gameManager;
+    private BufferedWriter fileWriter = null;
 
     @Rule
     public MockitoRule mockitoRule = MockitoJUnit.rule();
@@ -29,11 +36,21 @@ public class GameManagerTest {
     private PlayerFactory playerFactory;
 
     @Before
-    public void setUp() {
+    public void setUp() throws IOException {
+        fileWriter = new BufferedWriter(new FileWriter(new File("test.txt")));
 
         when(playerFactory.createPlayer(any())).thenReturn(player);
 
-        gameManager = new GameManager(playerFactory);
+        gameManager = new GameManager(fileWriter, playerFactory);
+    }
+
+    @After
+    public void teardown() throws IOException {
+        if (fileWriter != null)
+        {
+            fileWriter.close();
+        }
+        fileWriter = null;
     }
 
     @Test

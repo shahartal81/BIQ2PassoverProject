@@ -3,16 +3,14 @@ package additionalclasses;
 import enums.Move;
 
 import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 
 public class OutputFile {
 
     private StringBuilder movesList = new StringBuilder();
-    private File outPutFile;
+    private BufferedWriter outPutFile;
 
-    public OutputFile(File file) {
+    public OutputFile(BufferedWriter file) {
         this.outPutFile = file;
     }
 
@@ -26,7 +24,7 @@ public class OutputFile {
     }
 
     public void exportToFile() throws IOException {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(outPutFile))) {
+        try (BufferedWriter writer = new BufferedWriter(outPutFile)) {
             writer.write(movesList.toString());
         } catch (IOException e){
             throw new IOException(e);

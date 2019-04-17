@@ -7,12 +7,11 @@ import enums.Move;
 import player.Player;
 import player.PlayerAdvanced;
 import player.PlayerBookmarkEachStep;
+import player.PlayerFactory;
 import player.PlayerSimple;
 import player.PlayerVeryAdvanced;
-import org.mockito.cglib.proxy.Factory;
-import player.*;
 
-import java.io.File;
+import java.io.BufferedWriter;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -38,8 +37,7 @@ public class GameManager {
 
     private OutputFile outputFile;
 
-    public GameManager(File outPutFile){
-    public GameManager(PlayerFactory playerFactory){
+    public GameManager(BufferedWriter outPutFile, PlayerFactory playerFactory){
         createMaze();
         if (mazeDimensions.getColumn() <= 3 && mazeDimensions.getRow() <= 3) {
             System.out.println("Using PlayerSimple");
