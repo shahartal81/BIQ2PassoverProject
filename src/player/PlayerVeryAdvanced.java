@@ -62,7 +62,7 @@ public class PlayerVeryAdvanced implements Player {
                     moves.add(move);
                 }
             }
-            Move[] movesArray = (Move[]) moves.toArray();
+            Move[] movesArray = moves.toArray(new Move[0]);
             return movesArray[new Random().nextInt(movesArray.length-1)];
         } else {
             switch (lastMove) {
