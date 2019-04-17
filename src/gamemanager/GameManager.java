@@ -18,7 +18,7 @@ import java.util.Map;
 
 public class GameManager {
     private Player player;
-    private static final int MAX_STEPS = 30;
+    private static final int MAX_STEPS = 3000;
     private int numberOfRows = 4;
     private int numberOfColumns = 6;
     private static final char PLAYER = MazeElement.PLAYER.getValue();
@@ -156,7 +156,6 @@ public class GameManager {
         while (usedSteps < MAX_STEPS && !isSolved) {
             Move move = player.move();
             movePlayer(move);
-
             outputFile.updateMovesMap(move);
         }
         if(isSolved){
@@ -167,6 +166,13 @@ public class GameManager {
             System.out.println("Loser!");
             System.out.println("Used steps: " + usedSteps + " reached the limit of allowed steps: " + MAX_STEPS);
         }
+        outputFile.printAllMoves();
+        try {
+            outputFile.exportToFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("Error while exporting to file");
+        }
         return isSolved;
     }
 
@@ -176,12 +182,5 @@ public class GameManager {
 
     public void setNumberOfColumns(int numberOfColumns) {
         this.numberOfColumns = numberOfColumns;
-        outputFile.printAllMoves();
-        try {
-            outputFile.exportToFile();
-        } catch (IOException e) {
-            e.printStackTrace();
-            System.out.println("Error while exporting to file");
-        }
     }
 }
