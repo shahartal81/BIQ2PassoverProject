@@ -1,11 +1,14 @@
 package main;
 
 import gamemanager.GameManager;
+import player.PlayerFactory;
 
 public class Run {
     public static void main(String[] args) {
-        GameManager gm1 = new GameManager();
-        gm1.printMaze();
-        gm1.playGame();
+        PlayerFactory playerFactory = new PlayerFactory();
+
+        GameManager gameManager = new GameManager(playerFactory);
+        gameManager.printMaze();
+        gameManager.playGame();
     }
 }
