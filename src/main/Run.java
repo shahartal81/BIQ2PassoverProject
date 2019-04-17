@@ -1,11 +1,17 @@
 package main;
 
 import gamemanager.GameManager;
+import player.PlayerFactory;
 
 import java.io.File;
 
 public class Run {
     public static void main(String[] args) {
+        PlayerFactory playerFactory = new PlayerFactory();
+
+        GameManager gameManager = new GameManager(playerFactory);
+        gameManager.printMaze();
+        gameManager.playGame();
         String filePath = "test.txt";
 //        if (args.length < 2) {
 //            System.out.println("Missing output file argument in command line");

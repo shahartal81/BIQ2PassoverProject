@@ -9,6 +9,8 @@ import player.PlayerAdvanced;
 import player.PlayerBookmarkEachStep;
 import player.PlayerSimple;
 import player.PlayerVeryAdvanced;
+import org.mockito.cglib.proxy.Factory;
+import player.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -18,8 +20,8 @@ import java.util.Map;
 public class GameManager {
     private Player player;
     private static final int MAX_STEPS = 30;
-    private static final int NUMBER_OF_ROWS = 4;
-    private static final int NUMBER_OF_COLUMNS = 6;
+    private int numberOfRows = 4;
+    private int numberOfColumns = 6;
     private static final char PLAYER = MazeElement.PLAYER.getValue();
     private static final char END = MazeElement.END.getValue();
     private static final char WALL = MazeElement.WALL.getValue();
@@ -37,6 +39,7 @@ public class GameManager {
     private OutputFile outputFile;
 
     public GameManager(File outPutFile){
+    public GameManager(PlayerFactory playerFactory){
         createMaze();
         if (mazeDimensions.getColumn() <= 3 && mazeDimensions.getRow() <= 3) {
             System.out.println("Using PlayerSimple");
@@ -52,11 +55,13 @@ public class GameManager {
             this.player = new PlayerBookmarkEachStep();
         }
         outputFile = new OutputFile(outPutFile);
+        player = playerFactory.createPlayer(mazeDimensions);
+
     }
 
     private void createMaze(){
-        mazeDimensions = new Position(NUMBER_OF_ROWS,NUMBER_OF_COLUMNS);
-        maze = new char[NUMBER_OF_ROWS][NUMBER_OF_COLUMNS];
+        mazeDimensions = new Position(numberOfRows, numberOfColumns);
+        maze = new char[numberOfRows][numberOfColumns];
         for (int i = 0; i < 4; i++){
             maze[0][i] = WALL;
         }
@@ -130,19 +135,17 @@ public class GameManager {
     private Position byMove(Move move) {
         switch (move){
             case UP:
-                return new Position(Math.floorMod(playerPosition.getRow() - 1, NUMBER_OF_ROWS), playerPosition.getColumn());
+                return new Position(Math.floorMod(playerPosition.getRow() - 1, numberOfRows), playerPosition.getColumn());
             case DOWN:
-                return new Position(Math.floorMod(playerPosition.getRow() + 1,NUMBER_OF_ROWS ), playerPosition.getColumn());
+                return new Position(Math.floorMod(playerPosition.getRow() + 1, numberOfRows), playerPosition.getColumn());
             case LEFT:
-                return new Position(playerPosition.getRow(), Math.floorMod(playerPosition.getColumn() - 1, NUMBER_OF_COLUMNS));
+                return new Position(playerPosition.getRow(), Math.floorMod(playerPosition.getColumn() - 1, numberOfColumns));
             case RIGHT:
-                return new Position(playerPosition.getRow(), Math.floorMod(playerPosition.getColumn() + 1, NUMBER_OF_COLUMNS));
+                return new Position(playerPosition.getRow(), Math.floorMod(playerPosition.getColumn() + 1, numberOfColumns));
             case BOOKMARK:
                 return playerPosition;
         }
-
         throw new IllegalArgumentException("");
-
     }
 
     private void changePosition(Position next) {
@@ -151,7 +154,7 @@ public class GameManager {
         playerPosition = next;
     }
 
-    public void playGame(){
+    public boolean playGame(){
         while (usedSteps < MAX_STEPS && !isSolved) {
             Move move = player.move();
             movePlayer(move);
@@ -166,6 +169,15 @@ public class GameManager {
             System.out.println("Loser!");
             System.out.println("Used steps: " + usedSteps + " reached the limit of allowed steps: " + MAX_STEPS);
         }
+        return isSolved;
+    }
+
+    public void setNumberOfRows(int numberOfRows) {
+        this.numberOfRows = numberOfRows;
+    }
+
+    public void setNumberOfColumns(int numberOfColumns) {
+        this.numberOfColumns = numberOfColumns;
         outputFile.printAllMoves();
         try {
             outputFile.exportToFile();
