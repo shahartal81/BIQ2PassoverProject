@@ -5,11 +5,7 @@ import additionalclasses.OutputFile;
 import additionalclasses.Position;
 import enums.Move;
 import player.Player;
-import player.PlayerAdvanced;
-import player.PlayerBookmarkEachStep;
 import player.PlayerFactory;
-import player.PlayerSimple;
-import player.PlayerVeryAdvanced;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -39,21 +35,8 @@ public class GameManager {
 
     public GameManager(BufferedWriter outPutFile, PlayerFactory playerFactory){
         createMaze();
-        if (mazeDimensions.getColumn() <= 3 && mazeDimensions.getRow() <= 3) {
-            System.out.println("Using PlayerSimple");
-            this.player = new PlayerSimple();
-        } else if (mazeDimensions.getColumn() <= 5 && mazeDimensions.getRow() <= 5) {
-            System.out.println("Using PlayerAdvanced");
-            this.player = new PlayerAdvanced();
-        } else if ((mazeDimensions.getColumn() * mazeDimensions.getRow()) * 3 >= MAX_STEPS){
-            System.out.println("Using PlayerVeryAdvanced");
-            this.player = new PlayerVeryAdvanced();
-        } else {
-            System.out.println("Using PlayerBookmarkEachStep");
-            this.player = new PlayerBookmarkEachStep();
-        }
         outputFile = new OutputFile(outPutFile);
-        player = playerFactory.createPlayer(mazeDimensions);
+        player = playerFactory.createPlayer(mazeDimensions, MAX_STEPS);
 
     }
 
