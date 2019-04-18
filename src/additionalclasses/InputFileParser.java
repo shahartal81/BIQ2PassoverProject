@@ -63,7 +63,6 @@ public class InputFileParser {
         return 0;
     }
 
-
     public static void mazeSymbolsValidation(){
         int countPlayerChar = 0;
         int countFinishChar = 0;

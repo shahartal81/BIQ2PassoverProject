@@ -6,7 +6,6 @@ public class Maze {
 
     private char[][] mazeMap = new char[rows][columns];
 
-
     public void setMaxSteps(int maxSteps) {
         this.maxSteps = maxSteps;
     }
