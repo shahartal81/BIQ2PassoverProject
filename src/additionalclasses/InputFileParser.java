@@ -9,7 +9,7 @@ import java.util.ArrayList;
 public class InputFileParser {
 
     private static ArrayList<String> result = new ArrayList<>();
-    private static String filename = "C:\\BIQ Training\\Maze Project\\sample.txt";
+    private static String filename = "C:\\Users\\yl0871\\maze.txt";
     String fileHeaderErrorLog;
     String mazeFileErrorLog;
 
@@ -49,17 +49,19 @@ public class InputFileParser {
 
     public static int numberOf(String key, int lineNumber){
         String line = result.get(lineNumber - 1).trim();
-        String[] strs = line.split("\\s+");
-        if ( strs.length != 3 || !strs[0].equals(key) || !strs[1].equals("=") || !strs[2].matches("[0-9]+")){
-            System.out.println("expected in line " + lineNumber + " - " + key + " = <num> got: " + "<" + line + ">");
+        if(line.contains("=")){
+            String[] strs = line.split("=");
+            if ( strs.length != 2 || !strs[0].equals(key) ||!strs[1].matches("[0-9]+")){
+                System.out.println("expected in line " + lineNumber + " - " + key + " = <num> got: " + "<" + line + ">");
+            }
+            try{
+                return Integer.parseInt(strs[1]);
+            } catch (NumberFormatException e){
+                e.printStackTrace();
+            }
+        } else{
+            System.out.println("line didn't contain the = symbol");
         }
-
-        try{
-            return Integer.parseInt(strs[2]);
-        } catch (NumberFormatException e){
-            e.printStackTrace();
-        }
-
         return 0;
     }
 
