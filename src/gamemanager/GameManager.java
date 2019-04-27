@@ -1,8 +1,6 @@
 package gamemanager;
 
-import additionalclasses.MazeElement;
-import additionalclasses.OutputFile;
-import additionalclasses.Position;
+import additionalclasses.*;
 import enums.Move;
 import player.Player;
 import player.PlayerFactory;
@@ -14,16 +12,12 @@ import java.util.Map;
 
 public class GameManager {
     private Player player;
-    private static final int MAX_STEPS = 3000;
-    private int numberOfRows = 4;
-    private int numberOfColumns = 6;
     private static final char PLAYER = MazeElement.PLAYER.getValue();
     private static final char END = MazeElement.END.getValue();
     private static final char WALL = MazeElement.WALL.getValue();
     private static final char PASS = MazeElement.PASS.getValue();
 
-    private Position mazeDimensions;
-    private char[][] maze;
+    private Maze maze;
     private Position playerPosition;
     private Position endPosition;
     private int usedSteps = 0;
@@ -34,60 +28,32 @@ public class GameManager {
     private OutputFile outputFile;
 
     public GameManager(BufferedWriter outPutFile, PlayerFactory playerFactory){
-        createMaze();
+        try {
+            maze = InputFileParser.getMaze();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         outputFile = new OutputFile(outPutFile);
-        player = playerFactory.createPlayer(mazeDimensions, MAX_STEPS);
+        player = playerFactory.createPlayer(new Position(maze.getRows(), maze.getColumns()), maze.getMaxSteps());
 
     }
 
-    private void createMaze(){
-        mazeDimensions = new Position(numberOfRows, numberOfColumns);
-        maze = new char[numberOfRows][numberOfColumns];
-        for (int i = 0; i < 4; i++){
-            maze[0][i] = WALL;
+    public GameManager(PlayerFactory playerFactory){
+        try {
+            maze = InputFileParser.getMaze();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        maze[0][4] = PASS;
-        maze[0][5] = PASS;
+        player = playerFactory.createPlayer(new Position(maze.getRows(), maze.getColumns()), maze.getMaxSteps());
+        playerPosition = maze.getPlayerPosition();
+        endPosition = maze.getEndPosition();
 
-        maze[1][0] = PASS;
-        maze[1][1] = PASS;
-        maze[1][2] = PLAYER;
-        playerPosition = new Position(1,2);
-        maze[1][3] = WALL;
-        maze[1][4] = END;
-        endPosition = new Position(1,4);
-        maze[1][5] = PASS;
-
-        maze[2][0] = WALL;
-        maze[2][1] = PASS;
-        maze[2][2] = PASS;
-        maze[2][3] = WALL;
-        maze[2][4] = PASS;
-        maze[2][5] = PASS;
-
-        maze[3][0] = PASS;
-        maze[3][1] = PASS;
-        maze[3][2] = PASS;
-        maze[3][3] = WALL;
-        maze[3][4] = PASS;
-
-    }
-
-    public void printMaze(){
-        for (int row = 0; row < maze.length; row++){
-            for (int col = 0; col < maze[row].length; col++) {
-                System.out.print(maze[row][col] + " ");
-            }
-
-            System.out.println();
-        }
-        System.out.println("----------------------------------");
     }
 
     private void movePlayer(Move move){
         Position next = byMove(move);
         try {
-            if (maze[next.getRow()][next.getColumn()] == WALL){
+            if (maze.getMazeMap()[next.getRow()][next.getColumn()] == WALL){
                 System.out.println("Wanted to move " + move + " but..."); //for console only
                 player.hitWall();
             } else if (next.equals(endPosition)) {
@@ -107,7 +73,7 @@ public class GameManager {
             }
             usedSteps++;
             System.out.println("Used steps: " + usedSteps); //for console only
-            printMaze(); //for console only
+            maze.printMaze();
         } catch (Exception e) {
             System.out.println("enums.Move is out of bounds");
         }
@@ -116,13 +82,13 @@ public class GameManager {
     private Position byMove(Move move) {
         switch (move){
             case UP:
-                return new Position(Math.floorMod(playerPosition.getRow() - 1, numberOfRows), playerPosition.getColumn());
+                return new Position(Math.floorMod(playerPosition.getRow() - 1, maze.getRows()), playerPosition.getColumn());
             case DOWN:
-                return new Position(Math.floorMod(playerPosition.getRow() + 1, numberOfRows), playerPosition.getColumn());
+                return new Position(Math.floorMod(playerPosition.getRow() + 1, maze.getRows()), playerPosition.getColumn());
             case LEFT:
-                return new Position(playerPosition.getRow(), Math.floorMod(playerPosition.getColumn() - 1, numberOfColumns));
+                return new Position(playerPosition.getRow(), Math.floorMod(playerPosition.getColumn() - 1, maze.getColumns()));
             case RIGHT:
-                return new Position(playerPosition.getRow(), Math.floorMod(playerPosition.getColumn() + 1, numberOfColumns));
+                return new Position(playerPosition.getRow(), Math.floorMod(playerPosition.getColumn() + 1, maze.getColumns()));
             case BOOKMARK:
                 return playerPosition;
         }
@@ -130,13 +96,13 @@ public class GameManager {
     }
 
     private void changePosition(Position next) {
-        maze[playerPosition.getRow()][playerPosition.getColumn()] = PASS;
-        maze[next.getRow()][next.getColumn()] = PLAYER;
+        maze.getMazeMap()[playerPosition.getRow()][playerPosition.getColumn()] = PASS;
+        maze.getMazeMap()[next.getRow()][next.getColumn()] = PLAYER;
         playerPosition = next;
     }
 
     public boolean playGame(){
-        while (usedSteps < MAX_STEPS && !isSolved) {
+        while (usedSteps < maze.getMaxSteps() && !isSolved) {
             Move move = player.move();
             movePlayer(move);
             outputFile.updateMovesMap(move);
@@ -147,7 +113,7 @@ public class GameManager {
         } else {
             outputFile.setEndGame('X');
             System.out.println("Loser!");
-            System.out.println("Used steps: " + usedSteps + " reached the limit of allowed steps: " + MAX_STEPS);
+            System.out.println("Used steps: " + usedSteps + " reached the limit of allowed steps: " + maze.getMaxSteps());
         }
         outputFile.printAllMoves();
         try {
@@ -159,11 +125,4 @@ public class GameManager {
         return isSolved;
     }
 
-    public void setNumberOfRows(int numberOfRows) {
-        this.numberOfRows = numberOfRows;
-    }
-
-    public void setNumberOfColumns(int numberOfColumns) {
-        this.numberOfColumns = numberOfColumns;
-    }
 }

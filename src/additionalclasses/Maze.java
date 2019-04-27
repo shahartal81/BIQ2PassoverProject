@@ -1,4 +1,7 @@
 package additionalclasses;
+
+import javafx.geometry.Pos;
+
 public class Maze {
     private int maxSteps;
     private int rows;
@@ -37,6 +40,39 @@ public class Maze {
 
     public int getColumns() {
         return columns;
+    }
+
+    public Position getPlayerPosition() {
+        for (int row = 0; row < mazeMap.length; row++) {
+            for (int col = 0; col < mazeMap[row].length; col++) {
+                if (mazeMap[row][col] == '@') {
+                    return new Position(row, col);
+                }
+            }
+        }
+        return null;
+    }
+
+    public Position getEndPosition() {
+        for (int row = 0; row < mazeMap.length; row++) {
+            for (int col = 0; col < mazeMap[row].length; col++) {
+                if (mazeMap[row][col] == '$') {
+                    return new Position(row, col);
+                }
+            }
+        }
+        return null;
+    }
+
+    public void printMaze(){
+        for (int row = 0; row < mazeMap.length; row++){
+            for (int col = 0; col < mazeMap[row].length; col++) {
+                System.out.print(mazeMap[row][col] + " ");
+            }
+
+            System.out.println();
+        }
+        System.out.println("----------------------------------");
     }
 
 }

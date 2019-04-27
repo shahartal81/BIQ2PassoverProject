@@ -9,7 +9,7 @@ import java.util.ArrayList;
 public class InputFileParser {
 
     private static ArrayList<String> result = new ArrayList<>();
-    private static String filename = "C:\\Users\\yl0871\\maze.txt";
+    private static String filename = "C:\\BIQ Training\\Maze Project\\sample.txt";
     String fileHeaderErrorLog;
     String mazeFileErrorLog;
 
