@@ -31,17 +31,6 @@ public class GameManager {
 
     private OutputFile outputFile;
 
-    public GameManager(BufferedWriter outPutFile, PlayerFactory playerFactory){
-        try {
-            maze = InputFileParser.getMaze();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        outputFile = new OutputFile(outPutFile);
-        player = playerFactory.createPlayer(new Position(maze.getRows(), maze.getColumns()), maze.getMaxSteps());
-
-    }
-
     public GameManager(PlayerFactory playerFactory){
         try {
             maze = InputFileParser.getMaze();

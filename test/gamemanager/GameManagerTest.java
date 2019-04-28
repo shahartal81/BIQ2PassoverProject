@@ -46,7 +46,7 @@ public class GameManagerTest {
 
         when(playerFactory.createPlayer(any(), anyInt())).thenReturn(player);
 
-        gameManager = new GameManager(fileWriter, playerFactory);
+        gameManager = new GameManager(playerFactory);
     }
 
     @After
