@@ -1,6 +1,10 @@
 package gamemanager;
 
-import additionalclasses.*;
+import additionalclasses.InputFileParser;
+import additionalclasses.Maze;
+import additionalclasses.MazeElement;
+import additionalclasses.OutputFile;
+import additionalclasses.Position;
 import enums.Move;
 import player.Player;
 import player.PlayerFactory;

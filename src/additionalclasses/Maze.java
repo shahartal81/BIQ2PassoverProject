@@ -1,7 +1,5 @@
 package additionalclasses;
 
-import javafx.geometry.Pos;
-
 public class Maze {
     private int maxSteps;
     private int rows;
