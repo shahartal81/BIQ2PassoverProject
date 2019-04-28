@@ -1,0 +1,8 @@
+﻿sample maze
+MaxSteps = 30
+Rows = 4
+Cols = 6
+####  
+  @#$ 
+#  #  
+   #  
