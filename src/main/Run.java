@@ -27,7 +27,6 @@ public class Run {
                 PlayerFactory playerFactory = new PlayerFactory();
 
                 GameManager gameManager = new GameManager(playerFactory);
-//                gameManager.printMaze();
                 gameManager.createOutPutFile(fileWriter);
                 gameManager.playGame();
             }
