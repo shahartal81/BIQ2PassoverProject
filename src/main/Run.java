@@ -28,6 +28,7 @@ public class Run {
 
                 GameManager gameManager = new GameManager(playerFactory);
 //                gameManager.printMaze();
+                gameManager.createOutPutFile(fileWriter);
                 gameManager.playGame();
             }
         }

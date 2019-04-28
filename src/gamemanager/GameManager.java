@@ -129,4 +129,8 @@ public class GameManager {
         return isSolved;
     }
 
+    public void createOutPutFile(BufferedWriter outPutFile) {
+        outputFile = new OutputFile(outPutFile);
+    }
+
 }

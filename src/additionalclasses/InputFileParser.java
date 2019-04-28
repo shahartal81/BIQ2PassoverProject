@@ -9,11 +9,11 @@ import java.util.ArrayList;
 public class InputFileParser {
 
     private static ArrayList<String> result = new ArrayList<>();
-    private static String filename = "C:\\BIQ Training\\Maze Project\\sample.txt";
+    private static String filename = "sample.txt";
     String fileHeaderErrorLog;
     String mazeFileErrorLog;
 
-    public static  Maze getMaze() throws Exception{
+    public static  Maze getMaze(){
         Maze maze = new Maze();
         readFromFile(filename);
 
@@ -51,11 +51,11 @@ public class InputFileParser {
         String line = result.get(lineNumber - 1).trim();
         if(line.contains("=")){
             String[] strs = line.split("=");
-            if ( strs.length != 2 || !strs[0].equals(key) ||!strs[1].matches("[0-9]+")){
+            if (strs.length != 2 || !strs[0].equals(key) ||!strs[1].matches("[0-9]+")){
                 System.out.println("expected in line " + lineNumber + " - " + key + " = <num> got: " + "<" + line + ">");
             }
-            try{
-                return Integer.parseInt(strs[1]);
+            try {
+                return Integer.parseInt(strs[1].trim());
             } catch (NumberFormatException e){
                 e.printStackTrace();
             }
