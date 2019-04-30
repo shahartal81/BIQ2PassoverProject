@@ -8,7 +8,7 @@ public class PlayerSimple implements Player {
 
     @Override
     public Move move() {
-        return randomMove();
+        return chooseMove();
     }
 
     @Override
@@ -21,7 +21,7 @@ public class PlayerSimple implements Player {
         System.out.println("Hit Bookmark");
     }
 
-    private Move randomMove(){
+    private Move chooseMove(){
         int pick = new Random().nextInt(Move.values().length-1);
         return Move.values()[pick];
     }

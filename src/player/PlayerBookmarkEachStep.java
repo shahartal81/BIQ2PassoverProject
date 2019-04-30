@@ -21,7 +21,7 @@ public class PlayerBookmarkEachStep implements Player {
             nextTurnBookmark = false;
             return Move.BOOKMARK;
         } else {
-            lastMove = randomMove();
+            lastMove = chooseMove();
             nextTurnBookmark = true;
             return lastMove;
         }
@@ -54,7 +54,7 @@ public class PlayerBookmarkEachStep implements Player {
         System.out.println("Added a bookmark");
     }
 
-    private Move randomMove(){
+    private Move chooseMove(){
         if (lastMove == null) {
             return new Move[]{Move.LEFT, Move.RIGHT, Move.UP, Move.DOWN}[new Random().nextInt(Move.values().length-1)];
         } else if (lastMove.equals(Move.BOOKMARK)) {
