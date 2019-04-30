@@ -66,6 +66,9 @@ public class PlayerFactoryTest {
                 return;
             case PLAYER_BOOKMARK_EACH_STEP:
                 Assert.assertTrue(player instanceof PlayerBookmarkEachStep);
+                return;
+            default:
+                Assert.fail("Player not supported!");
         }
     }
 }
