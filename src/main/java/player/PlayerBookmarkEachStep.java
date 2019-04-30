@@ -1,6 +1,6 @@
-package player;
+package main.java.player;
 
-import enums.Move;
+import main.java.enums.Move;
 
 import java.util.ArrayList;
 import java.util.HashMap;

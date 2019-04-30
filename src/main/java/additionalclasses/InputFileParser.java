@@ -1,8 +1,11 @@
-package additionalclasses;
+package main.java.additionalclasses;
 
-import com.sun.deploy.util.StringUtils;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class InputFileParser {

@@ -1,13 +1,12 @@
-package gamemanager;
+package main.java.gamemanager;
 
-import additionalclasses.InputFileParser;
-import additionalclasses.Maze;
-import additionalclasses.MazeElement;
-import additionalclasses.OutputFile;
-import additionalclasses.Position;
-import enums.Move;
-import player.Player;
-import player.PlayerFactory;
+import main.java.additionalclasses.Maze;
+import main.java.additionalclasses.MazeElement;
+import main.java.additionalclasses.OutputFile;
+import main.java.additionalclasses.Position;
+import main.java.enums.Move;
+import main.java.player.Player;
+import main.java.player.PlayerFactory;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -38,7 +37,7 @@ public class GameManager {
 //            e.printStackTrace();
 //        }
 //        outputFile = new OutputFile(outPutFile);
-//        player = playerFactory.createPlayer(new Position(maze.getRows(), maze.getColumns()), maze.getMaxSteps());
+//        main.java.player = playerFactory.createPlayer(new Position(maze.getRows(), maze.getColumns()), maze.getMaxSteps());
 //    }
 //
 //    public GameManager(PlayerFactory playerFactory){
@@ -47,7 +46,7 @@ public class GameManager {
 //        } catch (Exception e) {
 //            e.printStackTrace();
 //        }
-//        player = playerFactory.createPlayer(new Position(maze.getRows(), maze.getColumns()), maze.getMaxSteps());
+//        main.java.player = playerFactory.createPlayer(new Position(maze.getRows(), maze.getColumns()), maze.getMaxSteps());
 //        playerPosition = maze.getPlayerPosition();
 //        endPosition = maze.getEndPosition();
 //
@@ -91,7 +90,7 @@ public class GameManager {
             System.out.println("Used steps: " + usedSteps); //for console only
             maze.printMaze();
         } catch (Exception e) {
-            System.out.println("enums.Move is out of bounds");
+            System.out.println("main.java.enums.Move is out of bounds");
         }
     }
 

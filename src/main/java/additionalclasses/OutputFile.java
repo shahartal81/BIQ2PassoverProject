@@ -1,6 +1,6 @@
-package additionalclasses;
+package main.java.additionalclasses;
 
-import enums.Move;
+import main.java.enums.Move;
 
 import java.io.BufferedWriter;
 import java.io.IOException;

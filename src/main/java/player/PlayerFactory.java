@@ -1,6 +1,6 @@
-package player;
+package main.java.player;
 
-import additionalclasses.Position;
+import main.java.additionalclasses.Position;
 
 public class PlayerFactory {
 

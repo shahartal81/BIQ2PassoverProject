@@ -1,6 +1,6 @@
-package player;
+package main.java.player;
 
-import additionalclasses.Position;
+import main.java.additionalclasses.Position;
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;

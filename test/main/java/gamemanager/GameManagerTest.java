@@ -1,9 +1,8 @@
-package gamemanager;
+package main.java.gamemanager;
 
-import enums.Move;
+import main.java.enums.Move;
 import org.junit.After;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
@@ -11,17 +10,13 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
-import player.Player;
-import player.PlayerFactory;
+import main.java.player.Player;
+import main.java.player.PlayerFactory;
 
 import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 
 import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyInt;
-import static org.mockito.Mockito.when;
 
 public class GameManagerTest {
 
@@ -44,7 +39,7 @@ public class GameManagerTest {
 //        File createdFile = folder.newFile("test.txt");
 //        fileWriter = new BufferedWriter(new FileWriter(createdFile));
 //
-//        when(playerFactory.createPlayer(any(), anyInt())).thenReturn(player);
+//        when(playerFactory.createPlayer(any(), anyInt())).thenReturn(main.java.player);
 //
 //        gameManager = new GameManager(playerFactory);
 //    }

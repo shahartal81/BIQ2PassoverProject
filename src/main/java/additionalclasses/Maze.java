@@ -1,4 +1,4 @@
-package additionalclasses;
+package main.java.additionalclasses;
 
 public class Maze {
     private int maxSteps;
