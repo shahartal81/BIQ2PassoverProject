@@ -31,16 +31,6 @@ public class PlayerFactoryTest {
     }
 
     @Test
-    public void testPlayerAdvanced(){
-        when(position.getColumn()).thenReturn(5);
-        when(position.getRow()).thenReturn(5);
-        int maxSteps = 30;
-        playerFactory = new PlayerFactory();
-        Player player = playerFactory.createPlayer(new Position(position.getRow(), position.getColumn()), maxSteps);
-        Assert.assertTrue(player instanceof PlayerAdvanced);
-    }
-
-    @Test
     public void testPlayerVeryAdvanced(){
         when(position.getColumn()).thenReturn(10);
         when(position.getRow()).thenReturn(10);
