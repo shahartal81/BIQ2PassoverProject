@@ -1,7 +1,5 @@
 package additionalclasses;
 
-import enums.Move;
-
 import java.util.Objects;
 
 public class Position {
