@@ -38,16 +38,16 @@ public class GameManagerTest {
     @Mock
     private PlayerFactory playerFactory;
 
-    @Before
-    public void setUp() throws IOException {
-        folder.create();
-        File createdFile = folder.newFile("test.txt");
-        fileWriter = new BufferedWriter(new FileWriter(createdFile));
-
-        when(playerFactory.createPlayer(any(), anyInt())).thenReturn(player);
-
-        gameManager = new GameManager(playerFactory);
-    }
+//    @Before
+//    public void setUp() throws IOException {
+//        folder.create();
+//        File createdFile = folder.newFile("test.txt");
+//        fileWriter = new BufferedWriter(new FileWriter(createdFile));
+//
+//        when(playerFactory.createPlayer(any(), anyInt())).thenReturn(player);
+//
+//        gameManager = new GameManager(playerFactory);
+//    }
 
     @After
     public void teardown() throws IOException {
