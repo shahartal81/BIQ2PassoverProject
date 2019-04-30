@@ -38,6 +38,9 @@ public class PlayerAdvanced implements Player {
     public void hitBookmark(int seq) {
         hitBookmarkSeqNumber = seq;
         lastMove = Move.BOOKMARK;
+        if (!bookmarksMap.containsKey(seq)) {
+            addBookmark(seq);
+        }
         System.out.println("Hit Bookmark");
     }
 
@@ -54,7 +57,9 @@ public class PlayerAdvanced implements Player {
     }
 
     private Move chooseMove(){
-        if (lastMove.equals(Move.BOOKMARK)) {
+        if (lastMove == null) {
+            return new Move[]{Move.LEFT, Move.RIGHT, Move.UP, Move.DOWN}[new Random().nextInt(Move.values().length-1)];
+        } else if (lastMove.equals(Move.BOOKMARK)) {
             ArrayList<Move> moves = new ArrayList<>();
             for (Move move: Move.values()) {
                 if (!bookmarksMap.get(hitBookmarkSeqNumber).contains(move)) {
@@ -64,7 +69,18 @@ public class PlayerAdvanced implements Player {
             Move[] movesArray = moves.toArray(new Move[0]);
             return movesArray[new Random().nextInt(movesArray.length-1)];
         } else {
-            return new Move[]{Move.LEFT, Move.RIGHT, Move.UP, Move.DOWN}[new Random().nextInt(Move.values().length-1)];
+            switch (lastMove) {
+                case UP:
+                    return new Move[]{Move.LEFT, Move.RIGHT, Move.UP}[new Random().nextInt(Move.values().length - 2)];
+                case DOWN:
+                    return new Move[]{Move.LEFT, Move.RIGHT, Move.DOWN}[new Random().nextInt(Move.values().length - 2)];
+                case LEFT:
+                    return new Move[]{Move.LEFT, Move.DOWN, Move.UP}[new Random().nextInt(Move.values().length - 2)];
+                case RIGHT:
+                    return new Move[]{Move.RIGHT, Move.DOWN, Move.UP}[new Random().nextInt(Move.values().length - 2)];
+                default:
+                    throw new IllegalArgumentException("");
+            }
         }
     }
 }

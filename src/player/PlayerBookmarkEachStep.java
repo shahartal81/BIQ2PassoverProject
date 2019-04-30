@@ -39,6 +39,9 @@ public class PlayerBookmarkEachStep implements Player {
     public void hitBookmark(int seq) {
         hitBookmarkSeqNumber = seq;
         lastMove = Move.BOOKMARK;
+        if (!bookmarksMap.containsKey(seq)) {
+            addBookmark(seq);
+        }
         System.out.println("Hit Bookmark");
     }
 
@@ -55,17 +58,16 @@ public class PlayerBookmarkEachStep implements Player {
     }
 
     private Move chooseMove(){
-        if (lastMove.equals(Move.BOOKMARK)) {
-            ArrayList<Move> moves = new ArrayList<>();
-            for (Move move: Move.values()) {
-                if (!bookmarksMap.get(hitBookmarkSeqNumber).contains(move)) {
-                    moves.add(move);
+        if (lastMove != null && lastMove.equals(Move.BOOKMARK)) {
+                ArrayList<Move> moves = new ArrayList<>();
+                for (Move move : Move.values()) {
+                    if (!bookmarksMap.get(hitBookmarkSeqNumber).contains(move)) {
+                        moves.add(move);
+                    }
                 }
-            }
-            Move[] movesArray = moves.toArray(new Move[0]);
-            return movesArray[new Random().nextInt(movesArray.length-1)];
-        } else {
-            return new Move[]{Move.LEFT, Move.RIGHT, Move.UP, Move.DOWN}[new Random().nextInt(Move.values().length-1)];
+                Move[] movesArray = moves.toArray(new Move[0]);
+                return movesArray[new Random().nextInt(movesArray.length - 1)];
         }
+        return new Move[]{Move.LEFT, Move.RIGHT, Move.UP, Move.DOWN}[new Random().nextInt(Move.values().length-1)];
     }
 }

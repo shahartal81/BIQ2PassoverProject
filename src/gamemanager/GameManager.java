@@ -78,6 +78,7 @@ public class GameManager {
                 if (move.equals(Move.BOOKMARK)) {
                     bookmarkSeqNumber++;
                     bookmarksMap.put(playerPosition, bookmarkSeqNumber);
+                    System.out.println("Created " + move);
                 } else {
                     if (bookmarksMap.containsKey(next)) {
                         player.hitBookmark(bookmarksMap.get(next));
