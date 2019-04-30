@@ -20,11 +20,10 @@ public class PlayerFactoryTest {
 
     private enum PlayerTypes {
         PLAYER_SIMPLE,
-        PLAYER_VERY_ADVACNED,
+        PLAYER_VERY_ADVANCED,
         PLAYER_BOOKMARK_EACH_STEP
     }
 
-    private PlayerFactory playerFactory;
     private int maxSteps;
     private int rows;
     private int cols;
@@ -34,7 +33,7 @@ public class PlayerFactoryTest {
     public static Collection<Object[]> data() {
         return Arrays.asList(new Object[][] {
                 {30, 3, 3, PlayerTypes.PLAYER_SIMPLE},
-                {30, 10, 10, PlayerTypes.PLAYER_VERY_ADVACNED},
+                {30, 10, 10, PlayerTypes.PLAYER_VERY_ADVANCED},
                 {3000, 15, 15, PlayerTypes.PLAYER_BOOKMARK_EACH_STEP}
         });
     }
@@ -56,13 +55,13 @@ public class PlayerFactoryTest {
     public void testPlayerFactory(){
         when(position.getColumn()).thenReturn(cols);
         when(position.getRow()).thenReturn(rows);
-        playerFactory = new PlayerFactory();
+        PlayerFactory playerFactory = new PlayerFactory();
         Player player = playerFactory.createPlayer(new Position(position.getRow(), position.getColumn()), maxSteps);
         switch (playerInd){
             case PLAYER_SIMPLE:
                 Assert.assertTrue(player instanceof PlayerSimple);
                 return;
-            case PLAYER_VERY_ADVACNED:
+            case PLAYER_VERY_ADVANCED:
                 Assert.assertTrue(player instanceof PlayerVeryAdvanced);
                 return;
             case PLAYER_BOOKMARK_EACH_STEP:
