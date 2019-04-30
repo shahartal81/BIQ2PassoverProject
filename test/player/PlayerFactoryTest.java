@@ -62,7 +62,7 @@ public class PlayerFactoryTest {
                 Assert.assertTrue(player instanceof PlayerSimple);
                 return;
             case PLAYER_VERY_ADVANCED:
-                Assert.assertTrue(player instanceof PlayerVeryAdvanced);
+                Assert.assertTrue(player instanceof PlayerAdvanced);
                 return;
             case PLAYER_BOOKMARK_EACH_STEP:
                 Assert.assertTrue(player instanceof PlayerBookmarkEachStep);

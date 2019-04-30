@@ -9,8 +9,8 @@ public class PlayerFactory {
             System.out.println("Using PlayerSimple");
             return new PlayerSimple();
         } else if ((mazeDimensions.getColumn() * mazeDimensions.getRow()) * 3 >= maxSteps){
-            System.out.println("Using PlayerVeryAdvanced");
-            return new PlayerVeryAdvanced();
+            System.out.println("Using PlayerAdvanced");
+            return new PlayerAdvanced();
         } else {
             System.out.println("Using PlayerBookmarkEachStep");
             return new PlayerBookmarkEachStep();

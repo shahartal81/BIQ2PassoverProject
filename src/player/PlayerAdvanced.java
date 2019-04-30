@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
-public class PlayerVeryAdvanced implements Player {
+public class PlayerAdvanced implements Player {
 
     private Map<Integer, ArrayList<Move>> bookmarksMap = new HashMap<>();
     private int seqNumber = 0;
