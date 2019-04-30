@@ -75,11 +75,9 @@ public class PlayerAdvanced implements Player {
                     return new Move[]{Move.LEFT, Move.DOWN, Move.UP}[new Random().nextInt(Move.values().length - 2)];
                 case RIGHT:
                     return new Move[]{Move.RIGHT, Move.DOWN, Move.UP}[new Random().nextInt(Move.values().length - 2)];
+                default:
+                    throw new IllegalArgumentException("");
             }
-
-            throw new IllegalArgumentException("");
         }
-
-
     }
 }
