@@ -15,6 +15,26 @@ public class PlayerAdvanced implements Player {
     private boolean usedBookmark = false;
     private int hitBookmarkSeqNumber = 0;
 
+    public Map<Integer, ArrayList<Move>> getBookmarksMap() {
+        return bookmarksMap;
+    }
+
+    public int getSeqNumber() {
+        return seqNumber;
+    }
+
+    public Move getLastMove() {
+        return lastMove;
+    }
+
+    public boolean isUsedBookmark() {
+        return usedBookmark;
+    }
+
+    public int getHitBookmarkSeqNumber() {
+        return hitBookmarkSeqNumber;
+    }
+
     @Override
     public Move move() {
         if (usedBookmark) {
@@ -37,14 +57,13 @@ public class PlayerAdvanced implements Player {
     @Override
     public void hitBookmark(int seq) {
         hitBookmarkSeqNumber = seq;
-        lastMove = Move.BOOKMARK;
         if (!bookmarksMap.containsKey(seq)) {
             addBookmark(seq);
         }
         System.out.println("Hit Bookmark");
     }
 
-    private void addBookmark(Integer sequence) {
+    private void addBookmark(int sequence) {
         ArrayList<Move> moves;
         if (bookmarksMap.isEmpty() || !bookmarksMap.containsKey(sequence)) {
             moves = new ArrayList<>();
