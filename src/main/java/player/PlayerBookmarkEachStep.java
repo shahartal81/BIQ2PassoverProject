@@ -10,10 +10,30 @@ import java.util.Random;
 public class PlayerBookmarkEachStep implements Player {
 
     private Map<Integer, ArrayList<Move>> bookmarksMap = new HashMap<>();
-    private Integer seqNumber = 0;
+    private int seqNumber = 0;
     private Move lastMove;
     private boolean nextTurnBookmark = false;
     private int hitBookmarkSeqNumber = 0;
+
+    public Map<Integer, ArrayList<Move>> getBookmarksMap() {
+        return bookmarksMap;
+    }
+
+    public int getSeqNumber() {
+        return seqNumber;
+    }
+
+    public Move getLastMove() {
+        return lastMove;
+    }
+
+    public boolean isNextTurnBookmark() {
+        return nextTurnBookmark;
+    }
+
+    public int getHitBookmarkSeqNumber() {
+        return hitBookmarkSeqNumber;
+    }
 
     @Override
     public Move move() {
