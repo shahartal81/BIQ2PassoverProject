@@ -25,7 +25,7 @@ public class GameManagerTest {
 
     private GameManager gameManager;
     private BufferedWriter fileWriter = null;
-    private String mazeTestFilePath = "C:\\Users\\yl0871\\yuval\\maze.txt";
+    private String mazeTestFilePath = "test/resources/maze.txt";
     private File mazeFile = new File(mazeTestFilePath);
 
     @Rule
