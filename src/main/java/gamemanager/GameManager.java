@@ -30,7 +30,7 @@ public class GameManager {
 
     private OutputFile outputFile;
 
-//    public GameManager(BufferedWriter outPutFile, PlayerFactory playerFactory){
+    //    public GameManager(BufferedWriter outPutFile, PlayerFactory playerFactory){
 //        try {
 //            maze = InputFileParser.getMaze();
 //        } catch (Exception e) {
@@ -64,7 +64,7 @@ public class GameManager {
 
     }
 
-    private void movePlayer(Move move){
+    protected void movePlayer(Move move){
         Position next = byMove(move);
         try {
             if (maze.getMazeMap()[next.getRow()][next.getColumn()] == WALL){
@@ -142,6 +142,15 @@ public class GameManager {
 
     public void createOutPutFile(BufferedWriter outPutFile) {
         outputFile = new OutputFile(outPutFile);
+    }
+
+
+    public Position getPlayerPosition() {
+        return playerPosition;
+    }
+
+    public void setPlayerPosition(Position playerPosition) {
+        this.playerPosition = playerPosition;
     }
 
 }
