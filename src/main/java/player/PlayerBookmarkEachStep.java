@@ -12,8 +12,8 @@ public class PlayerBookmarkEachStep implements Player {
     private Map<Integer, ArrayList<Move>> bookmarksMap = new HashMap<>();
     private int seqNumber = 0;
     private Move lastMove;
-    private boolean nextTurnBookmark = false;
-    private int hitBookmarkSeqNumber = 0;
+    private boolean useBookmark = false;
+    private boolean hitBookmark = false;
 
     public Map<Integer, ArrayList<Move>> getBookmarksMap() {
         return bookmarksMap;
@@ -27,52 +27,69 @@ public class PlayerBookmarkEachStep implements Player {
         return lastMove;
     }
 
-    public boolean isNextTurnBookmark() {
-        return nextTurnBookmark;
+    public boolean isUseBookmark() {
+        return useBookmark;
     }
 
-    public int getHitBookmarkSeqNumber() {
-        return hitBookmarkSeqNumber;
+    public boolean getHitBookmark() {
+        return hitBookmark;
     }
 
     @Override
     public Move move() {
-        if (nextTurnBookmark) {
-            nextTurnBookmark = false;
-            return Move.BOOKMARK;
+        if (useBookmark) {
+            useBookmark = false;
+            seqNumber++;
+            handleBookmark(seqNumber);
+            lastMove = Move.BOOKMARK;
         } else {
             lastMove = chooseMove();
-            nextTurnBookmark = true;
-            return lastMove;
+            useBookmark = true;
         }
+        return lastMove;
     }
 
     @Override
     public void hitWall() {
-        seqNumber++;
-        addBookmark(seqNumber);
-        nextTurnBookmark = false;
         System.out.println("Hit Wall");
+        useBookmark = true;
     }
 
     @Override
     public void hitBookmark(int seq) {
-        hitBookmarkSeqNumber = seq;
-        lastMove = Move.BOOKMARK;
-        if (!bookmarksMap.containsKey(seq)) {
-            addBookmark(seq);
-        }
+        hitBookmark = true;
+        handleBookmark(seq);
         System.out.println("Hit Bookmark");
     }
 
-    private void addBookmark(Integer sequence) {
+    private void handleBookmark(int sequence) {
         ArrayList<Move> moves;
         if (bookmarksMap.isEmpty() || !bookmarksMap.containsKey(sequence)) {
             moves = new ArrayList<>();
+            moves.add(lastMove);
         } else {
             moves = bookmarksMap.get(sequence);
+            if (!hitBookmark) {
+                moves.add(lastMove);
+            } else {
+                switch (lastMove) {
+                    case UP:
+                        moves.add(Move.DOWN);
+                        break;
+                    case DOWN:
+                        moves.add(Move.UP);
+                        break;
+                    case RIGHT:
+                        moves.add(Move.LEFT);
+                        break;
+                    case LEFT:
+                        moves.add(Move.RIGHT);
+                        break;
+                    default:
+                        moves.add(lastMove);
+                }
+            }
         }
-        moves.add(lastMove);
         bookmarksMap.put(sequence, moves);
         System.out.println("Added a bookmark");
     }
@@ -81,7 +98,7 @@ public class PlayerBookmarkEachStep implements Player {
         if (lastMove != null && lastMove.equals(Move.BOOKMARK)) {
                 ArrayList<Move> moves = new ArrayList<>();
                 for (Move move : Move.values()) {
-                    if (!bookmarksMap.get(hitBookmarkSeqNumber).contains(move)) {
+                    if (!bookmarksMap.get(seqNumber).contains(move)) {
                         moves.add(move);
                     }
                 }

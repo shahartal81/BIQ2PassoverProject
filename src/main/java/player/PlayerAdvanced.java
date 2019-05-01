@@ -12,7 +12,7 @@ public class PlayerAdvanced implements Player {
     private Map<Integer, ArrayList<Move>> bookmarksMap = new HashMap<>();
     private int seqNumber = 0;
     private Move lastMove;
-    private boolean usedBookmark = false;
+    private boolean useBookmark = false;
     private boolean hitBookmark = false;
 
     public Map<Integer, ArrayList<Move>> getBookmarksMap() {
@@ -27,8 +27,8 @@ public class PlayerAdvanced implements Player {
         return lastMove;
     }
 
-    public boolean isUsedBookmark() {
-        return usedBookmark;
+    public boolean isUseBookmark() {
+        return useBookmark;
     }
 
     public boolean getHitBookmark() {
@@ -37,8 +37,10 @@ public class PlayerAdvanced implements Player {
 
     @Override
     public Move move() {
-        if (usedBookmark) {
-            usedBookmark = false;
+        if (useBookmark) {
+            useBookmark = false;
+            seqNumber++;
+            handleBookmark(seqNumber);
             lastMove = Move.BOOKMARK;
         } else {
             lastMove = chooseMove();
@@ -49,9 +51,7 @@ public class PlayerAdvanced implements Player {
     @Override
     public void hitWall() {
         System.out.println("Hit Wall");
-        seqNumber++;
-        handleBookmark(seqNumber);
-        usedBookmark = true;
+        useBookmark = true;
     }
 
     @Override
