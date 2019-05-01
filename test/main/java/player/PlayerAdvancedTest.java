@@ -33,10 +33,10 @@ public class PlayerAdvancedTest {
         player.hitWall();
         player.move();
         player.hitBookmark(1);
-        Assert.assertEquals("hit bookmark sequence should be 1", 1, player.getHitBookmarkSeqNumber());
+        Assert.assertTrue("hit bookmark should be true", player.getHitBookmark());
         Move move = player.move();
         player.hitBookmark(2);
-        Assert.assertEquals("hit bookmark sequence should be 2", 2, player.getHitBookmarkSeqNumber());
+        Assert.assertTrue("hit bookmark should be true", player.getHitBookmark());
         Assert.assertTrue("bookmark 2 should be in map", player.getBookmarksMap().containsKey(2));
         Assert.assertEquals("bookmark 2 should contain last move as value", move, player.getBookmarksMap().get(2).get(0));
     }

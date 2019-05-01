@@ -13,7 +13,7 @@ public class PlayerAdvanced implements Player {
     private int seqNumber = 0;
     private Move lastMove;
     private boolean usedBookmark = false;
-    private int hitBookmarkSeqNumber = 0;
+    private boolean hitBookmark = false;
 
     public Map<Integer, ArrayList<Move>> getBookmarksMap() {
         return bookmarksMap;
@@ -31,46 +31,64 @@ public class PlayerAdvanced implements Player {
         return usedBookmark;
     }
 
-    public int getHitBookmarkSeqNumber() {
-        return hitBookmarkSeqNumber;
+    public boolean getHitBookmark() {
+        return hitBookmark;
     }
 
     @Override
     public Move move() {
         if (usedBookmark) {
             usedBookmark = false;
-            return Move.BOOKMARK;
+            lastMove = Move.BOOKMARK;
         } else {
             lastMove = chooseMove();
-            return lastMove;
         }
+        return lastMove;
     }
 
     @Override
     public void hitWall() {
-        seqNumber++;
-        addBookmark(seqNumber);
-        usedBookmark = true;
         System.out.println("Hit Wall");
+        seqNumber++;
+        handleBookmark(seqNumber);
+        usedBookmark = true;
     }
 
     @Override
     public void hitBookmark(int seq) {
-        hitBookmarkSeqNumber = seq;
-        if (!bookmarksMap.containsKey(seq)) {
-            addBookmark(seq);
-        }
+        hitBookmark = true;
+        handleBookmark(seq);
         System.out.println("Hit Bookmark");
     }
 
-    private void addBookmark(int sequence) {
+    private void handleBookmark(int sequence) {
         ArrayList<Move> moves;
         if (bookmarksMap.isEmpty() || !bookmarksMap.containsKey(sequence)) {
             moves = new ArrayList<>();
+            moves.add(lastMove);
         } else {
             moves = bookmarksMap.get(sequence);
+            if (!hitBookmark) {
+                moves.add(lastMove);
+            } else {
+                switch (lastMove) {
+                    case UP:
+                        moves.add(Move.DOWN);
+                        break;
+                    case DOWN:
+                        moves.add(Move.UP);
+                        break;
+                    case RIGHT:
+                        moves.add(Move.LEFT);
+                        break;
+                    case LEFT:
+                        moves.add(Move.RIGHT);
+                        break;
+                    default:
+                        moves.add(lastMove);
+                }
+            }
         }
-        moves.add(lastMove);
         bookmarksMap.put(sequence, moves);
         System.out.println("Added a bookmark");
     }
@@ -81,7 +99,7 @@ public class PlayerAdvanced implements Player {
         } else if (lastMove.equals(Move.BOOKMARK)) {
             ArrayList<Move> moves = new ArrayList<>();
             for (Move move: Move.values()) {
-                if (!bookmarksMap.get(hitBookmarkSeqNumber).contains(move)) {
+                if (!bookmarksMap.get(seqNumber).contains(move)) {
                     moves.add(move);
                 }
             }
