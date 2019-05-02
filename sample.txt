@@ -1,7 +1,7 @@
 ﻿sample maze
-MaxSteps = 0
-Rows = 0
-Cols = 0
+MaxSteps = 30
+Rows = 4
+Cols = 6
 ####  
   @#$ 
 #  #  
