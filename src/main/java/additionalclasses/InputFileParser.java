@@ -11,10 +11,6 @@ import java.util.ArrayList;
 public class InputFileParser {
 
     private static ArrayList<String> result = new ArrayList<>();
-//    private static String filename = "sample.txt";
-    private static int maxSteps;
-    private static int rows;
-    private static int cols;
     private static final char PLAYER = MazeElement.PLAYER.getValue();
     private static final char END = MazeElement.END.getValue();
     private static final char WALL = MazeElement.WALL.getValue();
@@ -30,16 +26,19 @@ public class InputFileParser {
             return maze;
         }
 
-        maxSteps = numberOf("MaxSteps", 2);
-        rows = numberOf("Rows", 3);
-        cols = numberOf("Cols", 4);
+        int maxSteps = numberOf("MaxSteps", 2);
+        int rows = numberOf("Rows", 3);
+        int cols = numberOf("Cols", 4);
 
-        if(isValid(maxSteps) && isValid(rows, cols)) {
+        boolean isMaxValid = isMazeHeaderValid(maxSteps);
+        boolean isRowColValid = isMazeHeaderValid(rows, cols);
+        boolean isMazeValid = isMazeValid();
+
+        if(isMaxValid && isRowColValid && isMazeValid) {
             maze = new Maze();
             maze.setMaxSteps(maxSteps);
             maze.setRows(rows);
             maze.setColumns(cols);
-            mazeSymbolsValidation();
             maze.setMazeMap(fillMazeMap(rows, cols));
         }
        else {
@@ -48,7 +47,7 @@ public class InputFileParser {
         return maze;
     }
 
-    public static void readFromFile(File fileIn){
+    private static void readFromFile(File fileIn){
 
         try(BufferedReader readFile = new BufferedReader(new FileReader(fileIn))){
             String line;
@@ -66,7 +65,7 @@ public class InputFileParser {
         }
     }
 
-    public static int numberOf(String key, int lineNumber){
+    private static int numberOf(String key, int lineNumber){
         if (lineNumber < result.size()) {
             String line = result.get(lineNumber - 1).trim();
             String[] strs = line.split("=");
@@ -83,9 +82,12 @@ public class InputFileParser {
         return -1;
     }
 
-    public static void mazeSymbolsValidation(){
+    private static boolean isMazeValid(){
+        boolean isMazeValid = false;
+        boolean isCharValid = true;
         int countPlayerChar = 0;
         int countEndChar = 0;
+
         for (int i = 4; i < result.size(); i++){
             for (int j = 0; j < result.get(i).length(); j++){
                 char mazeChar = result.get(i).charAt(j);
@@ -96,26 +98,32 @@ public class InputFileParser {
                     countEndChar++;
                 }
                 else if (mazeChar != WALL && mazeChar != PASS){
-                    System.out.println("Wrong character in maze: " + "<" + mazeChar + "> in row " + (i+1) + ", col " + (j+1) ); //row-col in file
+                    System.out.println("Wrong character in maze: " +  mazeChar + " in row " + (i+1) + ", col " + (j+1) ); //row-col in file
+                    isCharValid = false;
                 }
             }
         }
-
-        validateMazeChar(countPlayerChar, PLAYER);
-        validateMazeChar(countEndChar, END);
+        if (isCharCountValid(countPlayerChar, PLAYER) && isCharCountValid(countEndChar, END) && isCharValid){
+            isMazeValid = true;
+        }
+        return isMazeValid;
     }
 
-    private static void validateMazeChar (int count, char mazeChar){
+    private static boolean isCharCountValid(int count, char mazeChar){
+        boolean isValid = false;
         if (count == 0){
             System.out.println("Missing " +  mazeChar + " in maze");
         }
-
         if (count > 1){
             System.out.println("More than one " +  mazeChar + " in maze");
+
+        } else {
+            isValid = true;
         }
+        return isValid;
     }
 
-    public static char[][] fillMazeMap(int rows, int cols){
+    private static char[][] fillMazeMap(int rows, int cols){
         char[][]mazeMap = new char[rows][cols];
         ArrayList<String> mazeArray = new ArrayList<>();
         for (int i = 4; i < result.size(); i++){
@@ -127,7 +135,7 @@ public class InputFileParser {
             if (str.length() < cols){
                 int diff = cols - str.length();
                 int index = mazeArray.indexOf(str);
-                mazeArray.set(index, addColumns(str, diff));
+                mazeArray.set(index, addEmptyColumns(str, diff));
             }
         }
 
@@ -148,7 +156,7 @@ public class InputFileParser {
         return mazeMap;
     }
 
-    private static String addColumns(String str, int diff) {
+    private static String addEmptyColumns(String str, int diff) {
         StringBuilder sb = new StringBuilder();
         sb.append(str);
         for (int i = 0; i < diff; i++){
@@ -165,7 +173,7 @@ public class InputFileParser {
         return row.toString();
     }
 
-    private static boolean isValid(int steps){
+    private static boolean isMazeHeaderValid(int steps){
         if (steps == 0) {
             System.out.println("Bad maze file header: expected in line 2 - MaxSteps bigger than 0 "
                     + "\n" + "got: " + result.get(1));
@@ -174,13 +182,12 @@ public class InputFileParser {
         return true;
     }
 
-    private static boolean isValid(int row, int col){
-        if ((row <= 1 && col <= 2) || (row <= 2 && col <= 1)) {
+    private static boolean isMazeHeaderValid(int row, int col){
+        if ((row < 1 && col < 2) || (row < 2 && col < 1)) {
             System.out.println("Bad maze file header: expected in lines 3,4 - minimum 1 row and 2 columns or 2 rows and 1 column in a maze "
                     + "\n" + "got: " + result.get(2) + " " + result.get(3));
             return false;
         }
-
         return true;
     }
 }
