@@ -27,6 +27,8 @@ public class GameManagerTest {
     private BufferedWriter fileWriter = null;
     private String mazeTestFilePath = "test/resources/maze.txt";
     private File mazeFile = new File(mazeTestFilePath);
+    private Position playerPosition;
+    private Position expectedPosition;
 
     @Rule
     public MockitoRule mockitoRule = MockitoJUnit.rule();
@@ -62,32 +64,32 @@ public class GameManagerTest {
     @Test
     public void moveLeftTest(){
         gameManager.movePlayer(Move.LEFT);
-        Position playerPosition = gameManager.getPlayerPosition();
-        Position expectedPosition = new Position(2,1);
+        playerPosition = gameManager.getPlayerPosition();
+        expectedPosition = new Position(2,1);
         Assert.assertEquals(playerPosition,expectedPosition);
     }
 
     @Test
     public void moveRightTest(){
         gameManager.movePlayer(Move.RIGHT);
-        Position playerPosition = gameManager.getPlayerPosition();
-        Position expectedPosition = new Position(2,3);
+        playerPosition = gameManager.getPlayerPosition();
+        expectedPosition = new Position(2,3);
         Assert.assertEquals(playerPosition,expectedPosition);
     }
 
     @Test
     public void moveUpTest(){
         gameManager.movePlayer(Move.UP);
-        Position playerPosition = gameManager.getPlayerPosition();
-        Position expectedPosition = new Position(1,2);
+        playerPosition = gameManager.getPlayerPosition();
+        expectedPosition = new Position(1,2);
         Assert.assertEquals(playerPosition,expectedPosition);
     }
 
     @Test
     public void moveDownTest(){
         gameManager.movePlayer(Move.DOWN);
-        Position playerPosition = gameManager.getPlayerPosition();
-        Position expectedPosition = new Position(3,2);
+        playerPosition = gameManager.getPlayerPosition();
+        expectedPosition = new Position(3,2);
         Assert.assertEquals(playerPosition,expectedPosition);
     }
 
@@ -95,8 +97,8 @@ public class GameManagerTest {
     public void moveLeftAndDownTest(){
         gameManager.movePlayer(Move.DOWN);
         gameManager.movePlayer(Move.LEFT);
-        Position playerPosition = gameManager.getPlayerPosition();
-        Position expectedPosition = new Position(3,1);
+        playerPosition = gameManager.getPlayerPosition();
+        expectedPosition = new Position(3,1);
         Assert.assertEquals(playerPosition,expectedPosition);
     }
 
@@ -114,8 +116,8 @@ public class GameManagerTest {
         gameManager.movePlayer(Move.RIGHT);
         gameManager.movePlayer(Move.RIGHT);
         gameManager.movePlayer(Move.RIGHT);
-        Position playerPosition = gameManager.getPlayerPosition();
-        Position expectedPosition = new Position(2,0);
+        playerPosition = gameManager.getPlayerPosition();
+        expectedPosition = new Position(2,0);
         Assert.assertEquals(playerPosition,expectedPosition);
     }
 
@@ -124,8 +126,8 @@ public class GameManagerTest {
         gameManager.movePlayer(Move.DOWN);
         gameManager.movePlayer(Move.DOWN);
         gameManager.movePlayer(Move.DOWN);
-        Position playerPosition = gameManager.getPlayerPosition();
-        Position expectedPosition = new Position(0,2);
+        playerPosition = gameManager.getPlayerPosition();
+        expectedPosition = new Position(0,2);
         Assert.assertEquals(playerPosition,expectedPosition);
     }
 
