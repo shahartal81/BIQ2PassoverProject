@@ -47,8 +47,9 @@ public class GameManagerTest {
 //        fileWriter = new BufferedWriter(new FileWriter(createdFile));
 
         when(playerFactory.createPlayer(any(),anyInt())).thenReturn(player);
+        InputFileParser ifp = new InputFileParser();
 
-        gameManager = new GameManager(playerFactory, InputFileParser.getMaze(mazeFile));
+        gameManager = new GameManager(playerFactory, ifp.getMaze(mazeFile));
     }
 
     @After

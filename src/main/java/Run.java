@@ -12,7 +12,6 @@ import java.io.IOException;
 
 public class Run {
     public static void main(String[] args) {
-//        String filePath = "test.txt";
         if (args.length == 0){
             System.out.println("Missing maze file argument in command line");
         }
@@ -30,7 +29,8 @@ public class Run {
             System.out.println("Command line argument for maze: " +  fileIn + " doesn't lead to a maze file or leads to a file that cannot be opened");
         }
         else {
-            maze = InputFileParser.getMaze(fileIn);
+            InputFileParser ifp = new InputFileParser();
+            maze = ifp.getMaze(fileIn);
         }
 
         File fileOut = new File(args[1]);
