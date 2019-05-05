@@ -1,1 +1,8 @@
-﻿
+This is my maze
+MaxSteps = 10      
+Rows = 4
+Cols = 12
+###  ##   ##
+# @  # #   #
+##  $  ##  #
+### #  #####﻿
