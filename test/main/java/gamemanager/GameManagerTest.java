@@ -1,6 +1,6 @@
 package main.java.gamemanager;
 
-import main.java.additionalclasses.InputFileParser;
+import main.java.filehandling.InputFileParser;
 import main.java.additionalclasses.Position;
 import main.java.enums.Move;
 import org.junit.*;

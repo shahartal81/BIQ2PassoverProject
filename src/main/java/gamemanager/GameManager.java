@@ -2,7 +2,7 @@ package main.java.gamemanager;
 
 import main.java.additionalclasses.Maze;
 import main.java.additionalclasses.MazeElement;
-import main.java.additionalclasses.OutputFile;
+import main.java.filehandling.OutputFile;
 import main.java.additionalclasses.Position;
 import main.java.enums.Move;
 import main.java.player.Player;

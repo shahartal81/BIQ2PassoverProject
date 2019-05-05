@@ -1,4 +1,4 @@
-package main.java.additionalclasses;
+package main.java.filehandling;
 
 import main.java.enums.Move;
 

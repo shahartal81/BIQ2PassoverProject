@@ -1,5 +1,8 @@
-package main.java.additionalclasses;
+package main.java.filehandling;
 
+
+import main.java.additionalclasses.Maze;
+import main.java.additionalclasses.MazeElement;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -20,7 +23,7 @@ public class InputFileParser {
     }
 
 
-    public  Maze getMaze(File fileIn){
+    public Maze getMaze(File fileIn){
         Maze maze = null;
         readFromFile(fileIn);
 

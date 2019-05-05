@@ -1,7 +1,8 @@
 package main.java;
 
-import main.java.additionalclasses.InputFileParser;
+import main.java.filehandling.InputFileParser;
 import main.java.additionalclasses.Maze;
+import main.java.gamemanager.GameLoader;
 import main.java.gamemanager.GameManager;
 import main.java.player.PlayerFactory;
 
@@ -18,38 +19,8 @@ public class Run {
         if (args.length < 2) {
             System.out.println("Missing output file argument in command line");
         } else {
-            new Run().validateAndStartGame(args);
-        }
-    }
-
-    private void validateAndStartGame(String[] args) {
-        Maze maze = null;
-        File fileIn = new File(args[0]);
-        if (!fileIn.isFile() || !fileIn.exists()){
-            System.out.println("Command line argument for maze: " +  fileIn + " doesn't lead to a maze file or leads to a file that cannot be opened");
-        }
-        else {
-            InputFileParser ifp = new InputFileParser();
-            maze = ifp.getMaze(fileIn);
-        }
-
-        File fileOut = new File(args[1]);
-        if (fileOut.exists()) {
-            System.out.println("Command line argument for output file: " + fileOut + " points to a bad path or to a file that already exists");
-        } else if(maze != null){
-            start(maze, fileOut);
-        }
-    }
-
-
-    public void start(Maze maze, File fileOut) {
-        try (BufferedWriter fileWriter = new BufferedWriter(new FileWriter(fileOut))) {
-            PlayerFactory playerFactory = new PlayerFactory();
-            GameManager gameManager = new GameManager(playerFactory, maze);
-            gameManager.createOutPutFile(fileWriter);
-            gameManager.playGame();
-        } catch (IOException e) {
-            e.printStackTrace();
+            GameLoader gl = new GameLoader();
+            gl.validateAndStartGame(args);
         }
     }
 }
