@@ -29,6 +29,7 @@ public class GameManagerTest {
     private File mazeFile = new File(mazeTestFilePath);
     private Position playerPosition;
     private Position expectedPosition;
+    private int bookmarkSequence;
 
     @Rule
     public MockitoRule mockitoRule = MockitoJUnit.rule();
@@ -132,5 +133,62 @@ public class GameManagerTest {
         Assert.assertEquals(playerPosition,expectedPosition);
     }
 
+    @Test
+    public void mazeIsSolvedSuccessTest(){
+        gameManager.movePlayer(Move.UP);
+        gameManager.movePlayer(Move.LEFT);
+        Assert.assertTrue(gameManager.getIsSolved());
+    }
 
+    @Test
+    public void mazeIsntSolvedAfterMaxSteps(){
+        Mockito.when(player.move()).thenReturn(Move.LEFT);
+        Assert.assertFalse(gameManager.getIsSolved());
+    }
+
+    @Test
+    public void increaseUsedStepsOnEachMoveTest(){
+        int usedSteps = gameManager.getUsedSteps();
+        gameManager.movePlayer(Move.UP);
+        usedSteps++;
+        Assert.assertEquals(usedSteps, gameManager.getUsedSteps());
+        gameManager.movePlayer(Move.RIGHT);
+        usedSteps++;
+        gameManager.movePlayer(Move.RIGHT);
+        usedSteps++;
+        Assert.assertEquals(usedSteps, gameManager.getUsedSteps());
+        gameManager.movePlayer(Move.BOOKMARK);
+        usedSteps++;
+        Assert.assertEquals(usedSteps, gameManager.getUsedSteps());
+    }
+
+    @Test
+    public void bookmarkSequenceIsIncreasedTest(){
+        bookmarkSequence = gameManager.getBookmarkSeqNumber();
+        gameManager.movePlayer(Move.BOOKMARK);
+        bookmarkSequence++;
+        Assert.assertEquals(bookmarkSequence, gameManager.getBookmarkSeqNumber());
+    }
+
+    @Test
+    public void bookmarkMapIsUpdatedTest(){
+        playerPosition = gameManager.getPlayerPosition();
+        gameManager.movePlayer(Move.BOOKMARK);
+        Assert.assertTrue(gameManager.getBookmarksMap().containsKey(playerPosition));
+    }
+
+    @Test
+    public void bookmarkPositionThatWasAlreadyBookmarkedTest(){
+        bookmarkSequence = gameManager.getBookmarkSeqNumber();
+        playerPosition = gameManager.getPlayerPosition();
+        gameManager.movePlayer(Move.BOOKMARK);
+        bookmarkSequence++;
+        gameManager.movePlayer(Move.LEFT);
+        gameManager.movePlayer(Move.BOOKMARK);
+        bookmarkSequence++;
+        gameManager.movePlayer(Move.RIGHT);
+        gameManager.movePlayer(Move.BOOKMARK);
+        bookmarkSequence++;
+        Assert.assertEquals(bookmarkSequence, (int) gameManager.getBookmarksMap().get(playerPosition));
+    }
 }

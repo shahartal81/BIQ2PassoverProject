@@ -149,8 +149,13 @@ public class GameManager {
         return playerPosition;
     }
 
-    public void setPlayerPosition(Position playerPosition) {
-        this.playerPosition = playerPosition;
+    public boolean getIsSolved() {
+        return isSolved;
     }
 
+    public int getUsedSteps() { return usedSteps; }
+
+    public int getBookmarkSeqNumber() { return bookmarkSeqNumber; }
+
+    public Map<Position, Integer> getBookmarksMap() { return bookmarksMap; }
 }
