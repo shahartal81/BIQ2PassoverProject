@@ -1,7 +1,7 @@
 package main.java.gamemanager;
 
 import main.java.additionalclasses.Maze;
-import main.java.filehandling.InputFileParser;
+import main.java.filehandling.FileParser;
 import main.java.player.PlayerFactory;
 
 import java.io.BufferedWriter;
@@ -12,16 +12,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GameLoader {
-    private List<String> errorsList = new ArrayList<>();
-    public void validateAndStartGame(String[] args) {
+
+    private List<String> errorsList;
+
+
+    public void validateAndStartGame(String[] args, FileParser inputFileParser) {
+        errorsList = new ArrayList<>();
         Maze maze = null;
+
         File fileIn = new File(args[0]);
         if (!fileIn.isFile() || !fileIn.exists()){
             addToErrorList("Command line argument for maze: " +  fileIn + " doesn't lead to a maze file or leads to a file that cannot be opened");
         }
         else {
-            InputFileParser ifp = new InputFileParser(this);
-            maze = ifp.getMaze(fileIn);
+            inputFileParser.setErrorList(errorsList);
+            maze = inputFileParser.getMaze(fileIn);
         }
 
         File fileOut = new File(args[1]);
@@ -51,4 +56,10 @@ public class GameLoader {
     public void addToErrorList(String error){
         errorsList.add(error);
     }
+
+    public List<String> getErrorsList() {
+        return errorsList;
+    }
+
+
 }
