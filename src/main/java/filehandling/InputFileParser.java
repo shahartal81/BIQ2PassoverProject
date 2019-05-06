@@ -3,6 +3,7 @@ package main.java.filehandling;
 
 import main.java.additionalclasses.Maze;
 import main.java.additionalclasses.MazeElement;
+import main.java.gamemanager.GameLoader;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -10,15 +11,24 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class InputFileParser {
     private ArrayList<String> result = new ArrayList<>();
+    private GameLoader gameLoader;
     private static final char PLAYER = MazeElement.PLAYER.getValue();
     private static final char END = MazeElement.END.getValue();
     private static final char WALL = MazeElement.WALL.getValue();
     private static final char PASS = MazeElement.PASS.getValue();
 
-    public ArrayList<String> getResult() {
+    public InputFileParser(GameLoader gameLoader){
+        this.gameLoader = gameLoader;
+    }
+
+    public InputFileParser(){
+    }
+
+    List<String> getResult() {
         return result;
     }
 
@@ -28,7 +38,7 @@ public class InputFileParser {
         readFromFile(fileIn);
 
         if (result.size() < 5){
-            System.out.println("Bad maze file format"); //TODO - change to a more informative error
+            gameLoader.addToErrorList("Data in maze input file is insufficient. Maze cannot be created");
             return maze;
         }
 
@@ -48,21 +58,22 @@ public class InputFileParser {
             maze.setMazeMap(fillMazeMap(rows, cols));
         }
        else {
-            System.out.println("Data in maze input file is invalid. Maze cannot be created");
+           gameLoader.addToErrorList("Data in maze input file is invalid. Maze cannot be created");
         }
+
         return maze;
     }
 
-    void readFromFile(File fileIn){
+    private void readFromFile(File fileIn){
         try(BufferedReader readFile = new BufferedReader(new FileReader(fileIn))){
            readFromFile(readFile);
 
         }
         catch (FileNotFoundException e){
-            System.out.println("File not found. Exception: " + e);
+            gameLoader.addToErrorList("File not found. Exception: " + e);
         }
         catch (IOException e){
-            System.out.println("Reading from file failed: " + e);
+            gameLoader.addToErrorList("Reading from file failed: " + e);
         }
     }
 
@@ -82,13 +93,13 @@ public class InputFileParser {
             String[] strs = line.split("=");
             String num = strs[1].trim();
             if (strs.length != 2 || !strs[0].trim().equals(key) || !num.matches("[0-9]+")) {
-                System.out.println("Bad maze file header: expected in line " + lineNumber + " - " + key + " = <num>" + "\n" + " got: " + line);
+                gameLoader.addToErrorList("Bad maze file header: expected in line " + lineNumber + " - " + key + " = <num>" + "\n" + " got: " + line);
                 return -1;
             }
             try {
                 return Integer.parseInt(num);
             } catch (NumberFormatException e) {
-                System.out.println("Invalid number " + num + " in line " + lineNumber);
+                gameLoader.addToErrorList("Invalid number " + num + " in line " + lineNumber);
             }
         }
         return -1;
@@ -113,7 +124,7 @@ public class InputFileParser {
                     countEndChar++;
                 }
                 else if (mazeChar != WALL && mazeChar != PASS){
-                    System.out.println("Wrong character in maze: " +  mazeChar + " in row " + (i+1) + ", col " + (j+1) ); //row-col in file
+                    gameLoader.addToErrorList("Wrong character in maze: " +  mazeChar + " in row " + (i+1) + ", col " + (j+1) );
                     isCharValid = false;
                 }
             }
@@ -125,13 +136,13 @@ public class InputFileParser {
         return isMazeValid;
     }
 
-    private static boolean isCharCountValid(int count, char mazeChar){
+    private boolean isCharCountValid(int count, char mazeChar){
         boolean isValid = false;
         if (count == 0){
-            System.out.println("Missing " +  mazeChar + " in maze");
+            gameLoader.addToErrorList("Missing " +  mazeChar + " in maze");
         }
         else if (count > 1){
-            System.out.println("More than one " +  mazeChar + " in maze");
+            gameLoader.addToErrorList("More than one " +  mazeChar + " in maze");
 
         } else {
             isValid = true;
@@ -191,7 +202,7 @@ public class InputFileParser {
 
     private boolean isMaxStepsValid(int steps){
         if (steps == 0) {
-            System.out.println("Bad maze file header: expected in line 2 - MaxSteps bigger than 0 "
+            gameLoader.addToErrorList("Bad maze file header: expected in line 2 - MaxSteps bigger than 0 "
                     + "\n" + "got: " + result.get(1));
             return false;
         }
@@ -200,7 +211,7 @@ public class InputFileParser {
 
     private boolean isRowsColsValid(int row, int col){
         if ((row < 1 && col < 2) || (row < 2 && col < 1)) {
-            System.out.println("Bad maze file header: expected in lines 3,4 - minimum 1 row and 2 columns or 2 rows and 1 column in a maze "
+            gameLoader.addToErrorList("Bad maze file header: expected in lines 3,4 - minimum 1 row and 2 columns or 2 rows and 1 column in a maze "
                     + "\n" + "got: " + result.get(2) + " " + result.get(3));
             return false;
         }

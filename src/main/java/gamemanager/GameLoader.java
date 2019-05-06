@@ -8,24 +8,31 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class GameLoader {
+    private List<String> errorsList = new ArrayList<>();
     public void validateAndStartGame(String[] args) {
         Maze maze = null;
         File fileIn = new File(args[0]);
         if (!fileIn.isFile() || !fileIn.exists()){
-            System.out.println("Command line argument for maze: " +  fileIn + " doesn't lead to a maze file or leads to a file that cannot be opened");
+            addToErrorList("Command line argument for maze: " +  fileIn + " doesn't lead to a maze file or leads to a file that cannot be opened");
         }
         else {
-            InputFileParser ifp = new InputFileParser();
+            InputFileParser ifp = new InputFileParser(this);
             maze = ifp.getMaze(fileIn);
         }
 
         File fileOut = new File(args[1]);
         if (fileOut.exists()) {
-            System.out.println("Command line argument for output file: " + fileOut + " points to a bad path or to a file that already exists");
-        } else if(maze != null){
+            addToErrorList("Command line argument for output file: " + fileOut + " points to a bad path or to a file that already exists");
+        } if(maze != null){
             start(maze, fileOut);
+        } else {
+            for (String error : errorsList){
+                System.out.println(error);
+            }
         }
     }
 
@@ -39,5 +46,9 @@ public class GameLoader {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void addToErrorList(String error){
+        errorsList.add(error);
     }
 }
