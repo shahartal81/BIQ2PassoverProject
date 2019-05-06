@@ -3,6 +3,7 @@ package main.java.gamemanager;
 import main.java.filehandling.InputFileParser;
 import main.java.additionalclasses.Position;
 import main.java.enums.Move;
+import main.java.filehandling.FileParser;
 import org.junit.*;
 import org.junit.rules.TemporaryFolder;
 import org.mockito.Mock;
@@ -48,7 +49,7 @@ public class GameManagerTest {
 //        fileWriter = new BufferedWriter(new FileWriter(createdFile));
 
         when(playerFactory.createPlayer(any(),anyInt())).thenReturn(player);
-        InputFileParser ifp = new InputFileParser();
+        FileParser ifp = new InputFileParser();
 
         gameManager = new GameManager(playerFactory, ifp.getMaze(mazeFile));
     }
