@@ -3,6 +3,7 @@ package main.java.gamemanager;
 import main.java.filehandling.InputFileParser;
 import main.java.additionalclasses.Position;
 import main.java.enums.Move;
+import main.java.filehandling.FileParser;
 import org.junit.*;
 import org.junit.rules.TemporaryFolder;
 import org.mockito.Mock;
@@ -29,6 +30,7 @@ public class GameManagerTest {
     private File mazeFile = new File(mazeTestFilePath);
     private Position playerPosition;
     private Position expectedPosition;
+    private int bookmarkSequence;
 
     @Rule
     public MockitoRule mockitoRule = MockitoJUnit.rule();
@@ -47,7 +49,7 @@ public class GameManagerTest {
 //        fileWriter = new BufferedWriter(new FileWriter(createdFile));
 
         when(playerFactory.createPlayer(any(),anyInt())).thenReturn(player);
-        InputFileParser ifp = new InputFileParser();
+        FileParser ifp = new InputFileParser();
 
         gameManager = new GameManager(playerFactory, ifp.getMaze(mazeFile));
     }
@@ -132,5 +134,62 @@ public class GameManagerTest {
         Assert.assertEquals(playerPosition,expectedPosition);
     }
 
+    @Test
+    public void mazeIsSolvedSuccessTest(){
+        gameManager.movePlayer(Move.UP);
+        gameManager.movePlayer(Move.LEFT);
+        Assert.assertTrue(gameManager.getIsSolved());
+    }
 
+    @Test
+    public void mazeIsntSolvedAfterMaxSteps(){
+        Mockito.when(player.move()).thenReturn(Move.LEFT);
+        Assert.assertFalse(gameManager.getIsSolved());
+    }
+
+    @Test
+    public void increaseUsedStepsOnEachMoveTest(){
+        int usedSteps = gameManager.getUsedSteps();
+        gameManager.movePlayer(Move.UP);
+        usedSteps++;
+        Assert.assertEquals(usedSteps, gameManager.getUsedSteps());
+        gameManager.movePlayer(Move.RIGHT);
+        usedSteps++;
+        gameManager.movePlayer(Move.RIGHT);
+        usedSteps++;
+        Assert.assertEquals(usedSteps, gameManager.getUsedSteps());
+        gameManager.movePlayer(Move.BOOKMARK);
+        usedSteps++;
+        Assert.assertEquals(usedSteps, gameManager.getUsedSteps());
+    }
+
+    @Test
+    public void bookmarkSequenceIsIncreasedTest(){
+        bookmarkSequence = gameManager.getBookmarkSeqNumber();
+        gameManager.movePlayer(Move.BOOKMARK);
+        bookmarkSequence++;
+        Assert.assertEquals(bookmarkSequence, gameManager.getBookmarkSeqNumber());
+    }
+
+    @Test
+    public void bookmarkMapIsUpdatedTest(){
+        playerPosition = gameManager.getPlayerPosition();
+        gameManager.movePlayer(Move.BOOKMARK);
+        Assert.assertTrue(gameManager.getBookmarksMap().containsKey(playerPosition));
+    }
+
+    @Test
+    public void bookmarkPositionThatWasAlreadyBookmarkedTest(){
+        bookmarkSequence = gameManager.getBookmarkSeqNumber();
+        playerPosition = gameManager.getPlayerPosition();
+        gameManager.movePlayer(Move.BOOKMARK);
+        bookmarkSequence++;
+        gameManager.movePlayer(Move.LEFT);
+        gameManager.movePlayer(Move.BOOKMARK);
+        bookmarkSequence++;
+        gameManager.movePlayer(Move.RIGHT);
+        gameManager.movePlayer(Move.BOOKMARK);
+        bookmarkSequence++;
+        Assert.assertEquals(bookmarkSequence, (int) gameManager.getBookmarksMap().get(playerPosition));
+    }
 }
