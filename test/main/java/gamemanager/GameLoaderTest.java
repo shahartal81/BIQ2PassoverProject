@@ -6,6 +6,7 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
+import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 
@@ -49,7 +50,7 @@ public class GameLoaderTest {
             throw new Exception("failed to create inputFile for test " + e);
         }
         gameLoader.validateAndStartGame(paths, fileParser);
-        when(fileParser.getMaze(inputFile)).thenReturn(null);
+        when(fileParser.getMaze(any())).thenReturn(null);
         errorsList = gameLoader.getErrorsList();
         Assert.assertTrue(errorsList.isEmpty());
 
@@ -66,7 +67,7 @@ public class GameLoaderTest {
             throw new Exception("failed to create inputFile for test " + e);
         }
         gameLoader.validateAndStartGame(paths, fileParser);
-        when(fileParser.getMaze(inputFile)).thenReturn(null);
+        when(fileParser.getMaze(any())).thenReturn(null);
         errorsList = gameLoader.getErrorsList();
         Assert.assertEquals(errorsList.get(0), "Command line argument for maze: " + inputFile + " doesn't lead to a maze file or leads to a file that cannot be opened");
     }
@@ -77,7 +78,7 @@ public class GameLoaderTest {
         inputFile = new File(paths[0]);
         outputFile = new File(paths[1]);
         gameLoader.validateAndStartGame(paths, fileParser);
-        when(fileParser.getMaze(inputFile)).thenReturn(null);
+        when(fileParser.getMaze(any())).thenReturn(null);
         errorsList = gameLoader.getErrorsList();
         Assert.assertEquals(errorsList.get(0), "Command line argument for maze: " + inputFile + " doesn't lead to a maze file or leads to a file that cannot be opened");
     }
@@ -98,7 +99,7 @@ public class GameLoaderTest {
             throw new Exception("failed to create outputFile for test" + e);
         }
         gameLoader.validateAndStartGame(paths, fileParser);
-        when(fileParser.getMaze(inputFile)).thenReturn(null);
+        when(fileParser.getMaze(any())).thenReturn(null);
         errorsList = gameLoader.getErrorsList();
         Assert.assertEquals(errorsList.get(0), "Command line argument for output file: " + outputFile + " points to a bad path or to a file that already exists");
     }

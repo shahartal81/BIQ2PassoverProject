@@ -2,6 +2,7 @@ package main.java.gamemanager;
 
 import main.java.additionalclasses.Maze;
 import main.java.filehandling.FileParser;
+import main.java.filehandling.FileReader;
 import main.java.player.PlayerFactory;
 
 import java.io.BufferedWriter;
@@ -15,7 +16,7 @@ public class GameLoader {
 
     private List<String> errorsList;
 
-
+    
     public void validateAndStartGame(String[] args, FileParser inputFileParser) {
         errorsList = new ArrayList<>();
         Maze maze = null;
@@ -26,7 +27,8 @@ public class GameLoader {
         }
         else {
             inputFileParser.setErrorList(errorsList);
-            maze = inputFileParser.getMaze(fileIn);
+            FileReader reader = new FileReader();
+            maze = inputFileParser.getMaze(reader.readFromFile(fileIn));
         }
 
         File fileOut = new File(args[1]);

@@ -3,6 +3,7 @@ package main.java.filehandling;
 
 import main.java.additionalclasses.Maze;
 import main.java.additionalclasses.MazeElement;
+import main.java.gamemanager.GameLoader;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -32,12 +33,15 @@ public class InputFileParser implements FileParser {
     }
 
 
-    @Override
-    public Maze getMaze(File fileIn){
-        Maze maze = null;
-        readFromFile(fileIn);
 
-        if (result.size() < 5){
+    public List<String> getErrorsList(){
+        return errorList;
+    }
+
+    @Override
+    public Maze getMaze(List<String> result){
+        Maze maze = null;
+         if (result.size() < 5){
             errorList.add("Data in maze input file is insufficient. Maze cannot be created");
             return maze;
         }
@@ -67,28 +71,6 @@ public class InputFileParser implements FileParser {
     @Override
     public void setErrorList(List<String> errorsList) {
         this.errorList = errorsList;
-    }
-
-    private void readFromFile(File fileIn){
-        try(BufferedReader readFile = new BufferedReader(new FileReader(fileIn))){
-           readFromFile(readFile);
-
-        }
-        catch (FileNotFoundException e){
-            errorList.add(("File not found. Exception: " + e));
-        }
-        catch (IOException e){
-            errorList.add(("Reading from file failed: " + e));
-        }
-    }
-
-    void readFromFile(BufferedReader readFile) throws IOException {
-        String line;
-        while((line = readFile.readLine()) != null) {
-            if (line.trim().length() > 0) {
-                result.add(line);
-            }
-        }
     }
 
     private int numberOf(String key, int lineNumber){
