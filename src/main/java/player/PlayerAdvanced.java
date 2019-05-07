@@ -12,8 +12,9 @@ public class PlayerAdvanced implements Player {
     private Map<Integer, ArrayList<Move>> bookmarksMap = new HashMap<>();
     private int seqNumber = 0;
     private Move lastMove;
-    private boolean useBookmark = false;
-    private boolean hitBookmark = false;
+    private boolean hitWall = false;
+    private boolean considerBookmark = false;
+    private int bookmarkNumberToConsider = 0;
 
     public Map<Integer, ArrayList<Move>> getBookmarksMap() {
         return bookmarksMap;
@@ -27,18 +28,13 @@ public class PlayerAdvanced implements Player {
         return lastMove;
     }
 
-    public boolean isUseBookmark() {
-        return useBookmark;
-    }
-
-    public boolean getHitBookmark() {
-        return hitBookmark;
+    public boolean isHitWall() {
+        return hitWall;
     }
 
     @Override
     public Move move() {
-        if (useBookmark) {
-            useBookmark = false;
+        if (hitWall && !considerBookmark) {
             seqNumber++;
             handleBookmark(seqNumber);
             lastMove = Move.BOOKMARK;
@@ -50,74 +46,54 @@ public class PlayerAdvanced implements Player {
 
     @Override
     public void hitWall() {
-        System.out.println("Hit Wall");
-        useBookmark = true;
+        System.out.println("Player hit Wall");
+        hitWall = true;
     }
 
     @Override
     public void hitBookmark(int seq) {
-        hitBookmark = true;
+        System.out.println("Player hit Bookmark");
         handleBookmark(seq);
-        System.out.println("Hit Bookmark");
     }
 
     private void handleBookmark(int sequence) {
         ArrayList<Move> moves;
         if (bookmarksMap.isEmpty() || !bookmarksMap.containsKey(sequence)) {
             moves = new ArrayList<>();
-            moves.add(lastMove);
+            System.out.println("Player created new bookmark in sequence " + sequence);
         } else {
             moves = bookmarksMap.get(sequence);
-            if (!hitBookmark) {
-                moves.add(lastMove);
-            } else {
-                switch (lastMove) {
-                    case UP:
-                        moves.add(Move.DOWN);
-                        break;
-                    case DOWN:
-                        moves.add(Move.UP);
-                        break;
-                    case RIGHT:
-                        moves.add(Move.LEFT);
-                        break;
-                    case LEFT:
-                        moves.add(Move.RIGHT);
-                        break;
-                    default:
-                        moves.add(lastMove);
-                }
-            }
+            considerBookmark = true;
+            bookmarkNumberToConsider = sequence;
         }
+        if (hitWall && !moves.contains(lastMove)) {
+            moves.add(lastMove);
+            System.out.println("Player added " + lastMove + " at bookmark sequence " + sequence);
+        }
+        hitWall = false;
+        System.out.println("Player forbidden moves in sequence " + sequence + " are " + moves);
         bookmarksMap.put(sequence, moves);
-        System.out.println("Added a bookmark");
     }
 
     private Move chooseMove(){
-        if (lastMove == null) {
-            return new Move[]{Move.LEFT, Move.RIGHT, Move.UP, Move.DOWN}[new Random().nextInt(Move.values().length-1)];
-        } else if (lastMove.equals(Move.BOOKMARK)) {
+        if (hitWall || considerBookmark || (lastMove != null && lastMove.equals(Move.BOOKMARK))) {
             ArrayList<Move> moves = new ArrayList<>();
-            for (Move move: Move.values()) {
-                if (!bookmarksMap.get(seqNumber).contains(move)) {
+            int sequenceNumber;
+            if (considerBookmark) {
+                sequenceNumber = bookmarkNumberToConsider;
+                considerBookmark = false;
+            } else {
+                sequenceNumber = seqNumber;
+            }
+            for (Move move : Move.values()) {
+                if (!bookmarksMap.get(sequenceNumber).contains(move) && !move.equals(Move.BOOKMARK)) {
                     moves.add(move);
                 }
             }
             Move[] movesArray = moves.toArray(new Move[0]);
-            return movesArray[new Random().nextInt(movesArray.length-1)];
-        } else {
-            switch (lastMove) {
-                case UP:
-                    return new Move[]{Move.LEFT, Move.RIGHT, Move.UP}[new Random().nextInt(Move.values().length - 2)];
-                case DOWN:
-                    return new Move[]{Move.LEFT, Move.RIGHT, Move.DOWN}[new Random().nextInt(Move.values().length - 2)];
-                case LEFT:
-                    return new Move[]{Move.LEFT, Move.DOWN, Move.UP}[new Random().nextInt(Move.values().length - 2)];
-                case RIGHT:
-                    return new Move[]{Move.RIGHT, Move.DOWN, Move.UP}[new Random().nextInt(Move.values().length - 2)];
-                default:
-                    throw new IllegalArgumentException("");
-            }
+            System.out.println("Player has following options to choose from: " + moves);
+            return movesArray[new Random().nextInt(movesArray.length - 1)];
         }
+        return new Move[]{Move.LEFT, Move.RIGHT, Move.UP, Move.DOWN}[new Random().nextInt(Move.values().length-1)];
     }
 }
