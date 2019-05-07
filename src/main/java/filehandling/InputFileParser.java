@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class InputFileParser implements FileParser {
-    private ArrayList<String> result = new ArrayList<>();
+    private List<String> result = new ArrayList<>();
     private List<String> errorList;
     private static final char PLAYER = MazeElement.PLAYER.getValue();
     private static final char END = MazeElement.END.getValue();
@@ -34,10 +34,12 @@ public class InputFileParser implements FileParser {
     @Override
     public Maze getMaze(List<String> result){
         Maze maze = null;
-         if (result.size() < 5){
+         if (result == null || result.size() < 5 ){
             errorList.add("Data in maze input file is insufficient. Maze cannot be created");
             return maze;
         }
+
+         this.result = result;
 
         int maxSteps = numberOf("MaxSteps", 2);
         int rows = numberOf("Rows", 3);

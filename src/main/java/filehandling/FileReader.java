@@ -12,6 +12,7 @@ import java.util.List;
 
 public class FileReader {
     private GameLoader gameLoader = new GameLoader();
+    List<String> result = new ArrayList<>();
 
     public List<String> readFromFile(File fileIn){
         try(BufferedReader readFile = new BufferedReader(new java.io.FileReader(fileIn))){
@@ -27,7 +28,6 @@ public class FileReader {
     }
 
     public List<String> readFromFile(BufferedReader readFile) throws IOException {
-        List<String> result = new ArrayList<>();
         String line;
         while((line = readFile.readLine()) != null) {
             if (line.trim().length() > 0) {
