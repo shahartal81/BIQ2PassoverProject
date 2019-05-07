@@ -30,28 +30,6 @@ public class GameManager {
 
     private OutputFile outputFile;
 
-    //    public GameManager(BufferedWriter outPutFile, PlayerFactory playerFactory){
-//        try {
-//            maze = InputFileParser.getMaze();
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//        outputFile = new OutputFile(outPutFile);
-//        main.java.player = playerFactory.createPlayer(new Position(maze.getRows(), maze.getColumns()), maze.getMaxSteps());
-//    }
-//
-//    public GameManager(PlayerFactory playerFactory){
-//        try {
-//            maze = InputFileParser.getMaze();
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//        main.java.player = playerFactory.createPlayer(new Position(maze.getRows(), maze.getColumns()), maze.getMaxSteps());
-//        playerPosition = maze.getPlayerPosition();
-//        endPosition = maze.getEndPosition();
-//
-//    }
-
     public GameManager(PlayerFactory playerFactory, Maze maze){
         try {
             this.maze = maze;
@@ -68,22 +46,26 @@ public class GameManager {
         Position next = byMove(move);
         try {
             if (maze.getMazeMap()[next.getRow()][next.getColumn()] == WALL){
-                System.out.println("Wanted to move " + move + " but..."); //for console only
+                System.out.println("GM: Player wanted to move " + move + " but..."); //for console only
                 player.hitWall();
+                if (bookmarksMap.containsKey(playerPosition)) {
+                    System.out.println("GM: Player hit bookmark at " + playerPosition + " with sequence number " + bookmarksMap.get(playerPosition));
+                    player.hitBookmark(bookmarksMap.get(playerPosition));
+                }
             } else if (next.equals(endPosition)) {
-                System.out.println("Moved " + move);
+                System.out.println("GM: Player moved " + move);
                 isSolved = true;
             } else {
                 if (move.equals(Move.BOOKMARK)) {
                     bookmarkSeqNumber++;
                     bookmarksMap.put(playerPosition, bookmarkSeqNumber);
-                    System.out.println("Created " + move);
+                    System.out.println("GM: Created bookmark at " + playerPosition + " with sequence number " + bookmarkSeqNumber);
                 } else {
-                    if (bookmarksMap.containsKey(next)) {
-                        player.hitBookmark(bookmarksMap.get(next));
-                    }
-                    System.out.println("Moved " + move);
+                    System.out.println("GM: Player moved " + move);
                     changePosition(next);
+                    if (bookmarksMap.containsKey(playerPosition)) {
+                        player.hitBookmark(bookmarksMap.get(playerPosition));
+                    }
                 }
             }
             usedSteps++;
