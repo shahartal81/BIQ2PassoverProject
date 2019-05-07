@@ -1,7 +1,5 @@
 package filehandling;
 
-import main.java.filehandling.FileReader;
-import main.java.filehandling.InputFileParser;
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;

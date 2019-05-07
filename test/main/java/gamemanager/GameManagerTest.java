@@ -1,16 +1,16 @@
 package gamemanager;
 
-import main.java.additionalclasses.Position;
-import main.java.enums.Move;
-import main.java.gamemanager.GameManager;
+import additionalclasses.Position;
+import enums.Move;
 import org.junit.*;
 import org.junit.rules.TemporaryFolder;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
-import main.java.player.Player;
-import main.java.player.PlayerFactory;
+import player.Player;
+import player.PlayerFactory;
+
 import java.io.File;
 
 import java.io.BufferedWriter;

@@ -1,7 +1,6 @@
 package gamemanager;
 
 import filehandling.FileParser;
-import main.java.gamemanager.GameLoader;
 import org.junit.*;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;

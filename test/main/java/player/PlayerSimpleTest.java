@@ -1,9 +1,8 @@
 package player;
 
-import main.java.enums.Move;
+import enums.Move;
 import org.junit.Assert;
 import org.junit.Test;
-import main.java.player.PlayerSimple;
 
 public class PlayerSimpleTest {
 
