@@ -6,7 +6,7 @@ import java.io.File;
 import java.util.List;
 
 public interface FileParser {
-    Maze getMaze(File fileIn);
+    Maze getMaze(List<String> arr);
 
     void setErrorList(List<String> errorsList);
 }
