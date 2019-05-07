@@ -15,6 +15,8 @@ public class GameLoader {
 
     private List<String> errorsList;
 
+    
+
 
     public void validateAndStartGame(String[] args, FileParser inputFileParser) {
         errorsList = new ArrayList<>();
