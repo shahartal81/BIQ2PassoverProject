@@ -1,15 +1,8 @@
-package main.java.filehandling;
+package filehandling;
 
+import additionalclasses.Maze;
+import additionalclasses.MazeElement;
 
-import main.java.additionalclasses.Maze;
-import main.java.additionalclasses.MazeElement;
-import main.java.gamemanager.GameLoader;
-
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,7 +21,7 @@ public class InputFileParser implements FileParser {
     public InputFileParser(){
     }
 
-    List<String> getResult() {
+    public List<String> getResult() {
         return result;
     }
 

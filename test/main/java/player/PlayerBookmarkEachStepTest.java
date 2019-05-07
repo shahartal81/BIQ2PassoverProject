@@ -1,14 +1,15 @@
-package main.java.player;
+package player;
 
 import main.java.enums.Move;
 import org.junit.Assert;
 import org.junit.Test;
+import main.java.player.PlayerBookmarkEachStep;
 
 public class PlayerBookmarkEachStepTest {
 
     @Test
     public void testPlayerBookmarkEachStepMoveMethod(){
-        PlayerBookmarkEachStep player = new PlayerBookmarkEachStep();
+        main.java.player.PlayerBookmarkEachStep player = new PlayerBookmarkEachStep();
         Move move = player.move();
         Assert.assertTrue(move.equals(Move.DOWN) || move.equals(Move.UP) || move.equals(Move.LEFT) || move.equals(Move.RIGHT));
         Assert.assertTrue("next turn bookmark flag should be true", player.isUseBookmark());

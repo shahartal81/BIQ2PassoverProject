@@ -1,6 +1,6 @@
-package main.java.filehandling;
+package filehandling;
 
-import main.java.additionalclasses.Maze;
+import additionalclasses.Maze;
 
 import java.io.File;
 import java.util.List;

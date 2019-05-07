@@ -1,8 +1,8 @@
-package main.java.gamemanager;
+package gamemanager;
 
-import main.java.filehandling.InputFileParser;
 import main.java.additionalclasses.Position;
 import main.java.enums.Move;
+import main.java.gamemanager.GameManager;
 import org.junit.*;
 import org.junit.rules.TemporaryFolder;
 import org.mockito.Mock;

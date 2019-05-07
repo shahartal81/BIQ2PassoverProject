@@ -1,6 +1,7 @@
-package main.java.filehandling;
+package filehandling;
 
-import main.java.gamemanager.GameLoader;
+import main.java.filehandling.FileReader;
+import main.java.filehandling.InputFileParser;
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
@@ -10,13 +11,11 @@ import org.mockito.Mockito;
 
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.*;
 
 public class InputFileParserTest {
@@ -32,7 +31,7 @@ public class InputFileParserTest {
         FileReader testSubject = new FileReader();
         BufferedReader bufferedReader = Mockito.mock(BufferedReader.class);
         when(bufferedReader.readLine()).thenReturn
-                ("Simple maze", null);
+                ("Simple maze", (String) null);
         List<String> result = testSubject.readFromFile(bufferedReader);
         Assert.assertEquals(1, result.size());
         Assert.assertEquals("Simple maze", result.get(0));

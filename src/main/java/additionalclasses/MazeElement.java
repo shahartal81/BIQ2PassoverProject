@@ -1,4 +1,4 @@
-package main.java.additionalclasses;
+package additionalclasses;
 
 public enum MazeElement {
     PLAYER('@'),

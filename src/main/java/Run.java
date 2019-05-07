@@ -1,8 +1,6 @@
-package main.java;
-
-import main.java.filehandling.InputFileParser;
-import main.java.filehandling.FileParser;
-import main.java.gamemanager.GameLoader;
+import filehandling.FileParser;
+import filehandling.InputFileParser;
+import gamemanager.GameLoader;
 
 public class Run {
     public static void main(String[] args) {

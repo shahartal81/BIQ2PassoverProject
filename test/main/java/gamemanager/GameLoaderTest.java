@@ -1,13 +1,13 @@
-package main.java.gamemanager;
+package gamemanager;
 
-import main.java.filehandling.FileParser;
+import filehandling.FileParser;
+import main.java.gamemanager.GameLoader;
 import org.junit.*;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
 import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 
 import java.io.File;

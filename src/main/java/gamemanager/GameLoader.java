@@ -1,9 +1,9 @@
-package main.java.gamemanager;
+package gamemanager;
 
-import main.java.additionalclasses.Maze;
-import main.java.filehandling.FileParser;
-import main.java.filehandling.FileReader;
-import main.java.player.PlayerFactory;
+import additionalclasses.Maze;
+import filehandling.FileParser;
+import filehandling.FileReader;
+import player.PlayerFactory;
 
 import java.io.BufferedWriter;
 import java.io.File;

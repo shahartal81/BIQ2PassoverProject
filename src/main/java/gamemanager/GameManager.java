@@ -1,12 +1,12 @@
-package main.java.gamemanager;
+package gamemanager;
 
-import main.java.additionalclasses.Maze;
-import main.java.additionalclasses.MazeElement;
-import main.java.filehandling.OutputFile;
-import main.java.additionalclasses.Position;
-import main.java.enums.Move;
-import main.java.player.Player;
-import main.java.player.PlayerFactory;
+import additionalclasses.Maze;
+import additionalclasses.MazeElement;
+import additionalclasses.Position;
+import enums.Move;
+import filehandling.OutputFile;
+import player.Player;
+import player.PlayerFactory;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -42,7 +42,7 @@ public class GameManager {
 
     }
 
-    protected void movePlayer(Move move){
+    public void movePlayer(Move move){
         Position next = byMove(move);
         try {
             if (maze.getMazeMap()[next.getRow()][next.getColumn()] == WALL){

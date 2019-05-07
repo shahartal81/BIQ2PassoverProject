@@ -1,4 +1,4 @@
-package main.java.player;
+package player;
 
 import main.java.additionalclasses.Position;
 import org.junit.Assert;
@@ -9,6 +9,11 @@ import org.junit.runners.Parameterized;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
+import main.java.player.PlayerFactory;
+import main.java.player.Player;
+import main.java.player.PlayerSimple;
+import main.java.player.PlayerAdvanced;
+import main.java.player.PlayerBookmarkEachStep;
 
 import java.util.Arrays;
 import java.util.Collection;

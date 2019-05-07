@@ -1,6 +1,6 @@
-package main.java.filehandling;
+package filehandling;
 
-import main.java.enums.Move;
+import enums.Move;
 
 import java.io.BufferedWriter;
 import java.io.IOException;

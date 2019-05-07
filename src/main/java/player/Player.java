@@ -1,6 +1,6 @@
-package main.java.player;
+package player;
 
-import main.java.enums.Move;
+import enums.Move;
 
 public interface Player {
     Move move();

@@ -1,6 +1,7 @@
-package main.java.filehandling;
+package filehandling;
 
-import main.java.gamemanager.GameLoader;
+
+import gamemanager.GameLoader;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -25,7 +26,7 @@ public class FileReader {
         return null;
     }
 
-    List<String> readFromFile(BufferedReader readFile) throws IOException {
+    public List<String> readFromFile(BufferedReader readFile) throws IOException {
         List<String> result = new ArrayList<>();
         String line;
         while((line = readFile.readLine()) != null) {

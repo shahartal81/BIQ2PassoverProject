@@ -1,4 +1,4 @@
-package main.java.additionalclasses;
+package additionalclasses;
 
 import java.util.Objects;
 
