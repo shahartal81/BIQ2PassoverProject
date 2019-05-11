@@ -1,7 +1,7 @@
 package gamemanager;
 
 import additionalclasses.Maze;
-import filehandling.FileParser;
+import filehandling.MazeDefinitionParser;
 import filehandling.FileReader;
 import player.PlayerFactory;
 
@@ -17,7 +17,7 @@ public class GameLoader {
     private List<String> errorsList;
 
     
-    public void validateAndStartGame(String[] args, FileParser inputFileParser) {
+    public void validateAndStartGame(String[] args, MazeDefinitionParser inputFileParser) {
         errorsList = new ArrayList<>();
         Maze maze = null;
 
@@ -34,9 +34,11 @@ public class GameLoader {
         File fileOut = new File(args[1]);
         if (fileOut.exists()) {
             addToErrorList("Command line argument for output file: " + fileOut + " points to a bad path or to a file that already exists");
-        } if(maze != null){
+        } else if(maze != null){
             start(maze, fileOut);
-        } else {
+        }
+
+        if (!errorsList.isEmpty()) {
             for (String error : errorsList){
                 System.out.println(error);
             }

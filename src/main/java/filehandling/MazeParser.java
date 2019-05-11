@@ -6,25 +6,31 @@ import additionalclasses.MazeElement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class InputFileParser implements FileParser {
-    private List<String> result = new ArrayList<>();
-    private List<String> errorList;
+public class MazeParser implements MazeDefinitionParser {
     private static final char PLAYER = MazeElement.PLAYER.getValue();
     private static final char END = MazeElement.END.getValue();
     private static final char WALL = MazeElement.WALL.getValue();
     private static final char PASS = MazeElement.PASS.getValue();
+    
+    private List<String> mazeDefinition = new ArrayList<>();
+    
+    private List<String> errorList = new ArrayList<>();
 
-    public InputFileParser(List<String> errorList){
+
+    public MazeParser(List<String> errorList){
         this.errorList = errorList;
     }
 
-    public InputFileParser(){
+    public MazeParser(){
     }
 
-    public List<String> getResult() {
-        return result;
+    public List<String> getMazeDefinition() {
+        return mazeDefinition;
     }
 
+    void setMazeDefinition(List<String> mazeDefinition) {
+        this.mazeDefinition = mazeDefinition;
+    }
 
 
     public List<String> getErrorsList(){
@@ -32,14 +38,14 @@ public class InputFileParser implements FileParser {
     }
 
     @Override
-    public Maze getMaze(List<String> result){
+    public Maze getMaze(List<String> mazeDefinition){
         Maze maze = null;
-         if (result == null || result.size() < 5 ){
+         if (mazeDefinition == null || mazeDefinition.size() < 5 ){
             errorList.add("Data in maze input file is insufficient. Maze cannot be created");
             return maze;
         }
 
-         this.result = result;
+        this.mazeDefinition = mazeDefinition;
 
         int maxSteps = numberOf("MaxSteps", 2);
         int rows = numberOf("Rows", 3);
@@ -68,10 +74,10 @@ public class InputFileParser implements FileParser {
         this.errorList = errorsList;
     }
 
-    private int numberOf(String key, int lineNumber){
+    int numberOf(String key, int lineNumber){
         int index = lineNumber - 1;
-        if (index < result.size()) {
-            String line = result.get(index).trim();
+        if (index < mazeDefinition.size()) {
+            String line = mazeDefinition.get(index).trim();
             String[] strs = line.split("=");
             String num = strs[1].trim();
             if (strs.length != 2 || !strs[0].trim().equals(key) || !num.matches("[0-9]+")) {
@@ -93,8 +99,8 @@ public class InputFileParser implements FileParser {
         int countPlayerChar = 0;
         int countEndChar = 0;
 
-        for (int i = 4; i < result.size(); i++){
-            String line = result.get(i);
+        for (int i = 4; i < mazeDefinition.size(); i++){
+            String line = mazeDefinition.get(i);
 
             for (int j = 0; j < line.length(); j++){
                 char mazeChar = line.charAt(j);
@@ -134,10 +140,7 @@ public class InputFileParser implements FileParser {
 
     private char[][] fillMazeMap(int rows, int cols){
         char[][]mazeMap = new char[rows][cols];
-        ArrayList<String> mazeArray = new ArrayList<>();
-        for (int i = 4; i < result.size(); i++){
-            mazeArray.add(result.get(i));
-        }
+        List<String> mazeArray = mazeDefinition.subList(4, mazeDefinition.size());
 
         //add spaces for missing columns
         for (int i = 0; i < mazeArray.size(); i++){
@@ -165,7 +168,7 @@ public class InputFileParser implements FileParser {
         return mazeMap;
     }
 
-    private static String addEmptyColumns(String str, int diff) {
+    private String addEmptyColumns(String str, int diff) {
         StringBuilder sb = new StringBuilder();
         sb.append(str);
         for (int i = 0; i < diff; i++){
@@ -174,7 +177,7 @@ public class InputFileParser implements FileParser {
         return sb.toString();
     }
 
-    private static String addEmptyRow(int cols) {
+    private String addEmptyRow(int cols) {
         StringBuilder row = new StringBuilder();
         for (int i = 0; i < cols; i++){
             row.append(PASS);
@@ -185,7 +188,7 @@ public class InputFileParser implements FileParser {
     private boolean isMaxStepsValid(int steps){
         if (steps == 0) {
             errorList.add(("Bad maze file header: expected in line 2 - MaxSteps bigger than 0 "
-                    + "\n" + "got: " + result.get(1)));
+                    + "\n" + "got: " + mazeDefinition.get(1)));
             return false;
         }
         return true;
@@ -194,7 +197,7 @@ public class InputFileParser implements FileParser {
     private boolean isRowsColsValid(int row, int col){
         if ((row < 1 && col < 2) || (row < 2 && col < 1)) {
             errorList.add(("Bad maze file header: expected in lines 3,4 - minimum 1 row and 2 columns or 2 rows and 1 column in a maze "
-                    + "\n" + "got: " + result.get(2) + " " + result.get(3)));
+                    + "\n" + "got: " + mazeDefinition.get(2) + " " + mazeDefinition.get(3)));
             return false;
         }
         return true;

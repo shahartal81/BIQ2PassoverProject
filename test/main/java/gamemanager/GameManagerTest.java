@@ -2,6 +2,8 @@ package gamemanager;
 
 import additionalclasses.Position;
 import enums.Move;
+import filehandling.FileReader;
+import filehandling.MazeParser;
 import org.junit.*;
 import org.junit.rules.TemporaryFolder;
 import org.mockito.Mock;
@@ -14,7 +16,10 @@ import player.PlayerFactory;
 import java.io.File;
 
 import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyInt;
@@ -23,10 +28,11 @@ import static org.mockito.Mockito.when;
 
 public class GameManagerTest {
 
-    private GameManager gameManager;
+    private gamemanager.GameManager gameManager;
     private BufferedWriter fileWriter = null;
     private String mazeTestFilePath = "test/resources/maze.txt";
     private File mazeFile = new File(mazeTestFilePath);
+    private List<String> mazeDefinition = new ArrayList<>();
     private Position playerPosition;
     private Position expectedPosition;
     private int bookmarkSequence;
@@ -43,14 +49,16 @@ public class GameManagerTest {
 
     @Before
     public void setUp() throws IOException {
-//        folder.create();
-//        File createdFile = folder.newFile("test.txt");
-//        fileWriter = new BufferedWriter(new FileWriter(createdFile));
+        FileReader reader = new FileReader();
+        mazeDefinition = reader.readFromFile(mazeFile);
+        folder.create();
+        File createdFile = folder.newFile("test.txt");
+        fileWriter = new BufferedWriter(new FileWriter(createdFile));
 
         when(playerFactory.createPlayer(any(),anyInt())).thenReturn(player);
-//        InputFileParser ifp = new InputFileParser();
+        MazeParser ifp = new MazeParser();
 
-//        gameManager = new GameManager(playerFactory, ifp.getMaze(mazeFile));
+        gameManager = new GameManager(playerFactory, ifp.getMaze(mazeDefinition));
     }
 
     @After

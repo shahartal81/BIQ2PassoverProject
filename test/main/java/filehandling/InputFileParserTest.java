@@ -4,7 +4,6 @@ import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-import org.junit.rules.TemporaryFolder;
 import org.mockito.Mockito;
 
 
@@ -21,12 +20,9 @@ public class InputFileParserTest {
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
 
-    @Rule
-    public TemporaryFolder folder= new TemporaryFolder();
-
     @Test
     public void readFromFileOneLineTest() throws IOException {
-        FileReader testSubject = new FileReader();
+        filehandling.FileReader testSubject = new filehandling.FileReader();
         BufferedReader bufferedReader = Mockito.mock(BufferedReader.class);
         when(bufferedReader.readLine()).thenReturn
                 ("Simple maze", (String) null);
@@ -73,18 +69,18 @@ public class InputFileParserTest {
     @Test
     public void readFromFileEmptyFileTest() {
         List<String> result = new ArrayList<>();
-        InputFileParser testSubject = new InputFileParser();
+        MazeParser testSubject = new MazeParser();
         testSubject.getMaze(result);
-        Assert.assertEquals(0, testSubject.getResult().size());
+        Assert.assertEquals(0, testSubject.getMazeDefinition().size());
         List<String> errors = testSubject.getErrorsList();
         Assert.assertTrue(errors.contains("Data in maze input file is insufficient. Maze cannot be created"));
     }
 
     @Test
-    public void readFromFileNotEnoughLinesInFileTest() throws IOException {
+    public void readFromFileNotEnoughLinesInFileTest() {
         List<String> result = new ArrayList<>();
         result.add("simple maze");
-        InputFileParser testSubject = new InputFileParser();
+        MazeParser testSubject = new MazeParser();
         testSubject.getMaze(result);
         List<String> errors = testSubject.getErrorsList();
         Assert.assertTrue(errors.contains("Data in maze input file is insufficient. Maze cannot be created"));

@@ -1,5 +1,5 @@
-import filehandling.FileParser;
-import filehandling.InputFileParser;
+import filehandling.MazeDefinitionParser;
+import filehandling.MazeParser;
 import gamemanager.GameLoader;
 
 public class Run {
@@ -11,7 +11,7 @@ public class Run {
             System.out.println("Missing output file argument in command line");
         } else {
             GameLoader gameLoader = new GameLoader();
-            FileParser inputFileParser = new InputFileParser();
+            MazeDefinitionParser inputFileParser = new MazeParser();
             gameLoader.validateAndStartGame(args,inputFileParser);
         }
     }

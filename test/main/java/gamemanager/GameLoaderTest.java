@@ -1,6 +1,6 @@
 package gamemanager;
 
-import filehandling.FileParser;
+import filehandling.MazeDefinitionParser;
 import org.junit.*;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
@@ -25,7 +25,7 @@ public class GameLoaderTest {
     public MockitoRule mockitoRule = MockitoJUnit.rule();
 
     @Mock
-    private FileParser fileParser;
+    private MazeDefinitionParser fileParser;
 
     @Before
     public void setUp(){
