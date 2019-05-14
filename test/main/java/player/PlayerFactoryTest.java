@@ -19,9 +19,8 @@ import static org.mockito.Mockito.when;
 public class PlayerFactoryTest {
 
     private enum PlayerTypes {
-        PLAYER_SIMPLE,
-        PLAYER_VERY_ADVANCED,
-        PLAYER_BOOKMARK_EACH_STEP
+        PLAYER_BOOKMARK_EACH_STEP,
+        PLAYER_INTELLIGENT
     }
 
     private int maxSteps;
@@ -32,9 +31,8 @@ public class PlayerFactoryTest {
     @Parameterized.Parameters(name = "Test #{index} - Check if Max Steps = {0}, Rows = {1} Columns = {2} then Player = {3}")
     public static Collection<Object[]> data() {
         return Arrays.asList(new Object[][] {
-                {30, 3, 3, PlayerTypes.PLAYER_SIMPLE},
-                {30, 10, 10, PlayerTypes.PLAYER_VERY_ADVANCED},
-                {3000, 15, 15, PlayerTypes.PLAYER_BOOKMARK_EACH_STEP}
+                {3000, 15, 15, PlayerTypes.PLAYER_BOOKMARK_EACH_STEP},
+                {300, 3, 3, PlayerTypes.PLAYER_INTELLIGENT}
         });
     }
 
@@ -58,14 +56,11 @@ public class PlayerFactoryTest {
         PlayerFactory playerFactory = new PlayerFactory();
         Player player = playerFactory.createPlayer(new Position(position.getRow(), position.getColumn()), maxSteps);
         switch (playerInd){
-            case PLAYER_SIMPLE:
-                Assert.assertTrue(player instanceof PlayerSimple);
-                return;
-            case PLAYER_VERY_ADVANCED:
-                Assert.assertTrue(player instanceof PlayerAdvanced);
-                return;
             case PLAYER_BOOKMARK_EACH_STEP:
                 Assert.assertTrue(player instanceof PlayerBookmarkEachStep);
+                return;
+            case PLAYER_INTELLIGENT:
+                Assert.assertTrue(player instanceof PlayerIntelligent);
                 return;
             default:
                 Assert.fail("Player not supported!");

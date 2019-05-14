@@ -48,10 +48,6 @@ public class GameManager {
             if (maze.getMazeMap()[next.getRow()][next.getColumn()] == WALL){
                 System.out.println("GM: Player wanted to move " + move + " but..."); //for console only
                 player.hitWall();
-                if (bookmarksMap.containsKey(playerPosition)) {
-                    System.out.println("GM: Player hit bookmark at " + playerPosition + " with sequence number " + bookmarksMap.get(playerPosition));
-                    player.hitBookmark(bookmarksMap.get(playerPosition));
-                }
             } else if (next.equals(endPosition)) {
                 System.out.println("GM: Player moved " + move);
                 isSolved = true;
