@@ -77,12 +77,15 @@ public class MazeParser implements MazeDefinitionParser {
     int numberOf(String key, int lineNumber){
         int index = lineNumber - 1;
         if (index < mazeDefinition.size()) {
+            String num = "";
             String line = mazeDefinition.get(index).trim();
             String[] strs = line.split("=");
-            String num = strs[1].trim();
+            if (strs.length == 2){
+               num  = strs[1].trim();
+            }
             if (strs.length != 2 || !strs[0].trim().equals(key) || !num.matches("[0-9]+")) {
                 errorList.add(("Bad maze file header: expected in line " + lineNumber + " - " + key + " = <num>" + "\n" + " got: " + line));
-                return -1;
+                return 0;
             }
             try {
                 return Integer.parseInt(num);
@@ -90,7 +93,7 @@ public class MazeParser implements MazeDefinitionParser {
                 errorList.add(("Invalid number " + num + " in line " + lineNumber));
             }
         }
-        return -1;
+        return 0;
     }
 
     private boolean isMazeValid(){
@@ -185,7 +188,7 @@ public class MazeParser implements MazeDefinitionParser {
         return row.toString();
     }
 
-    private boolean isMaxStepsValid(int steps){
+    boolean isMaxStepsValid(int steps){
         if (steps == 0) {
             errorList.add(("Bad maze file header: expected in line 2 - MaxSteps bigger than 0 "
                     + "\n" + "got: " + mazeDefinition.get(1)));
