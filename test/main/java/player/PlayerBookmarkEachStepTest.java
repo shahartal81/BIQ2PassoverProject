@@ -9,10 +9,9 @@ public class PlayerBookmarkEachStepTest {
     @Test
     public void testPlayerBookmarkEachStepMoveMethod(){
         PlayerBookmarkEachStep player = new PlayerBookmarkEachStep();
-        Move move = player.move();
-        Assert.assertTrue(move.equals(Move.DOWN) || move.equals(Move.UP) || move.equals(Move.LEFT) || move.equals(Move.RIGHT));
+        player.move();
         Assert.assertTrue("next turn bookmark flag should be true", player.isUseBookmark());
-        move = player.move();
+        Move move = player.move();
         Assert.assertEquals("move should be bookmark", Move.BOOKMARK, move);
     }
 
@@ -26,8 +25,8 @@ public class PlayerBookmarkEachStepTest {
         Assert.assertTrue("use bookmark flag should be true", player.isUseBookmark());
         player.move();
         Assert.assertEquals("bookmark sequence should be 1", 1, player.getSeqNumber());
-        Assert.assertTrue("bookmark 1 should be in map", player.getBookmarksMap().containsKey(1));
-        Assert.assertEquals("bookmark 1 should contain last move as value", move, player.getBookmarksMap().get(1).get(0));
+        Assert.assertTrue("bookmark 1 should be in map", player.getBookmarks().containsKey(1));
+        Assert.assertTrue("bookmark 1 should contain last move as value",player.getBookmarks().get(1).getMovesPerformed().contains(move));
         Assert.assertEquals("last move should be bookmark", Move.BOOKMARK, player.getLastMove());
     }
 
@@ -42,7 +41,7 @@ public class PlayerBookmarkEachStepTest {
         Move move = player.move();
         player.hitBookmark(2);
         Assert.assertTrue("hit bookmark should be true", player.getHitBookmark());
-        Assert.assertTrue("bookmark 2 should be in map", player.getBookmarksMap().containsKey(2));
-        Assert.assertEquals("bookmark 2 should contain last move as value", move, player.getBookmarksMap().get(2).get(0));
+        Assert.assertTrue("bookmark 2 should be in map", player.getBookmarks().containsKey(2));
+        Assert.assertTrue("bookmark 2 should contain last move as value", player.getBookmarks().get(2).getMovesPerformed().contains(move));
     }
 }

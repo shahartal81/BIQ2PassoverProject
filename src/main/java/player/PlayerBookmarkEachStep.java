@@ -1,22 +1,24 @@
 package player;
 
+import additionalclasses.Bookmark;
 import enums.Move;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
 public class PlayerBookmarkEachStep implements Player {
 
-    private Map<Integer, ArrayList<Move>> bookmarksMap = new HashMap<>();
+    private Map<Integer, Bookmark> bookmarks = new HashMap<>();
     private int seqNumber = 0;
     private Move lastMove;
     private boolean useBookmark = false;
     private boolean hitBookmark = false;
 
-    public Map<Integer, ArrayList<Move>> getBookmarksMap() {
-        return bookmarksMap;
+    public Map<Integer, Bookmark> getBookmarks() {
+        return bookmarks;
     }
 
     public int getSeqNumber() {
@@ -63,12 +65,13 @@ public class PlayerBookmarkEachStep implements Player {
     }
 
     private void handleBookmark(int sequence) {
-        ArrayList<Move> moves;
-        if (bookmarksMap.isEmpty() || !bookmarksMap.containsKey(sequence)) {
+        List<Move> moves;
+        Bookmark bookmark = new Bookmark(seqNumber);
+        if (bookmarks.isEmpty() || !bookmarks.containsKey(sequence)) {
             moves = new ArrayList<>();
             moves.add(lastMove);
         } else {
-            moves = bookmarksMap.get(sequence);
+            moves = bookmarks.get(sequence).getMovesPerformed();
             if (!hitBookmark) {
                 moves.add(lastMove);
             } else {
@@ -90,15 +93,16 @@ public class PlayerBookmarkEachStep implements Player {
                 }
             }
         }
-        bookmarksMap.put(sequence, moves);
+        bookmark.setMovesPerformed(moves);
+        bookmarks.put(sequence, bookmark);
         System.out.println("Player added a bookmark");
     }
 
     private Move chooseMove(){
         if (lastMove != null && lastMove.equals(Move.BOOKMARK)) {
-                ArrayList<Move> moves = new ArrayList<>();
+                List<Move> moves = new ArrayList<>();
                 for (Move move : Move.values()) {
-                    if (!bookmarksMap.get(seqNumber).contains(move)) {
+                    if (!bookmarks.get(seqNumber).getMovesPerformed().contains(move)) {
                         moves.add(move);
                     }
                 }
