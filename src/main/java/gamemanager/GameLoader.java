@@ -32,7 +32,7 @@ public class GameLoader {
         }
 
         File fileOut = new File(args[1]);
-        if (fileOut.exists()) {
+        if (fileOut.exists() || !fileOut.getParentFile().exists()) {
             addToErrorList("Command line argument for output file: " + fileOut + " points to a bad path or to a file that already exists");
         } else if(maze != null){
             start(maze, fileOut);
