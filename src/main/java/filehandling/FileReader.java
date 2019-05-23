@@ -1,8 +1,5 @@
 package filehandling;
 
-
-import gamemanager.GameLoader;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -11,18 +8,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FileReader {
-    private GameLoader gameLoader = new GameLoader();
-    List<String> result = new ArrayList<>();
+    private List<String> result = new ArrayList<>();
+    private List<String> errorList;
+
+    public FileReader(List<String> errorList) {
+        this.errorList = errorList;
+    }
 
     public List<String> readFromFile(File fileIn){
         try(BufferedReader readFile = new BufferedReader(new java.io.FileReader(fileIn))){
             return readFromFile(readFile);
         }
         catch (FileNotFoundException e){
-            gameLoader.addToErrorList("File not found. Exception: " + e);
+            errorList.add("File not found. Exception: " + e);
         }
         catch (IOException e){
-            gameLoader.addToErrorList("Reading from file failed: " + e);
+            errorList.add("Reading from file failed: " + e);
         }
         return null;
     }

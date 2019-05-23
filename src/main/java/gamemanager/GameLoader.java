@@ -14,11 +14,9 @@ import java.util.List;
 
 public class GameLoader {
 
-    private List<String> errorsList;
-
+    private List<String> errorsList = new ArrayList<>();
     
     public void validateAndStartGame(String[] args, MazeDefinitionParser inputFileParser) {
-        errorsList = new ArrayList<>();
         Maze maze = null;
 
         File fileIn = new File(args[0]);
@@ -27,7 +25,7 @@ public class GameLoader {
         }
         else {
             inputFileParser.setErrorList(errorsList);
-            FileReader reader = new FileReader();
+            FileReader reader = new FileReader(errorsList);
             maze = inputFileParser.getMaze(reader.readFromFile(fileIn));
         }
 

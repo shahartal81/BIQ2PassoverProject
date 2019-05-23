@@ -11,7 +11,7 @@ public class Run {
             System.out.println("Missing output file argument in command line");
         } else {
             GameLoader gameLoader = new GameLoader();
-            MazeDefinitionParser inputFileParser = new MazeParser();
+            MazeDefinitionParser inputFileParser = new MazeParser(gameLoader.getErrorsList());
             gameLoader.validateAndStartGame(args,inputFileParser);
         }
     }
