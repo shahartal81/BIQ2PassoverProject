@@ -13,18 +13,8 @@ public class MazeParser implements MazeDefinitionParser {
     private static final char PASS = MazeElement.PASS.getValue();
     
     private List<String> mazeDefinition = new ArrayList<>();
-    
-    private List<String> errorList = new ArrayList<>();
 
-
-    public MazeParser(List<String> errorList){
-        this.errorList = errorList;
-    }
-
-    public MazeParser(){
-    }
-
-    public List<String> getMazeDefinition() {
+    List<String> getMazeDefinition() {
         return mazeDefinition;
     }
 
@@ -32,19 +22,15 @@ public class MazeParser implements MazeDefinitionParser {
         this.mazeDefinition = mazeDefinition;
     }
 
-
-    public List<String> getErrorsList(){
-        return errorList;
-    }
-
     @Override
     public Maze getMaze(List<String> mazeDefinition){
         Maze maze = null;
-         if (isMazeDefinitionInsufficient()){
-            errorList.add("Data in maze input file is insufficient. Maze cannot be created");
+
+        this.mazeDefinition = mazeDefinition;
+        if (isMazeDefinitionInsufficient()){
+            ErrorsSingleton.instance().addToErrorList("Data in maze input file is insufficient. Maze cannot be created");
             return maze;
         }
-        this.mazeDefinition = mazeDefinition;
 
         int maxSteps = numberOf("MaxSteps", 2);
         int rows = numberOf("Rows", 3);
@@ -62,19 +48,13 @@ public class MazeParser implements MazeDefinitionParser {
             maze.setMazeMap(fillMazeMap(rows, cols));
         }
         else {
-            errorList.add(("Data in maze input file is invalid. Maze cannot be created"));
+            ErrorsSingleton.instance().addToErrorList(("Data in maze input file is invalid. Maze cannot be created"));
         }
         return maze;
     }
 
     private boolean isMazeDefinitionInsufficient(){
         return mazeDefinition == null || mazeDefinition.isEmpty() || mazeDefinition.size() < 5;
-    }
-
-
-    @Override
-    public void setErrorList(List<String> errorsList) {
-        this.errorList = errorsList;
     }
 
     int numberOf(String key, int lineNumber){
@@ -87,13 +67,13 @@ public class MazeParser implements MazeDefinitionParser {
                num  = strs[1].trim();
             }
             if (strs.length != 2 || !strs[0].trim().equals(key) || !num.matches("[0-9]+")) {
-                errorList.add(("Bad maze file header: expected in line " + lineNumber + " - " + key + " = <num>" + "\n" + " got: " + line));
+                ErrorsSingleton.instance.addToErrorList(("Bad maze file header: expected in line " + lineNumber + " - " + key + " = <num>" + "\n" + " got: " + line));
                 return 0;
             }
             try {
                 return Integer.parseInt(num);
             } catch (NumberFormatException e) {
-                errorList.add(("Invalid number " + num + " in line " + lineNumber));
+                ErrorsSingleton.instance.addToErrorList(("Invalid number " + num + " in line " + lineNumber));
             }
         }
         return 0;
@@ -117,7 +97,7 @@ public class MazeParser implements MazeDefinitionParser {
                     countEndChar++;
                 }
                 else if (mazeChar != WALL && mazeChar != PASS){
-                    errorList.add(("Wrong character in maze: " +  mazeChar + " in row " + (i+1) + ", col " + (j+1) ));
+                    ErrorsSingleton.instance.addToErrorList(("Wrong character in maze: " +  mazeChar + " in row " + (i+1) + ", col " + (j+1) ));
                     isCharValid = false;
                 }
             }
@@ -128,10 +108,10 @@ public class MazeParser implements MazeDefinitionParser {
     private boolean isCharCountValid(int count, char mazeChar){
         boolean isValid = false;
         if (count == 0){
-            errorList.add(("Missing " +  mazeChar + " in maze"));
+            ErrorsSingleton.instance.addToErrorList(("Missing " +  mazeChar + " in maze"));
         }
         else if (count > 1){
-            errorList.add(("More than one " +  mazeChar + " in maze"));
+            ErrorsSingleton.instance.addToErrorList(("More than one " +  mazeChar + " in maze"));
         } else {
             isValid = true;
         }
@@ -187,7 +167,7 @@ public class MazeParser implements MazeDefinitionParser {
 
     boolean isMaxStepsValid(int steps){
         if (steps == 0) {
-            errorList.add(("Bad maze file header: expected in line 2 - MaxSteps bigger than 0 "
+            ErrorsSingleton.instance.addToErrorList(("Bad maze file header: expected in line 2 - MaxSteps bigger than 0 "
                     + "\n" + "got: " + mazeDefinition.get(1)));
             return false;
         }
@@ -196,7 +176,7 @@ public class MazeParser implements MazeDefinitionParser {
 
     private boolean isRowsColsValid(int row, int col){
         if ((row < 1 && col < 2) || (row < 2 && col < 1)) {
-            errorList.add(("Bad maze file header: expected in lines 3,4 - minimum 1 row and 2 columns or 2 rows and 1 column in a maze "
+            ErrorsSingleton.instance.addToErrorList(("Bad maze file header: expected in lines 3,4 - minimum 1 row and 2 columns or 2 rows and 1 column in a maze "
                     + "\n" + "got: " + mazeDefinition.get(2) + " " + mazeDefinition.get(3)));
             return false;
         }

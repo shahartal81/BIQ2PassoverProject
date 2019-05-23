@@ -8,21 +8,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MazeFileReader {
-    private GameLoader gameLoader = new GameLoader();
     private List<String> result = new ArrayList<>();
 
     public List<String> readFromFile(File fileIn){
-        List<String>fileLines = new ArrayList<>();
         try(BufferedReader readFile = new BufferedReader(new FileReader(fileIn))){
-            fileLines =  readFromFile(readFile);
+            return readFromFile(readFile);
         }
         catch (FileNotFoundException e){
-            gameLoader.addToErrorList("File not found. Exception: " + e);
+            ErrorsSingleton.instance().addToErrorList("File not found. Exception: " + e);
         }
         catch (IOException e){
-            gameLoader.addToErrorList("Reading from file failed: " + e);
+            ErrorsSingleton.instance().addToErrorList("Reading from file failed: " + e);
         }
-        return fileLines;
+
+        return new ArrayList<>();
     }
 
     List<String> readFromFile(BufferedReader readFile) throws IOException {

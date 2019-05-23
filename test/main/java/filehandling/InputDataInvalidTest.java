@@ -84,7 +84,7 @@ public class InputDataInvalidTest {
     @Test
     public void readFromFileMaxStepsRowsColsInvalidTest() {
         Assert.assertEquals(expectedNum, testSubject.numberOf(key, lineNumber));
-        List<String> errors = testSubject.getErrorsList();
+        List<String> errors = ErrorsSingleton.instance().getErrorsList();
         Assert.assertTrue(errors.contains(error));
     }
 }

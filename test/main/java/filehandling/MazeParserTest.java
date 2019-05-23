@@ -26,7 +26,7 @@ public class MazeParserTest {
         MazeParser testSubject = new MazeParser();
         testSubject.getMaze(mazeDefinition);
         Assert.assertEquals(0, testSubject.getMazeDefinition().size());
-        List<String> errors = testSubject.getErrorsList();
+        List<String> errors = ErrorsSingleton.instance().getErrorsList();
         Assert.assertTrue(errors.contains("Data in maze input file is insufficient. Maze cannot be created"));
     }
 
@@ -36,7 +36,7 @@ public class MazeParserTest {
         mazeDefinition.add("simple maze");
         MazeParser testSubject = new MazeParser();
         testSubject.getMaze(mazeDefinition);
-        List<String> errors = testSubject.getErrorsList();
+        List<String> errors = ErrorsSingleton.instance().getErrorsList();
         Assert.assertTrue(errors.contains("Data in maze input file is insufficient. Maze cannot be created"));
     }
 
@@ -54,7 +54,7 @@ public class MazeParserTest {
         mazeDefinition.add("MaxSteps = -10");
         MazeParser testSubject = new MazeParser();
         testSubject.setMazeDefinition(mazeDefinition);
-        List<String> errors = testSubject.getErrorsList();
+        List<String> errors = ErrorsSingleton.instance().getErrorsList();
         Assert.assertFalse(testSubject.isMaxStepsValid(0));
         Assert.assertTrue(errors.contains("Bad maze file header: expected in line 2 - MaxSteps bigger than 0 \n" + "got: MaxSteps = -10"));
     }

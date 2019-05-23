@@ -1,6 +1,7 @@
 package gamemanager;
 
 import additionalclasses.Maze;
+import filehandling.ErrorsSingleton;
 import filehandling.MazeDefinitionParser;
 import filehandling.MazeFileReader;
 import player.PlayerFactory;
@@ -24,22 +25,24 @@ public class GameLoader {
             addToErrorList("Command line argument for maze: " +  fileIn + " doesn't lead to a maze file or leads to a file that cannot be opened");
         }
         else {
-            inputFileParser.setErrorList(errorsList);
+//            inputFileParser.setErrorList(errorsList);
             maze = inputFileParser.getMaze(new MazeFileReader().readFromFile(fileIn));
         }
 
         File fileOut = new File(outputFile);
-        if (fileOut.exists()) {
+        if (fileOut.exists() || !fileOut.getParentFile().exists()) {
             addToErrorList("Command line argument for output file: " + fileOut + " points to a bad path or to a file that already exists");
         } else if(maze != null){
             start(maze, fileOut);
         }
 
-        if (!errorsList.isEmpty()) {
-            for (String error : errorsList){
-                System.out.println(error);
-            }
-        }
+        ErrorsSingleton.instance().printErrors();
+
+//        if (!errorsList.isEmpty()) {
+//            for (String error : errorsList){
+//                System.out.println(error);
+//            }
+//        }
     }
 
 
