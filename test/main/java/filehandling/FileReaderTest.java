@@ -1,6 +1,7 @@
 package filehandling;
 
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -16,12 +17,19 @@ import static org.mockito.Mockito.when;
 
 public class FileReaderTest {
 
+    private FileReader testSubject;
+
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
 
+    @Before
+    public void setUp(){
+        testSubject = new FileReader(new ArrayList<>());
+    }
+
     @Test
     public void readFromFileOneLineTest() throws IOException {
-        FileReader testSubject = new FileReader();
+
         BufferedReader bufferedReader = Mockito.mock(BufferedReader.class);
         when(bufferedReader.readLine()).thenReturn
                 ("Simple maze", (String) null);
@@ -32,7 +40,6 @@ public class FileReaderTest {
 
     @Test
     public void readFromFileMultipleLinesTest() throws IOException {
-        FileReader testSubject = new FileReader();
         BufferedReader bufferedReader = Mockito.mock(BufferedReader.class);
         when(bufferedReader.readLine()).thenReturn("Simple maze", "MaxSteps = 10", "Rows = 4", "Cols = 10", "##### \t", null);
         List<String> result = testSubject.readFromFile(bufferedReader);
@@ -46,7 +53,6 @@ public class FileReaderTest {
 
     @Test
     public void readFromFileContainEmptyLinesTest() throws IOException {
-        FileReader testSubject = new FileReader();
         BufferedReader bufferedReader = Mockito.mock(BufferedReader.class);
         when(bufferedReader.readLine()).thenReturn
                 ("\n","Simple maze", "\n", "MaxSteps = 10", "\n", null);
@@ -58,7 +64,6 @@ public class FileReaderTest {
 
     @Test (expected = FileNotFoundException.class)
     public void readFromFileNonExistingFileTest() throws IOException {
-        FileReader testSubject = new FileReader();
         BufferedReader bufferedReader = Mockito.mock(BufferedReader.class);
         when(bufferedReader.readLine()).thenThrow(new FileNotFoundException());
         testSubject.readFromFile(bufferedReader);

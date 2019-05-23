@@ -49,7 +49,7 @@ public class GameManagerTest {
 
     @Before
     public void setUp() throws IOException {
-        FileReader reader = new FileReader();
+        FileReader reader = new FileReader(new ArrayList<>());
         mazeDefinition = reader.readFromFile(mazeFile);
         folder.create();
         File createdFile = folder.newFile("test.txt");
