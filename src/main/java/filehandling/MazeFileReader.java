@@ -3,20 +3,18 @@ package filehandling;
 
 import gamemanager.GameLoader;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FileReader {
+public class MazeFileReader {
     private GameLoader gameLoader = new GameLoader();
-    List<String> result = new ArrayList<>();
+    private List<String> result = new ArrayList<>();
 
     public List<String> readFromFile(File fileIn){
-        try(BufferedReader readFile = new BufferedReader(new java.io.FileReader(fileIn))){
-            return readFromFile(readFile);
+        List<String>fileLines = new ArrayList<>();
+        try(BufferedReader readFile = new BufferedReader(new FileReader(fileIn))){
+            fileLines =  readFromFile(readFile);
         }
         catch (FileNotFoundException e){
             gameLoader.addToErrorList("File not found. Exception: " + e);
@@ -24,10 +22,10 @@ public class FileReader {
         catch (IOException e){
             gameLoader.addToErrorList("Reading from file failed: " + e);
         }
-        return null;
+        return fileLines;
     }
 
-    public List<String> readFromFile(BufferedReader readFile) throws IOException {
+    List<String> readFromFile(BufferedReader readFile) throws IOException {
         String line;
         while((line = readFile.readLine()) != null) {
             if (line.trim().length() > 0) {

@@ -2,7 +2,7 @@ import filehandling.MazeDefinitionParser;
 import filehandling.MazeParser;
 import gamemanager.GameLoader;
 
-public class Run {
+public class MazeGame {
     public static void main(String[] args) {
         if (args.length == 0){
             System.out.println("Missing maze file argument in command line");
@@ -12,7 +12,7 @@ public class Run {
         } else {
             GameLoader gameLoader = new GameLoader();
             MazeDefinitionParser inputFileParser = new MazeParser();
-            gameLoader.validateAndStartGame(args,inputFileParser);
+            gameLoader.validateAndStartGame(args[0], args[1],inputFileParser);
         }
     }
 }

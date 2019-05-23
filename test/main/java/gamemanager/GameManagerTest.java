@@ -2,7 +2,7 @@ package gamemanager;
 
 import additionalclasses.Position;
 import enums.Move;
-import filehandling.FileReader;
+import filehandling.MazeFileReader;
 import filehandling.MazeParser;
 import org.junit.*;
 import org.junit.rules.TemporaryFolder;
@@ -49,7 +49,7 @@ public class GameManagerTest {
 
     @Before
     public void setUp() throws IOException {
-        FileReader reader = new FileReader();
+        MazeFileReader reader = new MazeFileReader();
         mazeDefinition = reader.readFromFile(mazeFile);
         folder.create();
         File createdFile = folder.newFile("test.txt");

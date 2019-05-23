@@ -40,11 +40,10 @@ public class MazeParser implements MazeDefinitionParser {
     @Override
     public Maze getMaze(List<String> mazeDefinition){
         Maze maze = null;
-         if (mazeDefinition == null || mazeDefinition.size() < 5 ){
+         if (isMazeDefinitionInsufficient()){
             errorList.add("Data in maze input file is insufficient. Maze cannot be created");
             return maze;
         }
-
         this.mazeDefinition = mazeDefinition;
 
         int maxSteps = numberOf("MaxSteps", 2);
@@ -62,12 +61,16 @@ public class MazeParser implements MazeDefinitionParser {
             maze.setColumns(cols);
             maze.setMazeMap(fillMazeMap(rows, cols));
         }
-       else {
+        else {
             errorList.add(("Data in maze input file is invalid. Maze cannot be created"));
         }
-
         return maze;
     }
+
+    private boolean isMazeDefinitionInsufficient(){
+        return mazeDefinition == null || mazeDefinition.isEmpty() || mazeDefinition.size() < 5;
+    }
+
 
     @Override
     public void setErrorList(List<String> errorsList) {
@@ -97,7 +100,6 @@ public class MazeParser implements MazeDefinitionParser {
     }
 
     private boolean isMazeValid(){
-        boolean isMazeValid = false;
         boolean isCharValid = true;
         int countPlayerChar = 0;
         int countEndChar = 0;
@@ -120,11 +122,7 @@ public class MazeParser implements MazeDefinitionParser {
                 }
             }
         }
-
-        if (isCharCountValid(countPlayerChar, PLAYER) && isCharCountValid(countEndChar, END) && isCharValid){
-            isMazeValid = true;
-        }
-        return isMazeValid;
+        return isCharCountValid(countPlayerChar, PLAYER) && isCharCountValid(countEndChar, END) && isCharValid;
     }
 
     private boolean isCharCountValid(int count, char mazeChar){
@@ -134,7 +132,6 @@ public class MazeParser implements MazeDefinitionParser {
         }
         else if (count > 1){
             errorList.add(("More than one " +  mazeChar + " in maze"));
-
         } else {
             isValid = true;
         }
