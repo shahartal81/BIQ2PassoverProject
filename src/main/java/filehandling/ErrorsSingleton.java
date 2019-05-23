@@ -26,4 +26,9 @@ public class ErrorsSingleton {
             }
         }
     }
+
+
+    void clean(){
+        errorList.clear();
+    }
 }

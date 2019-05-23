@@ -35,6 +35,7 @@ public class InputDataInvalidTest {
         int index = lineNumber-1;
         result.set(index, input);
         testSubject.setMazeDefinition(result);
+        ErrorsSingleton.instance().clean();
     }
 
     @Parameters(name = "{index}: given in file({0}), expected {1}")
