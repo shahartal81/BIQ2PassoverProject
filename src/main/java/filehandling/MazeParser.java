@@ -79,7 +79,7 @@ public class MazeParser implements MazeDefinitionParser {
         return 0;
     }
 
-    private boolean isMazeValid(int rows, int cols){
+    boolean isMazeValid(int rows, int cols){
         if (!isRowsColsValid(rows,cols)) {
             return false;
         }
@@ -88,10 +88,12 @@ public class MazeParser implements MazeDefinitionParser {
         int countPlayerChar = 0;
         int countEndChar = 0;
 
-        for (int i = MAZE_START_LINE; i < (MAZE_START_LINE + rows); i++){
+        int mazeBodyRows = Integer.min(MAZE_START_LINE + rows, mazeDefinition.size());
+        for (int i = MAZE_START_LINE; i < mazeBodyRows; i++){
             String line = mazeDefinition.get(i);
 
-            for (int j = 0; j < cols; j++){
+            int mazeBodyCols = Integer.min(cols, line.length());
+            for (int j = 0; j < mazeBodyCols; j++){
                 char mazeChar = line.charAt(j);
 
                 if (mazeChar == PLAYER){

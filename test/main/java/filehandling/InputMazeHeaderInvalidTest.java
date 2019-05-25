@@ -14,7 +14,7 @@ import java.util.Collection;
 import java.util.List;
 
 @RunWith(Parameterized.class)
-public class InputDataInvalidTest {
+public class InputMazeHeaderInvalidTest {
     private static List<String> result = new ArrayList<>();
     private MazeParser testSubject = new MazeParser();
 
@@ -74,7 +74,7 @@ public class InputDataInvalidTest {
     private String error;
 
 
-    public InputDataInvalidTest(String input, int expectedNum, String key, int lineNumber, String error) {
+    public InputMazeHeaderInvalidTest(String input, int expectedNum, String key, int lineNumber, String error) {
         this.input = input;
         this.expectedNum = expectedNum;
         this.key = key;
