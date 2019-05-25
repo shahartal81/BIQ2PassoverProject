@@ -46,7 +46,7 @@ public class MazeParserTest {
     public void parseMazeMaxStepsValidTest() {
         MazeParser testSubject = new MazeParser();
         Assert.assertTrue(testSubject.isMaxStepsValid(1));
-        Assert.assertFalse(testSubject.isMaxStepsValid(0));
+
     }
 
     @Test
@@ -56,6 +56,7 @@ public class MazeParserTest {
         mazeDefinition.add("MaxSteps = -10");
         MazeParser testSubject = new MazeParser();
         testSubject.setMazeDefinition(mazeDefinition);
+        Assert.assertFalse(testSubject.isMaxStepsValid(0));
         List<String> errors = ErrorsSingleton.instance().getErrorsList();
         Assert.assertTrue(errors.contains("Bad maze file header: expected in line 2 - MaxSteps bigger than 0 \n" + "got: MaxSteps = -10"));
     }

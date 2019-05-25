@@ -15,7 +15,7 @@ import java.util.List;
 @RunWith(Parameterized.class)
 public class InputMazeBodyValidTest {
     private List<String> result = new ArrayList<>();
-    MazeParser testSubject = new MazeParser();
+    private MazeParser testSubject = new MazeParser();
 
     @Before
     public void init(){
