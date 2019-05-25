@@ -182,11 +182,11 @@ public class MazeParser implements MazeDefinitionParser {
     }
 
     boolean isRowsColsValid(int row, int col){
-        if ((row < 1 && col < 2) || (row < 2 && col < 1)) {
-            ErrorsSingleton.instance.addToErrorList(("Bad maze file header: expected in lines 3,4 - minimum 1 row and 2 columns or 2 rows and 1 column in a maze "
-                    + "\n" + "got: " + mazeDefinition.get(2) + " " + mazeDefinition.get(3)));
-            return false;
+        if (row > 0 && col > 0 && (row > 1 || col > 1)) {
+            return true;
         }
-        return true;
+        ErrorsSingleton.instance.addToErrorList(("Bad maze file header: expected in lines 3,4 - minimum 1 row and 2 columns or 2 rows and 1 column in a maze "
+                + "\n" + "got: " + mazeDefinition.get(2) + " " + mazeDefinition.get(3)));
+        return false;
     }
 }

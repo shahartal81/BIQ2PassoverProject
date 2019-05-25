@@ -19,17 +19,7 @@ public class InputMazeBodyValidTest {
 
     @Before
     public void init(){
-       result.add("My maze");
-       result.add("MaxSteps = 10");
-       result.add("Rows = 4");
-       result.add("Cols = 12");
-       result.add("###  ##   ##");
-       result.add("# @  # #   #");
-       result.add("##  $  ##  #");
-       result.add("### #  #####");
-
-       testSubject.setMazeDefinition(result);
-       ErrorsSingleton.instance().clean();
+        MazeTestData.init(result,testSubject);
     }
 
     @Parameters(name = "{index}: given rows({0}, cloumns {1}), expected - valid maze")
@@ -38,6 +28,12 @@ public class InputMazeBodyValidTest {
                 //valid cases
                 {4, 12},
                 {3, 10},
+                {30, 40},
+                {4, 11},
+                {3, 12},
+                {4, 13},
+                {5, 12}
+
         });
     }
 

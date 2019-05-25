@@ -1,6 +1,7 @@
 package filehandling;
 
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -65,5 +66,18 @@ public class MazeParserTest {
         Assert.assertTrue(testSubject.isRowsColsValid(1,2));
         Assert.assertTrue(testSubject.isRowsColsValid(2,1));
         Assert.assertTrue(testSubject.isRowsColsValid(2,2));
+    }
+
+    @Test
+    public void parseMazeRowsColsInvalidTest() {
+        List<String> result = new ArrayList<>();
+        MazeParser testSubject = new MazeParser();
+        MazeTestData.init(result,testSubject);
+
+        Assert.assertFalse(testSubject.isRowsColsValid(1,1));
+        Assert.assertFalse(testSubject.isRowsColsValid(0,0));
+        Assert.assertFalse(testSubject.isRowsColsValid(0,10));
+        Assert.assertFalse(testSubject.isRowsColsValid(10,0));
+        Assert.assertFalse(testSubject.isRowsColsValid(-1,5));
     }
 }
