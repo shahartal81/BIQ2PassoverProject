@@ -58,4 +58,12 @@ public class MazeParserTest {
         Assert.assertFalse(testSubject.isMaxStepsValid(0));
         Assert.assertTrue(errors.contains("Bad maze file header: expected in line 2 - MaxSteps bigger than 0 \n" + "got: MaxSteps = -10"));
     }
+
+    @Test
+    public void parseMazeRowsColsValidTest() {
+        MazeParser testSubject = new MazeParser();
+        Assert.assertTrue(testSubject.isRowsColsValid(1,2));
+        Assert.assertTrue(testSubject.isRowsColsValid(2,1));
+        Assert.assertTrue(testSubject.isRowsColsValid(2,2));
+    }
 }

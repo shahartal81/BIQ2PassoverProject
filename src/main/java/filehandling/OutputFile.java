@@ -8,10 +8,10 @@ import java.io.IOException;
 public class OutputFile {
 
     private StringBuilder movesList = new StringBuilder();
-    private BufferedWriter outPutFile;
+    private BufferedWriter outputFile;
 
     public OutputFile(BufferedWriter file) {
-        this.outPutFile = file;
+        this.outputFile = file;
     }
 
     public void updateMovesMap(Move move) {
@@ -24,12 +24,11 @@ public class OutputFile {
     }
 
     public void exportToFile() throws IOException {
-        try (BufferedWriter writer = new BufferedWriter(outPutFile)) {
+        try (BufferedWriter writer = new BufferedWriter(outputFile)) {
             writer.write(movesList.toString());
         } catch (IOException e){
             throw new IOException(e);
         }
-
     }
 
     public void printAllMoves() {

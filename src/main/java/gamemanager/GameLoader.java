@@ -15,34 +15,25 @@ import java.util.List;
 
 public class GameLoader {
 
-    private List<String> errorsList = new ArrayList<>();
-
     public void validateAndStartGame(String inputFile, String outputFile, MazeDefinitionParser inputFileParser) {
         Maze maze = null;
 
         File fileIn = new File(inputFile);
         if (!fileIn.isFile() || !fileIn.exists()){
-            addToErrorList("Command line argument for maze: " +  fileIn + " doesn't lead to a maze file or leads to a file that cannot be opened");
+            ErrorsSingleton.instance().addToErrorList("Command line argument for maze: " +  fileIn + " doesn't lead to a maze file or leads to a file that cannot be opened");
         }
         else {
-//            inputFileParser.setErrorList(errorsList);
             maze = inputFileParser.getMaze(new MazeFileReader().readFromFile(fileIn));
         }
 
         File fileOut = new File(outputFile);
-        if (fileOut.exists() || !fileOut.getParentFile().exists()) {
-            addToErrorList("Command line argument for output file: " + fileOut + " points to a bad path or to a file that already exists");
+        if (fileOut.exists()) {
+            ErrorsSingleton.instance().addToErrorList("Command line argument for output file: " + fileOut + " points to a bad path or to a file that already exists");
         } else if(maze != null){
             start(maze, fileOut);
         }
 
         ErrorsSingleton.instance().printErrors();
-
-//        if (!errorsList.isEmpty()) {
-//            for (String error : errorsList){
-//                System.out.println(error);
-//            }
-//        }
     }
 
 
@@ -53,17 +44,8 @@ public class GameLoader {
             gameManager.createOutPutFile(fileWriter);
             gameManager.playGame();
         } catch (IOException e) {
-            e.printStackTrace();
+            ErrorsSingleton.instance().addToErrorList("Cannot write to output file: " + e);
         }
     }
-
-    public void addToErrorList(String error){
-        errorsList.add(error);
-    }
-
-    public List<String> getErrorsList() {
-        return errorsList;
-    }
-
 
 }
