@@ -53,10 +53,6 @@ public class MazeParser implements MazeDefinitionParser {
         return maze;
     }
 
-    private boolean isMazeDefinitionInsufficient(){
-        return mazeDefinition == null || mazeDefinition.isEmpty() || mazeDefinition.size() < 5;
-    }
-
     int numberOf(String key, int lineNumber){
         int index = lineNumber - 1;
         if (index < mazeDefinition.size()) {
@@ -188,5 +184,9 @@ public class MazeParser implements MazeDefinitionParser {
         ErrorsSingleton.instance.addToErrorList(("Bad maze file header: expected in lines 3,4 - minimum 1 row and 2 columns or 2 rows and 1 column in a maze "
                 + "\n" + "got: " + mazeDefinition.get(2) + " " + mazeDefinition.get(3)));
         return false;
+    }
+
+    private boolean isMazeDefinitionInsufficient(){
+        return mazeDefinition == null || mazeDefinition.isEmpty() || mazeDefinition.size() < 5;
     }
 }

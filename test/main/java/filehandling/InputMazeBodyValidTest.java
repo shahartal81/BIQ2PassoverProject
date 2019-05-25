@@ -49,7 +49,7 @@ public class InputMazeBodyValidTest {
 
 
     @Test
-    public void readFromFileMaxStepsRowsColsValidTest() {
+    public void mazeBodyValidTest() {
         Assert.assertTrue(testSubject.isMazeValid(rows,cols));
     }
 }
