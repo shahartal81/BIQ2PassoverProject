@@ -20,7 +20,7 @@ public class PlayerFactoryTest {
 
     private enum PlayerTypes {
         PLAYER_BOOKMARK_EACH_STEP,
-        PLAYER_INTELLIGENT
+        PLAYER_SMART
     }
 
     private int maxSteps;
@@ -32,7 +32,7 @@ public class PlayerFactoryTest {
     public static Collection<Object[]> data() {
         return Arrays.asList(new Object[][] {
                 {3000, 15, 15, PlayerTypes.PLAYER_BOOKMARK_EACH_STEP},
-                {300, 3, 3, PlayerTypes.PLAYER_INTELLIGENT}
+                {300, 3, 3, PlayerTypes.PLAYER_SMART}
         });
     }
 
@@ -59,8 +59,8 @@ public class PlayerFactoryTest {
             case PLAYER_BOOKMARK_EACH_STEP:
                 Assert.assertTrue(player instanceof PlayerBookmarkEachStep);
                 return;
-            case PLAYER_INTELLIGENT:
-                Assert.assertTrue(player instanceof PlayerIntelligent);
+            case PLAYER_SMART:
+                Assert.assertTrue(player instanceof PlayerSmart);
                 return;
             default:
                 Assert.fail("Player not supported!");
