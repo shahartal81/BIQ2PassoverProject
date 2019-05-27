@@ -1,5 +1,6 @@
 package gamemanager;
 
+import additionalclasses.Maze;
 import filehandling.ErrorsSingleton;
 import filehandling.MazeDefinitionParser;
 import org.junit.After;
@@ -33,12 +34,14 @@ public class GameLoaderTest {
 
     @Before
     public void setUp(){
-
+        inputFile = null;
     }
 
     @After
     public void deleteFile(){
-        inputFile.delete();
+        if(inputFile != null){
+            inputFile.delete();
+        }
         outputFile.delete();
         ErrorsSingleton.instance().getErrorsList().clear();
     }
@@ -103,6 +106,14 @@ public class GameLoaderTest {
         }
         gameLoader.validateAndStartGame(paths[0], paths[1], fileParser);
         when(fileParser.getMaze(any())).thenReturn(null);
+        List<String> errorsList = ErrorsSingleton.instance().getErrorsList();
+        Assert.assertEquals(errorsList.get(0), "Command line argument for output file: " + outputFile + " points to a bad path or to a file that already exists");
+    }
+
+    @Test
+    public void outputFileBadPathTest() throws Exception {
+        outputFile = new File("test/kuku/validOutputFile.txt");
+        gameLoader.start(new Maze(), outputFile);
         List<String> errorsList = ErrorsSingleton.instance().getErrorsList();
         Assert.assertEquals(errorsList.get(0), "Command line argument for output file: " + outputFile + " points to a bad path or to a file that already exists");
     }
