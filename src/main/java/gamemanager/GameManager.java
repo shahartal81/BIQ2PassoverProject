@@ -42,7 +42,7 @@ public class GameManager {
 
     }
 
-    protected void movePlayer(Move move){
+    void movePlayer(Move move){
         Position next = byMove(move);
         try {
             if (maze.getMazeMap()[next.getRow()][next.getColumn()] == WALL){

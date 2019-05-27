@@ -4,8 +4,10 @@ import additionalclasses.Position;
 import enums.Move;
 import filehandling.MazeFileReader;
 import filehandling.MazeParser;
-import org.junit.*;
-import org.junit.rules.TemporaryFolder;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnit;
@@ -14,11 +16,6 @@ import player.Player;
 import player.PlayerFactory;
 
 import java.io.File;
-
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.mockito.Matchers.any;
@@ -29,17 +26,14 @@ import static org.mockito.Mockito.when;
 public class GameManagerTest {
 
     private gamemanager.GameManager gameManager;
-    private BufferedWriter fileWriter = null;
     private String mazeTestFilePath = "test/resources/maze.txt";
     private File mazeFile = new File(mazeTestFilePath);
-    private List<String> mazeDefinition = new ArrayList<>();
     private Position playerPosition;
     private Position expectedPosition;
     private int bookmarkSequence;
 
     @Rule
     public MockitoRule mockitoRule = MockitoJUnit.rule();
-    private TemporaryFolder folder = new TemporaryFolder();
 
     @Mock
     private Player player;
@@ -48,27 +42,15 @@ public class GameManagerTest {
     private PlayerFactory playerFactory;
 
     @Before
-    public void setUp() throws IOException {
+    public void setUp() {
         MazeFileReader reader = new MazeFileReader();
-        mazeDefinition = reader.readFromFile(mazeFile);
-        folder.create();
-        File createdFile = folder.newFile("test.txt");
-        fileWriter = new BufferedWriter(new FileWriter(createdFile));
-
+        List<String> mazeDefinition = reader.readFromFile(mazeFile);
         when(playerFactory.createPlayer(any(),anyInt())).thenReturn(player);
         MazeParser mazeParser = new MazeParser();
-
         gameManager = new GameManager(playerFactory, mazeParser.getMaze(mazeDefinition));
     }
 
-    @After
-    public void teardown() throws IOException {
-        if (fileWriter != null)
-        {
-            fileWriter.close();
-        }
-        fileWriter = null;
-    }
+
 
 
     @Test
