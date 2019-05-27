@@ -44,5 +44,4 @@ public class GameLoader {
             ErrorsSingleton.instance().addToErrorList("Command line argument for output file: " + fileOut + " points to a bad path or to a file that already exists");
         }
     }
-
 }
