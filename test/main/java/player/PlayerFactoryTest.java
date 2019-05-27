@@ -32,7 +32,7 @@ public class PlayerFactoryTest {
     public static Collection<Object[]> data() {
         return Arrays.asList(new Object[][] {
                 {3000, 15, 15, PlayerTypes.PLAYER_BOOKMARK_EACH_STEP},
-                {300, 3, 3, PlayerTypes.PLAYER_RULE_SET}
+                {50, 5, 5, PlayerTypes.PLAYER_RULE_SET}
         });
     }
 
