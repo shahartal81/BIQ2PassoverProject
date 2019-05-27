@@ -49,6 +49,12 @@ public class playerRuleSetTest {
     }
 
     @Test
+    public void hitBookmark(){
+        player.move();
+        player.move();
+    }
+
+    @Test
     public void moveState_shouldMoveRight(){
         player.move();
         player.setState(PlayerRuleSet.State.MOVED);

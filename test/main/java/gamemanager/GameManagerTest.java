@@ -4,7 +4,6 @@ import additionalclasses.Position;
 import enums.Move;
 import filehandling.MazeFileReader;
 import filehandling.MazeParser;
-import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
@@ -16,13 +15,13 @@ import org.mockito.junit.MockitoRule;
 import player.Player;
 import player.PlayerFactory;
 
+import java.io.BufferedWriter;
 import java.io.File;
 import java.util.List;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyInt;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 public class GameManagerTest {
 
@@ -42,6 +41,7 @@ public class GameManagerTest {
     @Mock
     private PlayerFactory playerFactory;
 
+
     @Before
     public void setUp() {
         MazeFileReader reader = new MazeFileReader();
@@ -49,10 +49,21 @@ public class GameManagerTest {
         when(playerFactory.createPlayer(any(),anyInt())).thenReturn(player);
         MazeParser mazeParser = new MazeParser();
         gameManager = new GameManager(playerFactory, mazeParser.getMaze(mazeDefinition));
+        gameManager.createOutPutFile(mock(BufferedWriter.class));
     }
 
 
+    @Test
+    public void playGameLoseTest(){
+        when(player.move()).thenReturn(Move.LEFT);
+        Assert.assertFalse(gameManager.playGame());
+    }
 
+    @Test
+    public void playGameWinTest(){
+        when(player.move()).thenReturn(Move.UP).thenReturn(Move.LEFT);
+        Assert.assertTrue(gameManager.playGame());
+    }
 
     @Test
     public void moveLeftTest(){
@@ -122,19 +133,6 @@ public class GameManagerTest {
         playerPosition = gameManager.getPlayerPosition();
         expectedPosition = new Position(0,2);
         Assert.assertEquals(playerPosition,expectedPosition);
-    }
-
-    @Test
-    public void mazeIsSolvedSuccessTest(){
-        gameManager.movePlayer(Move.UP);
-        gameManager.movePlayer(Move.LEFT);
-        Assert.assertTrue(gameManager.getIsSolved());
-    }
-
-    @Test
-    public void mazeIsntSolvedAfterMaxSteps(){
-        Mockito.when(player.move()).thenReturn(Move.LEFT);
-        Assert.assertFalse(gameManager.getIsSolved());
     }
 
     @Test
