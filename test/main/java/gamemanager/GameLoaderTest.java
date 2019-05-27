@@ -1,17 +1,22 @@
 package gamemanager;
 
+import filehandling.ErrorsSingleton;
 import filehandling.MazeDefinitionParser;
-import org.junit.*;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
-import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.when;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.when;
 
 public class GameLoaderTest {
 
@@ -19,7 +24,6 @@ public class GameLoaderTest {
     private File outputFile;
     private GameLoader gameLoader = new GameLoader();
     private String[] paths;
-    private List<String> errorsList;
 
     @Rule
     public MockitoRule mockitoRule = MockitoJUnit.rule();
@@ -50,8 +54,7 @@ public class GameLoaderTest {
         }
         gameLoader.validateAndStartGame(paths[0], paths[1],fileParser);
         when(fileParser.getMaze(any())).thenReturn(null);
-        errorsList = gameLoader.getErrorsList();
-        Assert.assertTrue(errorsList.isEmpty());
+        Assert.assertTrue(ErrorsSingleton.instance().getErrorsList().isEmpty());
 
     }
 
@@ -67,7 +70,7 @@ public class GameLoaderTest {
         }
         gameLoader.validateAndStartGame(paths[0], paths[1], fileParser);
         when(fileParser.getMaze(any())).thenReturn(null);
-        errorsList = gameLoader.getErrorsList();
+        List<String> errorsList = ErrorsSingleton.instance().getErrorsList();
         Assert.assertEquals(errorsList.get(0), "Command line argument for maze: " + inputFile + " doesn't lead to a maze file or leads to a file that cannot be opened");
     }
 
@@ -78,7 +81,7 @@ public class GameLoaderTest {
         outputFile = new File(paths[1]);
         gameLoader.validateAndStartGame(paths[0], paths[1], fileParser);
         when(fileParser.getMaze(any())).thenReturn(null);
-        errorsList = gameLoader.getErrorsList();
+        List<String> errorsList = ErrorsSingleton.instance().getErrorsList();
         Assert.assertEquals(errorsList.get(0), "Command line argument for maze: " + inputFile + " doesn't lead to a maze file or leads to a file that cannot be opened");
     }
 
@@ -99,7 +102,7 @@ public class GameLoaderTest {
         }
         gameLoader.validateAndStartGame(paths[0], paths[1], fileParser);
         when(fileParser.getMaze(any())).thenReturn(null);
-        errorsList = gameLoader.getErrorsList();
+        List<String> errorsList = ErrorsSingleton.instance().getErrorsList();
         Assert.assertEquals(errorsList.get(0), "Command line argument for output file: " + outputFile + " points to a bad path or to a file that already exists");
     }
 

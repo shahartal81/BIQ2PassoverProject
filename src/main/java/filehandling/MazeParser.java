@@ -11,6 +11,7 @@ public class MazeParser implements MazeDefinitionParser {
     private static final char END = MazeElement.END.getValue();
     private static final char WALL = MazeElement.WALL.getValue();
     private static final char PASS = MazeElement.PASS.getValue();
+    private static final int MAZE_START_LINE = 4;
     
     private List<String> mazeDefinition = new ArrayList<>();
 
@@ -37,10 +38,9 @@ public class MazeParser implements MazeDefinitionParser {
         int cols = numberOf("Cols", 4);
 
         boolean isMaxValid = isMaxStepsValid(maxSteps);
-        boolean isRowsColsValid = isRowsColsValid(rows, cols);
-        boolean isMazeValid = isMazeValid();
+        boolean isMazeValid = isMazeValid(rows, cols);
 
-        if (isMaxValid && isRowsColsValid && isMazeValid) {
+        if (isMaxValid && isMazeValid) {
             maze = new Maze();
             maze.setMaxSteps(maxSteps);
             maze.setRows(rows);
@@ -51,10 +51,6 @@ public class MazeParser implements MazeDefinitionParser {
             ErrorsSingleton.instance().addToErrorList(("Data in maze input file is invalid. Maze cannot be created"));
         }
         return maze;
-    }
-
-    private boolean isMazeDefinitionInsufficient(){
-        return mazeDefinition == null || mazeDefinition.isEmpty() || mazeDefinition.size() < 5;
     }
 
     int numberOf(String key, int lineNumber){
@@ -79,15 +75,21 @@ public class MazeParser implements MazeDefinitionParser {
         return 0;
     }
 
-    private boolean isMazeValid(){
+    boolean isMazeValid(int rows, int cols){
+        if (!isRowsColsValid(rows,cols)) {
+            return false;
+        }
+
         boolean isCharValid = true;
         int countPlayerChar = 0;
         int countEndChar = 0;
 
-        for (int i = 4; i < mazeDefinition.size(); i++){
+        int mazeBodyRows = Integer.min(MAZE_START_LINE + rows, mazeDefinition.size());
+        for (int i = MAZE_START_LINE; i < mazeBodyRows; i++){
             String line = mazeDefinition.get(i);
 
-            for (int j = 0; j < line.length(); j++){
+            int mazeBodyCols = Integer.min(cols, line.length());
+            for (int j = 0; j < mazeBodyCols; j++){
                 char mazeChar = line.charAt(j);
 
                 if (mazeChar == PLAYER){
@@ -102,6 +104,7 @@ public class MazeParser implements MazeDefinitionParser {
                 }
             }
         }
+
         return isCharCountValid(countPlayerChar, PLAYER) && isCharCountValid(countEndChar, END) && isCharValid;
     }
 
@@ -174,12 +177,16 @@ public class MazeParser implements MazeDefinitionParser {
         return true;
     }
 
-    private boolean isRowsColsValid(int row, int col){
-        if ((row < 1 && col < 2) || (row < 2 && col < 1)) {
-            ErrorsSingleton.instance.addToErrorList(("Bad maze file header: expected in lines 3,4 - minimum 1 row and 2 columns or 2 rows and 1 column in a maze "
-                    + "\n" + "got: " + mazeDefinition.get(2) + " " + mazeDefinition.get(3)));
-            return false;
+    boolean isRowsColsValid(int row, int col){
+        if (row > 0 && col > 0 && (row > 1 || col > 1)) {
+            return true;
         }
-        return true;
+        ErrorsSingleton.instance.addToErrorList(("Bad maze file header: expected in lines 3,4 - minimum 1 row and 2 columns or 2 rows and 1 column in a maze "
+                + "\n" + "got: " + mazeDefinition.get(2) + " " + mazeDefinition.get(3)));
+        return false;
+    }
+
+    private boolean isMazeDefinitionInsufficient(){
+        return mazeDefinition == null || mazeDefinition.isEmpty() || mazeDefinition.size() < 5;
     }
 }

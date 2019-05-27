@@ -1,21 +1,19 @@
 package filehandling;
 
 import org.junit.Assert;
-import org.junit.Assume;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
+import org.junit.runners.Parameterized.Parameters;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-import org.junit.runners.Parameterized.Parameters;
-
 @RunWith(Parameterized.class)
-public class InputDataValidTest {
+public class InputMazeHeaderValidTest {
     private List<String> result = new ArrayList<>();
     MazeParser testSubject = new MazeParser();
 
@@ -43,15 +41,15 @@ public class InputDataValidTest {
                 { "MaxSteps = 10", 10, "MaxSteps", 2},
                 { "MaxSteps = 0", 0, "MaxSteps", 2},
                 { "MaxSteps=10", 10, "MaxSteps", 2 },
-                {"     MaxSteps    =   10   ", 10, "MaxSteps", 2 },
+                { "     MaxSteps    =   10   ", 10, "MaxSteps", 2 },
                 { "Rows = 4", 4, "Rows", 3},
                 { "Rows = 0", 0, "Rows", 3},
                 { "Rows=4", 4, "Rows", 3},
                 { " Rows    =   4  ", 4, "Rows", 3},
                 { "Cols = 12", 12, "Cols", 4},
                 { "Cols = 0", 0, "Cols", 4},
-                {"Cols=12", 12, "Cols", 4},
-                {"   Cols   =   12    ", 12, "Cols", 4}
+                { "Cols=12", 12, "Cols", 4},
+                { "   Cols   =   12    ", 12, "Cols", 4}
         });
     }
 
@@ -59,10 +57,9 @@ public class InputDataValidTest {
     private int expectedNum;
     private String key;
     private int lineNumber;
-    private String error;
 
 
-    public InputDataValidTest(String input, int expectedNum, String key, int lineNumber) {
+    public InputMazeHeaderValidTest(String input, int expectedNum, String key, int lineNumber) {
         this.input = input;
         this.expectedNum = expectedNum;
         this.key = key;

@@ -4,16 +4,9 @@ import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-import org.mockito.Mockito;
 
-
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
-import static org.mockito.Mockito.*;
 
 public class MazeParserTest {
 
@@ -45,6 +38,7 @@ public class MazeParserTest {
     public void parseMazeMaxStepsValidTest() {
         MazeParser testSubject = new MazeParser();
         Assert.assertTrue(testSubject.isMaxStepsValid(1));
+
     }
 
     @Test
@@ -54,8 +48,29 @@ public class MazeParserTest {
         mazeDefinition.add("MaxSteps = -10");
         MazeParser testSubject = new MazeParser();
         testSubject.setMazeDefinition(mazeDefinition);
-        List<String> errors = ErrorsSingleton.instance().getErrorsList();
         Assert.assertFalse(testSubject.isMaxStepsValid(0));
+        List<String> errors = ErrorsSingleton.instance().getErrorsList();
         Assert.assertTrue(errors.contains("Bad maze file header: expected in line 2 - MaxSteps bigger than 0 \n" + "got: MaxSteps = -10"));
+    }
+
+    @Test
+    public void parseMazeRowsColsValidTest() {
+        MazeParser testSubject = new MazeParser();
+        Assert.assertTrue(testSubject.isRowsColsValid(1,2));
+        Assert.assertTrue(testSubject.isRowsColsValid(2,1));
+        Assert.assertTrue(testSubject.isRowsColsValid(2,2));
+    }
+
+    @Test
+    public void parseMazeRowsColsInvalidTest() {
+        List<String> result = new ArrayList<>();
+        MazeParser testSubject = new MazeParser();
+        MazeTestData.init(result,testSubject);
+
+        Assert.assertFalse(testSubject.isRowsColsValid(1,1));
+        Assert.assertFalse(testSubject.isRowsColsValid(0,0));
+        Assert.assertFalse(testSubject.isRowsColsValid(0,10));
+        Assert.assertFalse(testSubject.isRowsColsValid(10,0));
+        Assert.assertFalse(testSubject.isRowsColsValid(-1,5));
     }
 }

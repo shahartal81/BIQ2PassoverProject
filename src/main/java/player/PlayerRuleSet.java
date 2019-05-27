@@ -6,7 +6,8 @@ import enums.Move;
 import java.util.HashMap;
 import java.util.Map;
 
-import static player.CellInfo.Value.*;
+import static player.CellInfo.Value.UNKNOWN;
+import static player.CellInfo.Value.WALL;
 
 public class PlayerRuleSet implements Player {
 
