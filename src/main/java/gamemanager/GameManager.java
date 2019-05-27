@@ -46,18 +46,14 @@ public class GameManager {
         Position next = byMove(move);
         try {
             if (maze.getMazeMap()[next.getRow()][next.getColumn()] == WALL){
-                System.out.println("GM: Player wanted to move " + move + " but..."); //for console only
                 player.hitWall();
             } else if (next.equals(endPosition)) {
-                System.out.println("GM: Player moved " + move);
                 isSolved = true;
             } else {
                 if (move.equals(Move.BOOKMARK)) {
                     bookmarkSeqNumber++;
                     bookmarksMap.put(playerPosition, bookmarkSeqNumber);
-                    System.out.println("GM: Created bookmark at " + playerPosition + " with sequence number " + bookmarkSeqNumber);
                 } else {
-                    System.out.println("GM: Player moved " + move);
                     changePosition(next);
                     if (bookmarksMap.containsKey(playerPosition)) {
                         player.hitBookmark(bookmarksMap.get(playerPosition));
@@ -65,10 +61,9 @@ public class GameManager {
                 }
             }
             usedSteps++;
-            System.out.println("Used steps: " + usedSteps); //for console only
             maze.printMaze();
         } catch (Exception e) {
-            System.out.println("main.java.enums.Move is out of bounds");
+            throw new IllegalArgumentException("Move is out of bounds");
         }
     }
 
@@ -102,11 +97,10 @@ public class GameManager {
         }
         if(isSolved){
             outputFile.setEndGame('!');
-            System.out.println("You won!");
+            System.out.println("Succeeded in " + usedSteps + " steps");
         } else {
             outputFile.setEndGame('X');
-            System.out.println("Loser!");
-            System.out.println("Used steps: " + usedSteps + " reached the limit of allowed steps: " + maze.getMaxSteps());
+            System.out.println("Failed to solve maze in " + maze.getMaxSteps() + " steps");
         }
         outputFile.printAllMoves();
         try {
@@ -125,10 +119,6 @@ public class GameManager {
 
     public Position getPlayerPosition() {
         return playerPosition;
-    }
-
-    public boolean getIsSolved() {
-        return isSolved;
     }
 
     public int getUsedSteps() { return usedSteps; }

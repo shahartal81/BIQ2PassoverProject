@@ -83,7 +83,7 @@ public class playerRuleSetTest {
     }
 
     @Test
-    public void hitBookmarkOnShouldBookmarkState_shouldNotBookmark(){
+    public void changeRuleSetTest(){
         actualMoves.add(player.move());
         actualMoves.add(player.move());
         actualMoves.add(player.move());
@@ -95,4 +95,5 @@ public class playerRuleSetTest {
         expectedMoves = Arrays.asList(Move.BOOKMARK, Move.RIGHT,Move.RIGHT, Move.DOWN, Move.LEFT, Move.LEFT);
         Assert.assertEquals(expectedMoves,actualMoves);
     }
+
 }

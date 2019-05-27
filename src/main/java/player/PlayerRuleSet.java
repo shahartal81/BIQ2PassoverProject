@@ -25,7 +25,6 @@ public class PlayerRuleSet implements Player {
     private boolean shouldBookmark = true;
     private State state = State.MOVED;
 
-
     PlayerRuleSet() {
         positionCellInfoMap.put(currentPosition, new CellInfo());
     }
@@ -51,7 +50,7 @@ public class PlayerRuleSet implements Player {
         }
         Move nextMove = getNextMove();
         int counter = 0;
-        //will end at max_steps if we can't move or at max rule set length if we can't move
+        //will end at max_steps if we can't move or at max rule set length
         while(nextMove == null && counter < ruleSets.length){
             counter++;
             changeRuleSet();
@@ -69,7 +68,6 @@ public class PlayerRuleSet implements Player {
         if(ruleSetIndex == ruleSets.length){
             ruleSetIndex = 0;
         }
-        System.out.println("changed rule set to rule set: " + ruleSetIndex);
     }
 
     private Move getNextMove() {
@@ -103,7 +101,6 @@ public class PlayerRuleSet implements Player {
 
     private boolean canMove(Move direction){
         CellInfo.Value nextValue = getNextValue(direction);
-        System.out.println("next " + direction + " value: " + nextValue + " state: " + state);
         if (nextValue == WALL) {
             return false;
         }
@@ -122,17 +119,13 @@ public class PlayerRuleSet implements Player {
         if(state == State.CHANGED_DIRECTION_AFTER_BOOKMARK){
             setState(State.HIT_WALL_AFTER_BOOKMARK);
         }
-        System.out.println("state: " + state);
     }
 
     @Override
     public void hitBookmark(int seq) {
-        System.out.println("hit bookmark: our seq: " + bookmarkSequence + " gm seq: " + seq);
-        System.out.println(bookmarkToPositionMap);
         currentPosition = bookmarkToPositionMap.get(seq);
         setState(State.HIT_BOOKMARK);
     }
-
 
     private void changeCurrentPosition(Move direction) {
         previousPosition = currentPosition;
@@ -176,9 +169,7 @@ public class PlayerRuleSet implements Player {
         }
     }
 
-
      void setState(State newState){
-        System.out.println("change state: " + state + " -> " + newState);
         state = newState;
     }
 }
