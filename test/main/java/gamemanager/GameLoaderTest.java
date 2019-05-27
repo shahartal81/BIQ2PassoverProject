@@ -40,6 +40,7 @@ public class GameLoaderTest {
     public void deleteFile(){
         inputFile.delete();
         outputFile.delete();
+        ErrorsSingleton.instance().getErrorsList().clear();
     }
 
     @Test

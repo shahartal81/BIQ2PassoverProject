@@ -6,10 +6,9 @@ import filehandling.MazeDefinitionParser;
 import filehandling.MazeFileReader;
 import player.PlayerFactory;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class GameLoader {
 
@@ -42,8 +41,7 @@ public class GameLoader {
             gameManager.createOutPutFile(fileWriter);
             gameManager.playGame();
         } catch (IOException e) {
-            ErrorsSingleton.instance().addToErrorList("Cannot write to output file: " + e);
+            ErrorsSingleton.instance().addToErrorList("Command line argument for output file: " + fileOut + " points to a bad path or to a file that already exists");
         }
     }
-
 }
