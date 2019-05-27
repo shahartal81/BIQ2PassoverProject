@@ -10,8 +10,8 @@ public class PlayerFactory {
             System.out.println("Using PlayerBookmarkEachStep");
             return new PlayerBookmarkEachStep();
         } else {
-            System.out.println("Using PlayerIntelligent");
-            return new PlayerIntelligent(3);
+            System.out.println("Using PlayerRuleSet");
+            return new PlayerRuleSet();
         }
     }
 }

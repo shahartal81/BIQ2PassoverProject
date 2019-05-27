@@ -6,9 +6,10 @@ import enums.Move;
 import java.util.HashMap;
 import java.util.Map;
 
-import static player.CellInfo.Value.*;
+import static player.CellInfo.Value.UNKNOWN;
+import static player.CellInfo.Value.WALL;
 
-public class PlayerSmart implements Player {
+public class PlayerRuleSet implements Player {
 
     private Position previousPosition;
     private Position currentPosition = new Position(0,0);
@@ -22,11 +23,18 @@ public class PlayerSmart implements Player {
             new RuleSet(Move.UP, Move.RIGHT)};
     private int ruleSetIndex = 0;
     private boolean shouldBookmark = true;
-    private boolean shouldSkipFirstDirection;
+    private State state = State.MOVED;
 
 
-    PlayerSmart() {
+    PlayerRuleSet() {
         positionCellInfoMap.put(currentPosition, new CellInfo());
+    }
+
+    enum State {
+        MOVED,
+        HIT_BOOKMARK,
+        HIT_WALL_AFTER_BOOKMARK,
+        CHANGED_DIRECTION_AFTER_BOOKMARK
     }
 
     @Override
@@ -41,12 +49,17 @@ public class PlayerSmart implements Player {
                 return Move.BOOKMARK;
             }
         }
-
         Move nextMove = getNextMove();
-        //will end at max_steps if i can't move
-        while(nextMove == null){
+        int counter = 0;
+        //will end at max_steps if we can't move or at max rule set length if we can't move
+        while(nextMove == null && counter < ruleSets.length){
+            counter++;
             changeRuleSet();
+            setState(State.MOVED);
             nextMove = getNextMove();
+        }
+        if(counter == ruleSets.length){
+            return Move.UP;
         }
         return nextMove;
     }
@@ -56,30 +69,41 @@ public class PlayerSmart implements Player {
         if(ruleSetIndex == ruleSets.length){
             ruleSetIndex = 0;
         }
+        System.out.println("changed rule set to rule set: " + ruleSetIndex);
     }
 
     private Move getNextMove() {
-        if(!shouldSkipFirstDirection) {
+        if(state == State.MOVED || state == State.CHANGED_DIRECTION_AFTER_BOOKMARK) {
             Move direction = ruleSets[ruleSetIndex].getFirstDirection();
             if (canMove(direction)) {
-                previousPosition = currentPosition;
-                currentPosition = getPosition(direction);
+                changeCurrentPosition(direction);
+                setState(State.MOVED);
                 return direction;
             }
+            direction = ruleSets[ruleSetIndex].getSecondDirection();
+            if (canMove(direction)) {
+                changeCurrentPosition(direction);
+                setState(State.MOVED);
+                shouldBookmark = true;
+                return direction;
+            }
+            return null;
         }
-        Move direction = ruleSets[ruleSetIndex].getSecondDirection();
-        if (canMove(direction)) {
-            previousPosition = currentPosition;
-            currentPosition = getPosition(direction);
-            shouldBookmark = true;
-            shouldSkipFirstDirection = false;
-            return direction;
+        if(state == State.HIT_BOOKMARK) {
+            Move direction = ruleSets[ruleSetIndex].getSecondDirection();
+            if (canMove(direction)) {
+                changeCurrentPosition(direction);
+                setState(State.CHANGED_DIRECTION_AFTER_BOOKMARK);
+                shouldBookmark = true;
+                return direction;
+            }
         }
         return null;
     }
 
     private boolean canMove(Move direction){
         CellInfo.Value nextValue = getNextValue(direction);
+        System.out.println("next " + direction + " value: " + nextValue + " state: " + state);
         if (nextValue == WALL) {
             return false;
         }
@@ -95,6 +119,10 @@ public class PlayerSmart implements Player {
         shouldBookmark = false;
         positionCellInfoMap.get(currentPosition).setValue(WALL);
         currentPosition = previousPosition;
+        if(state == State.CHANGED_DIRECTION_AFTER_BOOKMARK){
+            setState(State.HIT_WALL_AFTER_BOOKMARK);
+        }
+        System.out.println("state: " + state);
     }
 
     @Override
@@ -102,33 +130,14 @@ public class PlayerSmart implements Player {
         System.out.println("hit bookmark: our seq: " + bookmarkSequence + " gm seq: " + seq);
         System.out.println(bookmarkToPositionMap);
         currentPosition = bookmarkToPositionMap.get(seq);
-        if(seq == 1){
-//            changeRuleSet();
-        }
-        shouldSkipFirstDirection = true;
+        setState(State.HIT_BOOKMARK);
     }
 
-//    private Move getNextMove(){
-//        CellInfo rightCellInfo = positionCellInfoMap.get(getRightPosition());
-//        if(rightCellInfo == null){
-//            CellInfo cellInfo = new CellInfo();
-//            positionCellInfoMap.put(getRightPosition(), cellInfo);
-//            lastMove = Move.RIGHT;
-//            return lastMove;
-//        }
-//        if(rightCellInfo.getValue() == WALL){
-//            CellInfo downCellInfo = positionCellInfoMap.get(getDownPosition());
-//            if(downCellInfo == null){
-//                CellInfo cellInfo = new CellInfo();
-//                positionCellInfoMap.put(getDownPosition(), cellInfo);
-//                lastMove = Move.DOWN;
-//                return lastMove;
-//            }
-//        }
-//    }
 
-
-
+    private void changeCurrentPosition(Move direction) {
+        previousPosition = currentPosition;
+        currentPosition = getPosition(direction);
+    }
 
     private Position getRightPosition() {
         return new Position(currentPosition.getRow(), currentPosition.getColumn() + 1);
@@ -163,8 +172,13 @@ public class PlayerSmart implements Player {
                 return getRightPosition();
             case BOOKMARK:
                 default:
-                throw new IllegalArgumentException("");
+                throw new IllegalArgumentException("Unknown Move");
         }
     }
 
+
+     void setState(State newState){
+        System.out.println("change state: " + state + " -> " + newState);
+        state = newState;
+    }
 }
