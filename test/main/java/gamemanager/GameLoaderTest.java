@@ -2,17 +2,21 @@ package gamemanager;
 
 import filehandling.ErrorsSingleton;
 import filehandling.MazeDefinitionParser;
-import org.junit.*;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
-import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.when;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.when;
 
 public class GameLoaderTest {
 

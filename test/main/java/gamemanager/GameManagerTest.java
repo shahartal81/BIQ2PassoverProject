@@ -4,7 +4,11 @@ import additionalclasses.Position;
 import enums.Move;
 import filehandling.MazeFileReader;
 import filehandling.MazeParser;
-import org.junit.*;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -13,9 +17,8 @@ import org.mockito.junit.MockitoRule;
 import player.Player;
 import player.PlayerFactory;
 
-import java.io.File;
-
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
