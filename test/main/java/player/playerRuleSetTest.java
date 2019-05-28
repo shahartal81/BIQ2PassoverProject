@@ -1,6 +1,5 @@
 package player;
 
-import additionalclasses.Position;
 import enums.Move;
 import org.junit.Assert;
 import org.junit.Before;
