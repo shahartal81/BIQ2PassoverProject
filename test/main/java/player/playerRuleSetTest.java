@@ -1,5 +1,6 @@
 package player;
 
+import additionalclasses.Position;
 import enums.Move;
 import org.junit.Assert;
 import org.junit.Before;
@@ -49,9 +50,18 @@ public class playerRuleSetTest {
     }
 
     @Test
-    public void hitBookmark(){
-        player.move();
-        player.move();
+    public void hitBookmark_shouldChangeDirection(){
+        actualMoves.add(player.move());
+        actualMoves.add(player.move());
+        actualMoves.add(player.move());
+        player.hitWall();
+        actualMoves.add(player.move());
+        player.hitWall();
+        actualMoves.add(player.move());
+        player.hitBookmark(1);
+        actualMoves.add(player.move());
+        expectedMoves = Arrays.asList(Move.BOOKMARK, Move.RIGHT,Move.RIGHT, Move.DOWN, Move.LEFT, Move.UP);
+        Assert.assertEquals(expectedMoves,actualMoves);
     }
 
     @Test
@@ -83,6 +93,17 @@ public class playerRuleSetTest {
     }
 
     @Test
+    public void hitWallAfterBookmarkChangeDirection_shouldChangeRuleSet(){
+        actualMoves.add(player.move());
+        actualMoves.add(player.move());
+        player.setState(PlayerRuleSet.State.CHANGED_DIRECTION_AFTER_BOOKMARK);
+        player.hitWall();
+        actualMoves.add(player.move());
+        expectedMoves = Arrays.asList(Move.BOOKMARK, Move.RIGHT, Move.LEFT);
+        Assert.assertEquals(expectedMoves,actualMoves);
+    }
+
+    @Test
     public void changeRuleSetTest(){
         actualMoves.add(player.move());
         actualMoves.add(player.move());
@@ -93,6 +114,22 @@ public class playerRuleSetTest {
         actualMoves.add(player.move());
         actualMoves.add(player.move());
         expectedMoves = Arrays.asList(Move.BOOKMARK, Move.RIGHT,Move.RIGHT, Move.DOWN, Move.LEFT, Move.LEFT);
+        Assert.assertEquals(expectedMoves,actualMoves);
+    }
+
+    @Test
+    public void cantMove_shouldReturnUpAlways(){
+        actualMoves.add(player.move());
+        actualMoves.add(player.move());
+        player.hitWall();
+        actualMoves.add(player.move());
+        player.hitWall();
+        actualMoves.add(player.move());
+        player.hitWall();
+        actualMoves.add(player.move());
+        player.hitWall();
+        actualMoves.add(player.move());
+        expectedMoves = Arrays.asList(Move.BOOKMARK, Move.RIGHT,Move.DOWN, Move.LEFT, Move.UP, Move.UP);
         Assert.assertEquals(expectedMoves,actualMoves);
     }
 
