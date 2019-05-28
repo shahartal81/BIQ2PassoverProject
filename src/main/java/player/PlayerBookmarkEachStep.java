@@ -53,7 +53,6 @@ public class PlayerBookmarkEachStep implements Player {
 
     @Override
     public void hitWall() {
-        System.out.println("Player hit Wall");
         useBookmark = true;
     }
 
@@ -61,7 +60,6 @@ public class PlayerBookmarkEachStep implements Player {
     public void hitBookmark(int seq) {
         hitBookmark = true;
         handleBookmark(seq);
-        System.out.println("Player hit Bookmark");
     }
 
     private void handleBookmark(int sequence) {
@@ -95,7 +93,6 @@ public class PlayerBookmarkEachStep implements Player {
         }
         bookmark.setMovesPerformed(moves);
         bookmarks.put(sequence, bookmark);
-        System.out.println("Player added a bookmark");
     }
 
     private Move chooseMove(){
