@@ -61,7 +61,6 @@ public class GameManager {
                 }
             }
             usedSteps++;
-            maze.printMaze();
         } catch (Exception e) {
             throw new IllegalArgumentException("Move is out of bounds");
         }

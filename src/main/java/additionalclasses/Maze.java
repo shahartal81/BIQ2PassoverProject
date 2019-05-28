@@ -62,15 +62,4 @@ public class Maze {
         return null;
     }
 
-    public void printMaze(){
-        for (int row = 0; row < mazeMap.length; row++){
-            for (int col = 0; col < mazeMap[row].length; col++) {
-                System.out.print(mazeMap[row][col] + " ");
-            }
-
-            System.out.println();
-        }
-        System.out.println("----------------------------------");
-    }
-
 }
