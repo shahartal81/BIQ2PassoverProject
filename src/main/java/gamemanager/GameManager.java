@@ -42,9 +42,9 @@ public class GameManager {
 
     public GameManager(String playerPackage, Maze maze) throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
         this.maze = maze;
-        Class<?> clazz = Class.forName(playerPackage);
-        Constructor<?> ctor = clazz.getConstructor();
-        player = (Player) ctor.newInstance();
+        Class<?> playerClass = Class.forName(playerPackage);
+        Constructor<?> playerConstructor = playerClass.getConstructor();
+        player = (Player) playerConstructor.newInstance();
         playerPosition = maze.getPlayerPosition();
         endPosition = maze.getEndPosition();
 
