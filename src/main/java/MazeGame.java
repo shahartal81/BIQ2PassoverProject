@@ -1,6 +1,9 @@
+import additionalclasses.Maze;
 import filehandling.MazeDefinitionParser;
 import filehandling.MazeParser;
 import gamemanager.GameLoader;
+
+import java.io.File;
 
 public class MazeGame {
     public static void main(String[] args) {
@@ -12,7 +15,13 @@ public class MazeGame {
         } else {
             GameLoader gameLoader = new GameLoader();
             MazeDefinitionParser inputFileParser = new MazeParser();
-            gameLoader.validateAndStartGame(args[0], args[1],inputFileParser);
+            if (gameLoader.validateArguments(args[0], args[1])) {
+                gameLoader.parseMaze(args[0], inputFileParser);
+                if (gameLoader.getMazesNumber() > 0) {
+                    gameLoader.start(args[1]);
+                }
+            }
+
         }
     }
 }

@@ -21,6 +21,7 @@ public class OutputFile {
 
     public void setEndGame(char c) {
         movesList.append(c);
+        movesList.append('\n');
     }
 
     public void exportToFile() throws IOException {

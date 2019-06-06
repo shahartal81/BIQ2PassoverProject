@@ -14,7 +14,7 @@ public class PlayerRuleSet implements Player {
     private Position previousPosition;
     private Position currentPosition = new Position(0,0);
     private Map<Integer, Position> bookmarkToPositionMap = new HashMap<>();
-    private Map<Position, CellInfo> positionCellInfoMap= new HashMap<>();
+    private Map<Position, CellInfo> positionCellInfoMap = new HashMap<Position, CellInfo>() {{put(currentPosition, new CellInfo());}};
     private int bookmarkSequence = 0;
     private RuleSet[] ruleSets = {
             new RuleSet(Move.RIGHT, Move.DOWN),
@@ -24,10 +24,6 @@ public class PlayerRuleSet implements Player {
     private int ruleSetIndex = 0;
     private boolean shouldBookmark = true;
     private State state = State.MOVED;
-
-    PlayerRuleSet() {
-        positionCellInfoMap.put(currentPosition, new CellInfo());
-    }
 
     enum State {
         MOVED,

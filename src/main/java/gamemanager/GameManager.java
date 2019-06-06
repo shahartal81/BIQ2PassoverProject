@@ -10,6 +10,8 @@ import player.PlayerFactory;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -31,12 +33,18 @@ public class GameManager {
     private OutputFile outputFile;
 
     public GameManager(PlayerFactory playerFactory, Maze maze){
-        try {
-            this.maze = maze;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        this.maze = maze;
         player = playerFactory.createPlayer(new Position(maze.getRows(), maze.getColumns()), maze.getMaxSteps());
+        playerPosition = maze.getPlayerPosition();
+        endPosition = maze.getEndPosition();
+
+    }
+
+    public GameManager(String playerPackage, Maze maze) throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
+        this.maze = maze;
+        Class<?> clazz = Class.forName(playerPackage);
+        Constructor<?> ctor = clazz.getConstructor();
+        player = (Player) ctor.newInstance();
         playerPosition = maze.getPlayerPosition();
         endPosition = maze.getEndPosition();
 

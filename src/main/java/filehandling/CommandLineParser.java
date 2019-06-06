@@ -14,72 +14,73 @@ import player.Player;
 public class CommandLineParser {
 
     Map<String, String> commands = new HashMap<>();
+    private static final String MAZES_FOLDER = "mazes_folder";
+    private static final String PLAYERS = "players";
+    private static final String THREADS = "threads";
 
     public CommandLineParser(String[] args) {
         validateAndParseArguments(args);
     }
 
     private void validateAndParseArguments(String[] args) {
-        if (args[0].equals("-mazes_folder") && args[1].charAt(0) != '-') {
-            commands.put(args[0].substring(1), args[1]);
+        if (args[0].charAt(0) != '-' && args[0].substring(1).equals(MAZES_FOLDER) && args[1].charAt(0) != '-') {
+            commands.put(MAZES_FOLDER, args[1]);
         } else {
+            //TODO maybe use the singleton of errors also here
             throw new IllegalArgumentException("Not a valid argument: " + args[0]);
         }
 
-        if (args[2].equals("-players") && args[3].charAt(0) != '-') {
-            commands.put(args[2].substring(1), args[3]);
+        if (args[2].charAt(0) != '-' && args[2].substring(1).equals(PLAYERS) && args[3].charAt(0) != '-') {
+            commands.put(PLAYERS, args[3]);
         } else {
+            //TODO maybe use the singleton of errors also here
             throw new IllegalArgumentException("Not a valid argument: " + args[2]);
         }
 
         if(args.length == 5) {
+            //TODO maybe use the singleton of errors also here
             throw new IllegalArgumentException("Not a valid argument: " + args[4]);
         }
         //Optional threads argument
         if(args.length == 6) {
-            if (args[4].equals("-threads") && args[5].charAt(0) != '-') {
-                commands.put(args[4].substring(1), args[5]);
+            if (args[4].charAt(0) != '-' && args[4].substring(1).equals(THREADS) && (int) args[5].charAt(0) > 0) {
+                commands.put(THREADS, args[5]);
             } else {
+                //TODO maybe use the singleton of errors also here
                 throw new IllegalArgumentException("Not a valid argument: " + args[4]);
             }
+        } else {
+            commands.put(THREADS, String.valueOf(1));
         }
     }
 
-    public String getMazesFolder() {
-        return commands.get("mazes_folder");
-    }
-
-    public String getPlayersPackage() {
-        return commands.get("players");
-    }
-
     public Integer getNumberOfThreads() {
-        return Integer.parseInt(commands.get("threads"));
+        return Integer.parseInt(commands.get(THREADS));
     }
 
     public List<String> parseMazesFolder() {
-        File folder = new File(commands.get("mazes_folder"));
+        File folder = new File(commands.get(MAZES_FOLDER));
         if(folder.isDirectory()) {
-            List<String> list = new ArrayList<>();
+            List<String> mazesList = new ArrayList<>();
             for (File fileEntry : Objects.requireNonNull(folder.listFiles())) {
-                list.add(fileEntry.toString());
+                mazesList.add(fileEntry.toString());
             }
-            return list;
+            return mazesList;
         } else {
-            throw new IllegalArgumentException(commands.get("mazes_folder") + " is not a folder");
+            throw new IllegalArgumentException(commands.get(MAZES_FOLDER) + " is not a folder");
         }
     }
 
     public List<String> parsePlayersPackage() {
-        Reflections reflections = new Reflections(commands.get("players"));
-        List<String> list = new ArrayList<>();
+        Reflections reflections = new Reflections(commands.get(PLAYERS));
+        List<String> playerList = new ArrayList<>();
 
-        Set<Class<? extends Player>> allClasses =
+        Set<Class<? extends Player>> allPlayerClasses =
                 reflections.getSubTypesOf(Player.class);
 
-        for(Class<? extends Player> aClass: allClasses) {
-            list.add(aClass.getSimpleName());
+        for(Class<? extends Player> playerClass: allPlayerClasses) {
+            playerList.add(playerClass.getName());
         }
-        return list;
+        return playerList;
     }
 }
