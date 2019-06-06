@@ -1,9 +1,6 @@
-import additionalclasses.Maze;
 import filehandling.MazeDefinitionParser;
 import filehandling.MazeParser;
 import gamemanager.GameLoader;
-
-import java.io.File;
 
 public class MazeGame {
     public static void main(String[] args) {

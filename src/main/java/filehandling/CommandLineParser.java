@@ -1,5 +1,8 @@
 package filehandling;
 
+import org.reflections.Reflections;
+import player.Player;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -7,9 +10,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
-
-import org.reflections.Reflections;
-import player.Player;
 
 public class CommandLineParser {
 
