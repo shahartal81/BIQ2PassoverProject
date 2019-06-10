@@ -4,6 +4,7 @@ public class Maze {
     private int maxSteps;
     private int rows;
     private int columns;
+    private String mazeName;
 
     private char[][] mazeMap = new char[rows][columns];
 
@@ -62,4 +63,7 @@ public class Maze {
         return null;
     }
 
+    public void setMazeName(String mazeName) {this.mazeName = mazeName;}
+
+    public String getMazeName() {return mazeName;}
 }
