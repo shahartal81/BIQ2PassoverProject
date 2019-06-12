@@ -100,7 +100,7 @@ public class GameLoaderTest {
         } catch (IOException e){
             throw new Exception("failed to create outputFile for test" + e);
         }
-        when(fileParser.getMaze(any())).thenReturn(null);
+
         gameLoader.validateArguments(paths[0], paths[1]);
         List<String> errorsList = ErrorsSingleton.instance().getErrorsList();
         Assert.assertEquals(errorsList.get(0), "Command line argument for output file: " + outputFile + " points to a bad path or to a file that already exists");
@@ -113,5 +113,15 @@ public class GameLoaderTest {
         gameLoader.start(path);
         List<String> errorsList = ErrorsSingleton.instance().getErrorsList();
         Assert.assertEquals(errorsList.get(0), "Command line argument for output file: " + outputFile + " points to a bad path or to a file that already exists");
+    }
+
+    @Test
+    public void parseMazeBadPathTest() {
+        paths = new String[]{"test/resources/validInputFile.txt", "test/resources/validOutputFile.txt"};
+        inputFile = new File(paths[0]);
+        outputFile = new File(paths[1]);
+        when(fileParser.getMaze(any())).thenReturn(null);
+        gameLoader.parseMaze(paths[0], fileParser);
+        Assert.assertEquals("Mazes list should be empty", 0, gameLoader.getMazesNumber());
     }
 }
