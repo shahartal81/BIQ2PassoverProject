@@ -12,7 +12,7 @@ public class MazeParser implements MazeDefinitionParser {
     private static final char WALL = MazeElement.WALL.getValue();
     private static final char PASS = MazeElement.PASS.getValue();
     private static final int MAZE_START_LINE = 4;
-    
+
     private List<String> mazeDefinition = new ArrayList<>();
 
     List<String> getMazeDefinition() {
@@ -32,7 +32,7 @@ public class MazeParser implements MazeDefinitionParser {
             ErrorsSingleton.instance().addToErrorList("Data in maze input file is insufficient. Maze cannot be created");
             return maze;
         }
-
+        String mazeName = mazeDefinition.get(0);
         int maxSteps = numberOf("MaxSteps", 2);
         int rows = numberOf("Rows", 3);
         int cols = numberOf("Cols", 4);
@@ -46,6 +46,7 @@ public class MazeParser implements MazeDefinitionParser {
             maze.setRows(rows);
             maze.setColumns(cols);
             maze.setMazeMap(fillMazeMap(rows, cols));
+            maze.setMazeName(mazeName);
         }
         else {
             ErrorsSingleton.instance().addToErrorList(("Data in maze input file is invalid. Maze cannot be created"));
