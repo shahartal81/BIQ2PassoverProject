@@ -63,8 +63,6 @@ public class GameLoaderTest {
             throw new Exception("failed to create inputFile for test " + e);
         }
         gameLoader.validateArguments(paths[0], paths[1]);
-        gameLoader.parseMaze(paths[0], fileParser);
-        when(fileParser.getMaze(any())).thenReturn(null);
         Assert.assertTrue(ErrorsSingleton.instance().getErrorsList().isEmpty());
 
     }
@@ -80,8 +78,6 @@ public class GameLoaderTest {
             throw new Exception("failed to create inputFile for test " + e);
         }
         gameLoader.validateArguments(paths[0], paths[1]);
-        gameLoader.parseMaze(paths[0], fileParser);
-        when(fileParser.getMaze(any())).thenReturn(null);
         List<String> errorsList = ErrorsSingleton.instance().getErrorsList();
         Assert.assertEquals(errorsList.get(0), "Command line argument for maze: " + inputFile + " doesn't lead to a maze file or leads to a file that cannot be opened");
     }
@@ -92,8 +88,6 @@ public class GameLoaderTest {
         inputFile = new File(paths[0]);
         outputFile = new File(paths[1]);
         gameLoader.validateArguments(paths[0], paths[1]);
-        gameLoader.parseMaze(paths[0], fileParser);
-        when(fileParser.getMaze(any())).thenReturn(null);
         List<String> errorsList = ErrorsSingleton.instance().getErrorsList();
         Assert.assertEquals(errorsList.get(0), "Command line argument for maze: " + inputFile + " doesn't lead to a maze file or leads to a file that cannot be opened");
     }
@@ -113,9 +107,8 @@ public class GameLoaderTest {
         } catch (IOException e){
             throw new Exception("failed to create outputFile for test" + e);
         }
-        when(fileParser.getMaze(any())).thenReturn(null);
+
         gameLoader.validateArguments(paths[0], paths[1]);
-        gameLoader.parseMaze(paths[0], fileParser);
         List<String> errorsList = ErrorsSingleton.instance().getErrorsList();
         Assert.assertEquals(errorsList.get(0), "Command line argument for output file: " + outputFile + " points to a bad path or to a file that already exists");
     }
@@ -168,5 +161,15 @@ public class GameLoaderTest {
         String[] lines = data.split(System.lineSeparator());
         Assert.assertEquals(lines[0], " Maze Name      | Player 1       | Player 2       | Player 3       ");
         Assert.assertEquals(lines[1], " maze1          | ✔ - 15         | X              | ✔ - 55         ");
+    }
+
+    @Test
+    public void parseMazeBadPathTest() {
+        paths = new String[]{"test/resources/validInputFile.txt", "test/resources/validOutputFile.txt"};
+        inputFile = new File(paths[0]);
+        outputFile = new File(paths[1]);
+        when(fileParser.getMaze(any())).thenReturn(null);
+        gameLoader.parseMaze(paths[0], fileParser);
+        Assert.assertEquals("Mazes list should be empty", 0, gameLoader.getMazesNumber());
     }
 }
