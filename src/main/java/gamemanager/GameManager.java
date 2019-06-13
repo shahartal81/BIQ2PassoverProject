@@ -133,4 +133,20 @@ public class GameManager {
     public int getBookmarkSeqNumber() { return bookmarkSeqNumber; }
 
     public Map<Position, Integer> getBookmarksMap() { return bookmarksMap; }
+
+    public Maze getMaze() {
+        return maze;
+    }
+
+    public Player getPlayer() {
+        return player;
+    }
+
+    public boolean getIsSolved() {
+        return isSolved;
+    }
+
+    public GameResult getGameResult(){
+        return new GameResult(player, isSolved, usedSteps);
+    }
 }

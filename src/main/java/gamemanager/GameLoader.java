@@ -12,10 +12,15 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.*;
 
 public class GameLoader {
 
@@ -83,5 +88,39 @@ public class GameLoader {
 
         threadPool.shutdown();
         threadPool.awaitTermination(120, TimeUnit.SECONDS);
+    }
+
+
+    public void printResults() {
+      Map<Maze, List<GameResult>> results = gameManagers.stream().collect(groupingBy(GameManager::getMaze,
+                mapping(GameManager::getGameResult, toList())));
+      boolean didPrintHeaders = false;
+      for(Map.Entry<Maze, List<GameResult>> entry : results.entrySet()) {
+          entry.getValue().sort(Comparator.comparing(gameResult -> gameResult.getPlayer().getPlayerName()));
+
+          if(!didPrintHeaders){
+              String paddedPlayersNames = entry.getValue().stream()
+                      .map(gameResult -> getPaddedString(gameResult.getPlayer().getPlayerName()))
+                      .collect(Collectors.joining("|"));
+              System.out.println(getPaddedString("Maze Name") + "|" + paddedPlayersNames);
+              didPrintHeaders = true;
+          }
+          String paddedResults = entry.getValue().stream()
+                  .map(gameResult -> getPaddedString(getResultSummary(gameResult)))
+                  .collect(Collectors.joining("|"));
+          System.out.println(getPaddedString(entry.getKey().getMazeName()) + "|" + paddedResults);
+      }
+    }
+
+    private String getPaddedString(String string) {
+        return String.format(" %-15s", string);
+    }
+
+    private String getResultSummary(GameResult gameResult) {
+        if(gameResult.isSolved()) {
+            return "✔ - " + gameResult.getUsedSteps();
+        } else {
+            return "X";
+        }
     }
 }

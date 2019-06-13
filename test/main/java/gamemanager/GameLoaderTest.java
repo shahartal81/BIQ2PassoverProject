@@ -1,5 +1,6 @@
 package gamemanager;
 
+import additionalclasses.Maze;
 import filehandling.ErrorsSingleton;
 import filehandling.MazeDefinitionParser;
 import org.junit.After;
@@ -9,11 +10,15 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.MockSettings;
+import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
+import java.nio.charset.StandardCharsets;
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,7 +49,9 @@ public class GameLoaderTest {
         if(inputFile != null){
             inputFile.delete();
         }
-        outputFile.delete();
+        if(outputFile != null){
+            outputFile.delete();
+        }
         ErrorsSingleton.instance().getErrorsList().clear();
     }
 
@@ -116,6 +123,47 @@ public class GameLoaderTest {
         gameLoader.start(path);
         List<String> errorsList = ErrorsSingleton.instance().getErrorsList();
         Assert.assertEquals(errorsList.get(0), "Command line argument for output file: " + outputFile + " points to a bad path or to a file that already exists");
+    }
+
+    @Test
+    public void printResultsTest() throws UnsupportedEncodingException {
+        PrintStream previousPrintStream = System.out;
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        String data;
+        try (PrintStream ps = new PrintStream(byteArrayOutputStream, true, "UTF-8")) {
+            System.setOut(ps);
+            Maze maze1 = mock(Maze.class);
+            GameResult gameResult1 = mock(GameResult.class, withSettings().defaultAnswer(Mockito.RETURNS_DEEP_STUBS));
+            GameResult gameResult2 = mock(GameResult.class, withSettings().defaultAnswer(Mockito.RETURNS_DEEP_STUBS));
+            GameResult gameResult3 = mock(GameResult.class, withSettings().defaultAnswer(Mockito.RETURNS_DEEP_STUBS));
+            when(gameResult1.getPlayer().getPlayerName()).thenReturn("Player 1");
+            when(gameResult2.getPlayer().getPlayerName()).thenReturn("Player 2");
+            when(gameResult3.getPlayer().getPlayerName()).thenReturn("Player 3");
+            when(gameResult1.isSolved()).thenReturn(true);
+            when(gameResult2.isSolved()).thenReturn(false);
+            when(gameResult3.isSolved()).thenReturn(true);
+            when(gameResult1.getUsedSteps()).thenReturn(15);
+            when(gameResult3.getUsedSteps()).thenReturn(55);
+            GameManager gameManager1 = mock(GameManager.class);
+            GameManager gameManager2 = mock(GameManager.class);
+            GameManager gameManager3 = mock(GameManager.class);
+            when(gameManager1.getGameResult()).thenReturn(gameResult1);
+            when(gameManager2.getGameResult()).thenReturn(gameResult2);
+            when(gameManager3.getGameResult()).thenReturn(gameResult3);
+            when(maze1.getMazeName()).thenReturn("maze1");
+            when(gameManager1.getMaze()).thenReturn(maze1);
+            when(gameManager2.getMaze()).thenReturn(maze1);
+            when(gameManager3.getMaze()).thenReturn(maze1);
+            gameLoader.gameManagers = Arrays.asList(gameManager1, gameManager2, gameManager3);
+            gameLoader.printResults();
+            data = new String(byteArrayOutputStream.toByteArray(), StandardCharsets.UTF_8);
+        } finally {
+            System.setOut(previousPrintStream);
+        }
+        System.out.println(data);
+        String[] lines = data.split(System.lineSeparator());
+        Assert.assertEquals(lines[0], " Maze Name      | Player 1       | Player 2       | Player 3       ");
+        Assert.assertEquals(lines[1], " maze1          | ✔ - 15         | X              | ✔ - 55         ");
     }
 
     @Test
