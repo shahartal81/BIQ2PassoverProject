@@ -8,14 +8,17 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 public class GameLoaderTest {
@@ -122,6 +125,21 @@ public class GameLoaderTest {
         outputFile = new File(paths[1]);
         when(fileParser.getMaze(any())).thenReturn(null);
         gameLoader.parseMaze(paths[0], fileParser);
+        Assert.assertEquals("Mazes list should be empty", 0, gameLoader.getMazesNumber());
+    }
+
+    @Test
+    public void parseMazesTest() {
+        paths = new String[]{"test/resources/validInputFile.txt", "test/resources/validOutputFile.txt"};
+        List<String> mazes = new ArrayList<>();
+        mazes.add("test/resources/maze1.txt");
+        mazes.add("test/resources/maze2.txt");
+        inputFile = new File(paths[0]);
+        outputFile = new File(paths[1]);
+        when(fileParser.getMaze(any())).thenReturn(null);
+        Mockito.doAnswer((answer) -> null).when(fileParser).getMaze(Mockito.any());
+        gameLoader.parseMazes(mazes, fileParser);
+        verify(fileParser, Mockito.times(2)).getMaze(Mockito.any());
         Assert.assertEquals("Mazes list should be empty", 0, gameLoader.getMazesNumber());
     }
 }
