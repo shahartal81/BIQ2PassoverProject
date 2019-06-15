@@ -68,7 +68,6 @@ public class GameManager {
                 }
             }
             usedSteps++;
-            maze.printMaze();
         } catch (Exception e) {
             throw new IllegalArgumentException("Move is out of bounds");
         }
@@ -94,6 +93,8 @@ public class GameManager {
         maze.getMazeMap()[playerPosition.getRow()][playerPosition.getColumn()] = PASS;
         maze.getMazeMap()[next.getRow()][next.getColumn()] = PLAYER;
         playerPosition = next;
+
+        maze.printMaze();
     }
 
     public boolean playGame(){
