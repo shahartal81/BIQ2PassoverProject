@@ -1,8 +1,8 @@
 ﻿This is my maze
-MaxSteps = 10      
+MaxSteps = 20
 Rows = 4
 Cols = 12
-###  ##   ##
+#### ##   ##
 # @  # #   #
 ##  $  ##  #
 ### #  #####

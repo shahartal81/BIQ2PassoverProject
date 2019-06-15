@@ -37,7 +37,6 @@ public class GameManager {
         player = playerFactory.createPlayer(new Position(maze.getRows(), maze.getColumns()), maze.getMaxSteps());
         playerPosition = maze.getPlayerPosition();
         endPosition = maze.getEndPosition();
-
     }
 
     public GameManager(String playerPackage, Maze maze) throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
@@ -69,6 +68,7 @@ public class GameManager {
                 }
             }
             usedSteps++;
+            maze.printMaze();
         } catch (Exception e) {
             throw new IllegalArgumentException("Move is out of bounds");
         }

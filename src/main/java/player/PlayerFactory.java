@@ -9,7 +9,8 @@ public class PlayerFactory {
         if ((mazeDimensions.getColumn() * mazeDimensions.getRow()) * 3 < maxSteps){
             return new PlayerBookmarkEachStep();
         } else {
-            return new PlayerRuleSet();
+//            return new PlayerRuleSet();
+            return new PlayerDistantGoing();
         }
     }
 }

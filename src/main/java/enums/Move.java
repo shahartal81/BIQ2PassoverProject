@@ -13,6 +13,20 @@ public enum Move {
         return this.value;
     }
 
+    public Move getOpposite(){
+        switch (this) {
+            case UP:
+                return DOWN;
+            case DOWN:
+                return UP;
+            case LEFT:
+                return RIGHT;
+            case RIGHT:
+                return LEFT;
+        }
+        throw new IllegalArgumentException("No opposite move for this move : " + getValue());
+    }
+
     Move (char value){
         this.value = value;
     }
