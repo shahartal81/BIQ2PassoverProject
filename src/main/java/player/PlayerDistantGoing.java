@@ -12,7 +12,8 @@ public class PlayerDistantGoing implements Player {
 
     private Set<Position> visited = new HashSet<>();
     private Set<Position> walls = new HashSet<>();
-    private Stack<Move> route = new Stack<>();
+//    private Stack<Move> route = new Stack<>();
+    private List<Move> routeList = new ArrayList<>();
     private Set<Integer> columnBookmarked = new HashSet<>();
     private Set<Integer> rowBookmarked = new HashSet<>();
     private Map<Integer,Position> bookmarks = new HashMap<>();
@@ -30,8 +31,11 @@ public class PlayerDistantGoing implements Player {
         nextMove = chooseMove();
         if (nextMove == null){
             // pop will throw exception if route is empty, in case there are no more options to proceed
-            System.out.println("Route size: " + route.size());
-            nextMove = route.pop().getOpposite();
+            System.out.println("Route size: " + routeList.size());
+//            nextMove = route.pop().getOpposite();
+            Move lastMove = routeList.get(routeList.size() - 1);
+            nextMove = lastMove.getOpposite();
+            routeList.remove(lastMove);
             isMovingBack = true;
         }
 
@@ -57,7 +61,7 @@ public class PlayerDistantGoing implements Player {
             setCurrentPosition(nextPosition);
             if (!isMovingBack) {
                 System.out.println("Move: " + nextMove.getValue());
-                route.add(nextMove);
+                routeList.add(nextMove);
             }
         }
 
@@ -119,11 +123,20 @@ public class PlayerDistantGoing implements Player {
 
         //loop over route, calculate position by each move and add to visited
         Position position = curPosition;
-        while (!route.isEmpty()){
-            Move move = route.pop();
+//        while (!route.isEmpty()){
+//            Move move = route.pop();
+//            position = byMove(position, move.getOpposite());
+//            visited.add(position);
+//        }
+        ListIterator li = routeList.listIterator(routeList.size());
+        while(li.hasPrevious()) {
+//            System.out.println(li.previous());
+            Move move = (Move)li.previous();
             position = byMove(position, move.getOpposite());
             visited.add(position);
         }
+
+
     }
 
     private Position byMove(Position position, Move move) {
