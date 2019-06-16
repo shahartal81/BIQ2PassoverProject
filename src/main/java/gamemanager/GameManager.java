@@ -62,7 +62,7 @@ public class GameManager {
             }
             usedSteps++;
         } catch (Exception e) {
-            throw new IllegalArgumentException("Move is out of bounds");
+            throw new IllegalArgumentException("Unknown Move");
         }
     }
 
