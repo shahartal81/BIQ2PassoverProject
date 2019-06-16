@@ -13,7 +13,7 @@ import java.util.Set;
 
 public class CommandLineParser {
 
-    Map<String, String> commands = new HashMap<>();
+    private Map<String, String> commands = new HashMap<>();
     private static final String MAZES_FOLDER = "mazes_folder";
     private static final String PLAYERS = "players";
     private static final String THREADS = "threads";
