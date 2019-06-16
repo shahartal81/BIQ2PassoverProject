@@ -75,16 +75,12 @@ public class CommandLineParser {
         }
     }
 
-    public List<String> parsePlayersPackage() {
+    public List<Class<?>> parsePlayersPackage() {
         Reflections reflections = new Reflections(commands.get(PLAYERS));
-        List<String> playerList = new ArrayList<>();
 
         Set<Class<? extends Player>> allPlayerClasses =
                 reflections.getSubTypesOf(Player.class);
 
-        for(Class<? extends Player> playerClass: allPlayerClasses) {
-            playerList.add(playerClass.getName());
-        }
-        return playerList;
+        return new ArrayList<>(allPlayerClasses);
     }
 }

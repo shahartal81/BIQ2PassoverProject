@@ -85,7 +85,7 @@ public class CommandLineParserTest {
         String[] arguments = {"-mazes_folder", "c:\\temp", "-players", "player", "-threads", "5"};
         CommandLineParser commandLineParser = new CommandLineParser();
         commandLineParser.validateAndParseArguments(arguments);
-        List<String> playersList = commandLineParser.parsePlayersPackage();
+        List<Class<?>> playersList = commandLineParser.parsePlayersPackage();
         Assert.assertEquals("Players list size is not correct", 2, playersList.size());
     }
 }
