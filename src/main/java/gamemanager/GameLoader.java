@@ -115,7 +115,7 @@ public class GameLoader {
     }
 
     private String getPaddedString(String string) {
-        return String.format(" %-15s\t", string);
+        return String.format(" %-30s\t", string);
     }
 
     private String getResultSummary(GameResult gameResult) {
