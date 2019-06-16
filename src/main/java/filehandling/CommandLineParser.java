@@ -18,18 +18,14 @@ public class CommandLineParser {
     private static final String PLAYERS = "players";
     private static final String THREADS = "threads";
 
-    public CommandLineParser(String[] args) {
-        validateAndParseArguments(args);
-    }
-
-    private void validateAndParseArguments(String[] args) {
-        if (args[0].charAt(0) != '-' && args[0].substring(1).equals(MAZES_FOLDER) && args[1].charAt(0) != '-') {
+    public void validateAndParseArguments(String[] args) {
+        if (args[0].charAt(0) == '-' && args[0].substring(1).equals(MAZES_FOLDER) && args[1].charAt(0) != '-') {
             commands.put(MAZES_FOLDER, args[1]);
         } else {
             ErrorsSingleton.instance().addToErrorList("Not a valid argument: " + args[0]);
         }
 
-        if (args[2].charAt(0) != '-' && args[2].substring(1).equals(PLAYERS) && args[3].charAt(0) != '-') {
+        if (args[2].charAt(0) == '-' && args[2].substring(1).equals(PLAYERS) && args[3].charAt(0) != '-') {
             commands.put(PLAYERS, args[3]);
         } else {
             ErrorsSingleton.instance().addToErrorList("Not a valid argument: " + args[2]);
@@ -40,10 +36,14 @@ public class CommandLineParser {
         }
         //Optional threads argument
         if(args.length == 6) {
-            if (args[4].charAt(0) != '-' && args[4].substring(1).equals(THREADS) && (int) args[5].charAt(0) > 0) {
-                commands.put(THREADS, args[5]);
-            } else {
-                ErrorsSingleton.instance().addToErrorList("Not a valid argument: " + args[4]);
+            try {
+                if (args[4].charAt(0) == '-' && args[4].substring(1).equals(THREADS) && Integer.parseInt(args[5]) > 0) {
+                    commands.put(THREADS, args[5]);
+                } else {
+                    ErrorsSingleton.instance().addToErrorList("Not a valid argument: " + args[4]);
+                }
+            } catch (NumberFormatException e) {
+                ErrorsSingleton.instance().addToErrorList("Not a valid number: " + args[5]);
             }
         } else {
             commands.put(THREADS, String.valueOf(1));
