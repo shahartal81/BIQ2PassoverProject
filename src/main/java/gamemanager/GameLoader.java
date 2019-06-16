@@ -75,7 +75,7 @@ public class GameLoader {
         }
     }
 
-    public void startGames(List<String> playerList, int numOfThreads) throws IllegalAccessException, InstantiationException, ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InterruptedException, IOException {
+    public void startGames(List<String> playerList, int numOfThreads) throws IllegalAccessException, InstantiationException, ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InterruptedException {
         for (Maze maze : mazes) {
             for (String player : playerList) {
                 GameManager gameManager = new GameManager(player, maze);
