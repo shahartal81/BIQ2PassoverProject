@@ -12,13 +12,11 @@ public class MazeGameMultiThread {
         CommandLineParser commandLineParser = new CommandLineParser();
         commandLineParser.validateAndParseArguments(args);
         if (ErrorsSingleton.instance().getErrorsList().isEmpty()) {
-            List<String> mazeList = commandLineParser.parseMazesFolder();
-            List<String> playerList = commandLineParser.parsePlayersPackage();
 
-            GameLoader gameLoader = new GameLoader();
             MazeParser inputFileParser = new MazeParser();
-            gameLoader.parseMazes(mazeList, inputFileParser);
-            gameLoader.startGames(playerList, commandLineParser.getNumberOfThreads());
+            GameLoader gameLoader = new GameLoader();
+            gameLoader.parseMazes(commandLineParser.parseMazesFolder(), inputFileParser);
+            gameLoader.startGames(commandLineParser.parsePlayersPackage(), commandLineParser.getNumberOfThreads());
             gameLoader.printResults();
         } else {
             ErrorsSingleton.instance().printErrors();
