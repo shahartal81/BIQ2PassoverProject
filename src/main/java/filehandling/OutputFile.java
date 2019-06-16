@@ -15,7 +15,7 @@ public class OutputFile {
     }
 
     public void updateMovesMap(Move move) {
-        movesList.append(move.getValue());
+        movesList.append(move.getAbr());
         movesList.append('\n');
     }
 

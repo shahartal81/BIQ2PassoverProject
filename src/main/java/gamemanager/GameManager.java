@@ -4,6 +4,7 @@ import additionalclasses.Maze;
 import additionalclasses.MazeElement;
 import additionalclasses.Position;
 import enums.Move;
+import filehandling.MazeParser;
 import filehandling.OutputFile;
 import player.Player;
 import player.PlayerFactory;
@@ -18,7 +19,6 @@ import java.util.Map;
 public class GameManager {
     private Player player;
     private static final char PLAYER = MazeElement.PLAYER.getValue();
-    private static final char END = MazeElement.END.getValue();
     private static final char WALL = MazeElement.WALL.getValue();
     private static final char PASS = MazeElement.PASS.getValue();
 
@@ -35,9 +35,8 @@ public class GameManager {
     public GameManager(PlayerFactory playerFactory, Maze maze){
         this.maze = maze;
         player = playerFactory.createPlayer(new Position(maze.getRows(), maze.getColumns()), maze.getMaxSteps());
-        playerPosition = maze.getPlayerPosition();
-        endPosition = maze.getEndPosition();
-
+        playerPosition = new Position(MazeParser.getPlayerPosition().getRow(), MazeParser.getPlayerPosition().getColumn());
+        endPosition = new Position(MazeParser.getEndPosition().getRow(), MazeParser.getEndPosition().getColumn());
     }
 
     public GameManager(String playerPackage, Maze maze) throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
@@ -45,9 +44,8 @@ public class GameManager {
         Class<?> playerClass = Class.forName(playerPackage);
         Constructor<?> playerConstructor = playerClass.getConstructor();
         player = (Player) playerConstructor.newInstance();
-        playerPosition = maze.getPlayerPosition();
-        endPosition = maze.getEndPosition();
-
+        playerPosition = new Position(MazeParser.getPlayerPosition().getRow(), MazeParser.getPlayerPosition().getColumn());
+        endPosition = new Position(MazeParser.getEndPosition().getRow(), MazeParser.getEndPosition().getColumn());
     }
 
     void movePlayer(Move move){
@@ -75,19 +73,8 @@ public class GameManager {
     }
 
     private Position byMove(Move move) {
-        switch (move){
-            case UP:
-                return new Position(Math.floorMod(playerPosition.getRow() - 1, maze.getRows()), playerPosition.getColumn());
-            case DOWN:
-                return new Position(Math.floorMod(playerPosition.getRow() + 1, maze.getRows()), playerPosition.getColumn());
-            case LEFT:
-                return new Position(playerPosition.getRow(), Math.floorMod(playerPosition.getColumn() - 1, maze.getColumns()));
-            case RIGHT:
-                return new Position(playerPosition.getRow(), Math.floorMod(playerPosition.getColumn() + 1, maze.getColumns()));
-            case BOOKMARK:
-                return playerPosition;
-        }
-        throw new IllegalArgumentException("");
+        return new Position(Math.floorMod(playerPosition.getRow() + move.getValue()[0], maze.getRows()),
+                Math.floorMod(playerPosition.getColumn() + move.getValue()[1], maze.getColumns()));
     }
 
     private void changePosition(Position next) {
@@ -104,10 +91,8 @@ public class GameManager {
         }
         if(isSolved){
             outputFile.setEndGame('!');
-            System.out.println("Succeeded in " + usedSteps + " steps");
         } else {
             outputFile.setEndGame('X');
-            System.out.println("Failed to solve maze in " + maze.getMaxSteps() + " steps");
         }
 
         try {
@@ -122,7 +107,6 @@ public class GameManager {
     public void createOutPutFile(BufferedWriter outPutFile) {
         outputFile = new OutputFile(outPutFile);
     }
-
 
     public Position getPlayerPosition() {
         return playerPosition;
@@ -140,10 +124,6 @@ public class GameManager {
 
     public Player getPlayer() {
         return player;
-    }
-
-    public boolean getIsSolved() {
-        return isSolved;
     }
 
     public GameResult getGameResult(){

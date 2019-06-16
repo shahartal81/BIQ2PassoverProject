@@ -2,6 +2,7 @@ package filehandling;
 
 import additionalclasses.Maze;
 import additionalclasses.MazeElement;
+import additionalclasses.Position;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,6 +13,16 @@ public class MazeParser {
     private static final char WALL = MazeElement.WALL.getValue();
     private static final char PASS = MazeElement.PASS.getValue();
     private static final int MAZE_START_LINE = 4;
+    private static Position playerPosition;
+    private static Position endPosition;
+
+    public static Position getPlayerPosition() {
+        return playerPosition;
+    }
+
+    public static Position getEndPosition() {
+        return endPosition;
+    }
 
     private List<String> mazeDefinition = new ArrayList<>();
 
@@ -29,7 +40,7 @@ public class MazeParser {
         this.mazeDefinition = mazeDefinition;
         if (isMazeDefinitionInsufficient()){
             ErrorsSingleton.instance().addToErrorList("Data in maze input file is insufficient. Maze cannot be created");
-            return maze;
+            return null;
         }
         String mazeName = mazeDefinition.get(0);
         int maxSteps = numberOf("MaxSteps", 2);
@@ -93,9 +104,11 @@ public class MazeParser {
                 char mazeChar = line.charAt(j);
 
                 if (mazeChar == PLAYER){
+                    playerPosition = new Position(i - MAZE_START_LINE, j);
                     countPlayerChar++;
                 }
                 else if (mazeChar == END){
+                    endPosition = new Position(i - MAZE_START_LINE, j);
                     countEndChar++;
                 }
                 else if (mazeChar != WALL && mazeChar != PASS){

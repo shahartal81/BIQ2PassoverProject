@@ -1,19 +1,25 @@
 package enums;
 
 public enum Move {
-    UP ('U'),
-    DOWN ('D'),
-    LEFT ('L'),
-    RIGHT ('R'),
-    BOOKMARK ('B');
+    UP('U', new int[]{-1, 0}),
+    DOWN('D', new int[]{1, 0}),
+    LEFT('L', new int[]{0, -1}),
+    RIGHT('R', new int[]{0, 1}),
+    BOOKMARK('B', new int[]{0, 0});
 
-    private char value;
+    private char abr;
+    private int[] value;
 
-    public char getValue(){
+    public int[] getValue(){
         return this.value;
     }
 
-    Move (char value){
+    public char getAbr() {
+        return abr;
+    }
+
+    Move(char abr, int[] value){
+        this.abr = abr;
         this.value = value;
     }
 }
