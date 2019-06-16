@@ -19,6 +19,14 @@ public class CommandLineParser {
     private static final String THREADS = "threads";
 
     public void validateAndParseArguments(String[] args) {
+        if (args.length < 4) {
+            ErrorsSingleton.instance().addToErrorList("Missing arguments in command line");
+            return;
+        }
+        if (args.length > 6) {
+            ErrorsSingleton.instance().addToErrorList("Too many arguments in command line");
+            return;
+        }
         if (args[0].charAt(0) == '-' && args[0].substring(1).equals(MAZES_FOLDER) && args[1].charAt(0) != '-') {
             commands.put(MAZES_FOLDER, args[1]);
         } else {

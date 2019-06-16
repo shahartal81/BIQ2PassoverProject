@@ -1,4 +1,4 @@
-package additionalclasses;
+package player;
 
 import enums.Move;
 

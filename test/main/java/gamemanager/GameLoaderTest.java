@@ -2,7 +2,7 @@ package gamemanager;
 
 import additionalclasses.Maze;
 import filehandling.ErrorsSingleton;
-import filehandling.MazeDefinitionParser;
+import filehandling.MazeParser;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -40,7 +40,7 @@ public class GameLoaderTest {
     public MockitoRule mockitoRule = MockitoJUnit.rule();
 
     @Mock
-    private MazeDefinitionParser fileParser;
+    private MazeParser fileParser;
 
     @Before
     public void setUp(){
@@ -68,7 +68,7 @@ public class GameLoaderTest {
         } catch (IOException e) {
             throw new Exception("failed to create inputFile for test " + e);
         }
-        gameLoader.validateArguments(paths[0], paths[1]);
+        gameLoader.validateArguments(paths);
         Assert.assertTrue(ErrorsSingleton.instance().getErrorsList().isEmpty());
 
     }
@@ -83,7 +83,7 @@ public class GameLoaderTest {
         } catch (IOException e) {
             throw new Exception("failed to create inputFile for test " + e);
         }
-        gameLoader.validateArguments(paths[0], paths[1]);
+        gameLoader.validateArguments(paths);
         List<String> errorsList = ErrorsSingleton.instance().getErrorsList();
         Assert.assertEquals(errorsList.get(0), "Command line argument for maze: " + inputFile + " doesn't lead to a maze file or leads to a file that cannot be opened");
     }
@@ -93,7 +93,7 @@ public class GameLoaderTest {
         paths = new String[]{"test/resources/validInputFile.txt", "test/resources/validOutputFile.txt"};
         inputFile = new File(paths[0]);
         outputFile = new File(paths[1]);
-        gameLoader.validateArguments(paths[0], paths[1]);
+        gameLoader.validateArguments(paths);
         List<String> errorsList = ErrorsSingleton.instance().getErrorsList();
         Assert.assertEquals(errorsList.get(0), "Command line argument for maze: " + inputFile + " doesn't lead to a maze file or leads to a file that cannot be opened");
     }
@@ -114,7 +114,7 @@ public class GameLoaderTest {
             throw new Exception("failed to create outputFile for test" + e);
         }
 
-        gameLoader.validateArguments(paths[0], paths[1]);
+        gameLoader.validateArguments(paths);
         List<String> errorsList = ErrorsSingleton.instance().getErrorsList();
         Assert.assertEquals(errorsList.get(0), "Command line argument for output file: " + outputFile + " points to a bad path or to a file that already exists");
     }
@@ -169,8 +169,8 @@ public class GameLoaderTest {
         for (int i = 0; i < lines.length; i++) {
             lines[i] = lines[i].replace("\t", "");
         }
-        Assert.assertEquals(" Maze Name      | Player 1       | Player 2       | Player 3       ", lines[0]);
-        Assert.assertEquals(" maze1          | ✔ - 15         | X              | ✔ - 55         ", lines[1]);
+        Assert.assertEquals(" Maze Name                     | Player 1                      | Player 2                      | Player 3                      ", lines[0]);
+        Assert.assertEquals(" maze1                         | ✔ - 15                        | X                             | ✔ - 55                        ", lines[1]);
     }
 
     @Test

@@ -2,8 +2,8 @@ package gamemanager;
 
 import additionalclasses.Maze;
 import filehandling.ErrorsSingleton;
-import filehandling.MazeDefinitionParser;
 import filehandling.MazeFileReader;
+import filehandling.MazeParser;
 import player.PlayerFactory;
 
 import java.io.BufferedWriter;
@@ -29,14 +29,23 @@ public class GameLoader {
     List<Maze> mazes = new ArrayList<>();
     List<GameManager> gameManagers = new ArrayList<>();
 
-    public boolean validateArguments(String inputFile, String outputFile) {
+    public boolean validateArguments(String[] args) {
 
-        File fileIn = new File(inputFile);
+        if (args.length == 0){
+            ErrorsSingleton.instance().addToErrorList("Missing maze file argument in command line");
+            return false;
+        }
+        if (args.length < 2) {
+            ErrorsSingleton.instance().addToErrorList("Missing output file argument in command line");
+            return false;
+        }
+
+        File fileIn = new File(args[0]);
         if (!fileIn.isFile() || !fileIn.exists()){
             ErrorsSingleton.instance().addToErrorList("Command line argument for maze: " +  fileIn + " doesn't lead to a maze file or leads to a file that cannot be opened");
         }
 
-        File fileOut = new File(outputFile);
+        File fileOut = new File(args[1]);
         if (fileOut.exists()) {
             ErrorsSingleton.instance().addToErrorList("Command line argument for output file: " + fileOut + " points to a bad path or to a file that already exists");
         }
@@ -45,7 +54,7 @@ public class GameLoader {
         return ErrorsSingleton.instance().getErrorsList().isEmpty();
     }
 
-    public void parseMaze(String inputFile, MazeDefinitionParser inputFileParser) {
+    public void parseMaze(String inputFile, MazeParser inputFileParser) {
         File fileIn = new File(inputFile);
         Maze maze = inputFileParser.getMaze(new MazeFileReader().readFromFile(fileIn));
         if (maze != null) {
@@ -53,7 +62,7 @@ public class GameLoader {
         }
     }
 
-    public void parseMazes(List<String> mazeList, MazeDefinitionParser inputFileParser) {
+    public void parseMazes(List<String> mazeList, MazeParser inputFileParser) {
         for (String maze: mazeList) {
             parseMaze(maze, inputFileParser);
         }

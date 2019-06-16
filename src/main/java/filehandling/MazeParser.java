@@ -6,7 +6,7 @@ import additionalclasses.MazeElement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MazeParser implements MazeDefinitionParser {
+public class MazeParser {
     private static final char PLAYER = MazeElement.PLAYER.getValue();
     private static final char END = MazeElement.END.getValue();
     private static final char WALL = MazeElement.WALL.getValue();
@@ -23,7 +23,6 @@ public class MazeParser implements MazeDefinitionParser {
         this.mazeDefinition = mazeDefinition;
     }
 
-    @Override
     public Maze getMaze(List<String> mazeDefinition){
         Maze maze = null;
 
