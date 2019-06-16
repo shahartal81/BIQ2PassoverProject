@@ -2,6 +2,7 @@ import filehandling.CommandLineParser;
 import filehandling.ErrorsSingleton;
 import filehandling.MazeParser;
 import gamemanager.GameLoader;
+import gamemanager.GameManagerFactory;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -14,8 +15,9 @@ public class MazeGameMultiThread {
 
             MazeParser inputFileParser = new MazeParser();
             GameLoader gameLoader = new GameLoader();
+            GameManagerFactory gameManagerFactory = new GameManagerFactory();
             gameLoader.parseMazes(commandLineParser.parseMazesFolder(), inputFileParser);
-            gameLoader.startGames(commandLineParser.parsePlayersPackage(), commandLineParser.getNumberOfThreads());
+            gameLoader.startGames(gameManagerFactory, commandLineParser.parsePlayersPackage(), commandLineParser.getNumberOfThreads());
             gameLoader.printResults();
         } else {
             ErrorsSingleton.instance().printErrors();

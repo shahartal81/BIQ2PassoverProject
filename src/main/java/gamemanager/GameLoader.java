@@ -15,9 +15,6 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.groupingBy;
@@ -84,21 +81,16 @@ public class GameLoader {
         }
     }
 
-    public void startGames(List<Class<?>> playerList, int numOfThreads) throws IllegalAccessException, InstantiationException, ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InterruptedException {
+    public void startGames(GameManagerFactory gameManagerFactory, List<Class<?>> playerList, int numOfThreads) throws IllegalAccessException, InstantiationException, ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InterruptedException {
         for (Maze maze : mazes) {
             for (Class<?> player : playerList) {
                 GameManager gameManager = new GameManager(player, maze);
                 gameManagers.add(gameManager);
             }
         }
-        ExecutorService threadPool = Executors.newFixedThreadPool(numOfThreads);
-        for (GameManager gameManager : gameManagers) {
-                GameManagerRunner gameManagerRunner = new GameManagerRunner(gameManager);
-                threadPool.execute(gameManagerRunner);
-        }
 
-        threadPool.shutdown();
-        threadPool.awaitTermination(120, TimeUnit.SECONDS);
+        GameManagerStrategy gameManagerStrategy = gameManagerFactory.chooseGameManagerStrategy(gameManagers, numOfThreads);
+        gameManagerStrategy.start();
     }
 
 
