@@ -27,6 +27,7 @@ public class MazeGameMultiThread {
             MazeDefinitionParser inputFileParser = new MazeParser();
             gameLoader.parseMazes(mazeList, inputFileParser);
             gameLoader.startGames(playerList, commandLineParser.getNumberOfThreads());
+            gameLoader.printResults();
         }
     }
 }

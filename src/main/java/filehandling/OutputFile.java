@@ -31,8 +31,4 @@ public class OutputFile {
             throw new IOException(e);
         }
     }
-
-    public void printAllMoves() {
-        System.out.print(movesList.toString());
-    }
 }
