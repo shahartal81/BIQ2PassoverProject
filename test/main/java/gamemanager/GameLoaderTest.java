@@ -14,13 +14,13 @@ import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
 import java.io.PrintStream;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
-import java.io.File;
-import java.io.IOException;
-import java.util.Arrays;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.mockito.Matchers.any;
@@ -146,6 +146,7 @@ public class GameLoaderTest {
             when(gameResult2.isSolved()).thenReturn(false);
             when(gameResult3.isSolved()).thenReturn(true);
             when(gameResult1.getUsedSteps()).thenReturn(15);
+            when(gameResult2.getUsedSteps()).thenReturn(25);
             when(gameResult3.getUsedSteps()).thenReturn(55);
             GameManager gameManager1 = mock(GameManager.class);
             GameManager gameManager2 = mock(GameManager.class);
@@ -165,8 +166,11 @@ public class GameLoaderTest {
         }
         System.out.println(data);
         String[] lines = data.split(System.lineSeparator());
-        Assert.assertEquals(lines[0], " Maze Name      | Player 1       | Player 2       | Player 3       ");
-        Assert.assertEquals(lines[1], " maze1          | ✔ - 15         | X              | ✔ - 55         ");
+        for (int i = 0; i < lines.length; i++) {
+            lines[i] = lines[i].replace("\t", "");
+        }
+        Assert.assertEquals(" Maze Name      | Player 1       | Player 2       | Player 3       ", lines[0]);
+        Assert.assertEquals(" maze1          | ✔ - 15         | X              | ✔ - 55         ", lines[1]);
     }
 
     @Test

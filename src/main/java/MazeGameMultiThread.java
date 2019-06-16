@@ -14,7 +14,8 @@ public class MazeGameMultiThread {
         } if (args.length > 6) {
             System.out.println("Too many arguments in command line");
         } else {
-            CommandLineParser commandLineParser = new CommandLineParser(args);
+            CommandLineParser commandLineParser = new CommandLineParser();
+            commandLineParser.validateAndParseArguments(args);
             List<String> mazeList = commandLineParser.parseMazesFolder();
             List<String> playerList = commandLineParser.parsePlayersPackage();
 

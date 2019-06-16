@@ -20,7 +20,9 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
-import static java.util.stream.Collectors.*;
+import static java.util.stream.Collectors.groupingBy;
+import static java.util.stream.Collectors.mapping;
+import static java.util.stream.Collectors.toList;
 
 public class GameLoader {
 
@@ -113,7 +115,7 @@ public class GameLoader {
     }
 
     private String getPaddedString(String string) {
-        return String.format(" %-15s", string);
+        return String.format(" %-15s\t", string);
     }
 
     private String getResultSummary(GameResult gameResult) {
