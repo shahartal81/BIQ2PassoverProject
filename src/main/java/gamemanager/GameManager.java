@@ -109,7 +109,7 @@ public class GameManager {
             outputFile.setEndGame('X');
             System.out.println("Failed to solve maze in " + maze.getMaxSteps() + " steps");
         }
-        outputFile.printAllMoves();
+
         try {
             outputFile.exportToFile();
         } catch (IOException e) {
