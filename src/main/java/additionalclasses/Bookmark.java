@@ -15,10 +15,6 @@ public class Bookmark {
         this.sequenceNumber = sequenceNumber;
     }
 
-    public int getSequenceNumber() {
-        return sequenceNumber;
-    }
-
     public List<Move> getMovesPerformed() {
         return movesPerformed;
     }

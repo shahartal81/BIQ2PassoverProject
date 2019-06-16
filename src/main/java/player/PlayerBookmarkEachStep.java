@@ -33,10 +33,6 @@ public class PlayerBookmarkEachStep implements Player {
         return useBookmark;
     }
 
-    public boolean getHitBookmark() {
-        return hitBookmark;
-    }
-
     @Override
     public Move move() {
         if (useBookmark) {
