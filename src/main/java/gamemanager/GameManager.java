@@ -93,8 +93,6 @@ public class GameManager {
         maze.getMazeMap()[playerPosition.getRow()][playerPosition.getColumn()] = PASS;
         maze.getMazeMap()[next.getRow()][next.getColumn()] = PLAYER;
         playerPosition = next;
-
-        maze.printMaze();
     }
 
     public boolean playGame(){

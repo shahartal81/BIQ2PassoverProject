@@ -29,9 +29,10 @@ public class LinesReader {
 
         String line;
         while((line = readFile.readLine()) != null) {
-            if (line.trim().length() > 0) {
-                result.add(line);
-            }
+//            if (line.trim().length() > 0) {
+//                result.add(line);
+//            }
+            result.add(line);
         }
         return result;
     }

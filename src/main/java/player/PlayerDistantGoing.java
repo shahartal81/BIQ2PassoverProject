@@ -1,6 +1,7 @@
 package player;
 
 import additionalclasses.Position;
+import cucumber.api.java.bs.I;
 import enums.Move;
 
 import java.util.*;
@@ -12,17 +13,17 @@ public class PlayerDistantGoing implements Player {
 
     private Set<Position> visited = new HashSet<>();
     private Set<Position> walls = new HashSet<>();
-//    private Stack<Move> route = new Stack<>();
     private List<Move> routeList = new ArrayList<>();
+
     private Set<Integer> columnBookmarked = new HashSet<>();
     private Set<Integer> rowBookmarked = new HashSet<>();
+
     private Map<Integer,Position> bookmarks = new HashMap<>();
     private int bookmarkSeqNumber = 0;
 
     private Position curPosition;
     private Move nextMove;
     private boolean isMovingBack = false;
-
 
     @Override
     public Move move() {
@@ -31,11 +32,9 @@ public class PlayerDistantGoing implements Player {
         nextMove = chooseMove();
         if (nextMove == null){
             // pop will throw exception if route is empty, in case there are no more options to proceed
-            System.out.println("Route size: " + routeList.size());
-//            nextMove = route.pop().getOpposite();
-            Move lastMove = routeList.get(routeList.size() - 1);
+            Move lastMove = routeList.remove(routeList.size() - 1);
             nextMove = lastMove.getOpposite();
-            routeList.remove(lastMove);
+
             isMovingBack = true;
         }
 
@@ -60,7 +59,6 @@ public class PlayerDistantGoing implements Player {
         if (!walls.contains(nextPosition)) {
             setCurrentPosition(nextPosition);
             if (!isMovingBack) {
-                System.out.println("Move: " + nextMove.getValue());
                 routeList.add(nextMove);
             }
         }
@@ -105,51 +103,32 @@ public class PlayerDistantGoing implements Player {
     public void hitWall() {
         Position nextPosition = byMove(curPosition, nextMove);
         walls.add(nextPosition);
-
-        System.out.println(nextPosition);
     }
 
     @Override
     public void hitBookmark(int seq) {
-        Position nextPosition = byMove(curPosition, nextMove);
         Position bookmarkedPosition = bookmarks.get(seq);
+
+        // bookmark can be removed by player
+        // see below "for loop" that removes bookmarks that are not definitely good
+        if (bookmarkedPosition == null) {
+            return;
+        }
+        Position nextPosition = byMove(curPosition, nextMove);
 
         if (bookmarkedPosition.equals(nextPosition)) {
             return;
         }
 
-        //reset current position by bookmark
+        // reset current position by bookmark
         curPosition = byMove(bookmarkedPosition, nextMove.getOpposite());
 
-        //loop over route, calculate position by each move and add to visited
-        Position position = curPosition;
-//        while (!route.isEmpty()){
-//            Move move = route.pop();
-//            position = byMove(position, move.getOpposite());
-//            visited.add(position);
-//        }
-        ListIterator li = routeList.listIterator(routeList.size());
-        while(li.hasPrevious()) {
-//            System.out.println(li.previous());
-            Move move = (Move)li.previous();
-            position = byMove(position, move.getOpposite());
-            visited.add(position);
+        for (int i = seq + 1; i <= bookmarkSeqNumber; ++i) {
+            bookmarks.remove(i);
         }
-
-
     }
 
     private Position byMove(Position position, Move move) {
-        switch (move){
-            case UP:
-                return new Position(position.getRow() + 1, position.getColumn());
-            case DOWN:
-                return new Position(position.getRow() - 1, position.getColumn());
-            case LEFT:
-                return new Position(position.getRow(), position.getColumn() - 1);
-            case RIGHT:
-                return new Position(position.getRow(), position.getColumn() + 1);
-        }
-        throw new IllegalArgumentException("");
+        return new Position(position.getRow() + move.getRow(), position.getColumn() + move.getColomn());
     }
 }

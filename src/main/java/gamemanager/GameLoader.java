@@ -2,8 +2,8 @@ package gamemanager;
 
 import additionalclasses.Maze;
 import filehandling.ErrorsSingleton;
+import filehandling.LinesReader;
 import filehandling.MazeDefinitionParser;
-import filehandling.MazeFileReader;
 import player.PlayerFactory;
 
 import java.io.BufferedWriter;
@@ -47,11 +47,12 @@ public class GameLoader {
 
     public void parseMaze(String inputFile, MazeDefinitionParser inputFileParser) {
         File fileIn = new File(inputFile);
-        Maze maze = inputFileParser.getMaze(new MazeFileReader().readFromFile(fileIn));
+        Maze maze = inputFileParser.getMaze(new LinesReader().readFromFile(fileIn));
         if (maze != null) {
             mazes.add(maze);
         }
     }
+
 
     public void parseMazes(List<String> mazeList, MazeDefinitionParser inputFileParser) {
         for (String maze: mazeList) {
