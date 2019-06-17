@@ -6,8 +6,8 @@ import enums.Move;
 import java.util.HashMap;
 import java.util.Map;
 
-import static player.CellInfo.Value.UNKNOWN;
-import static player.CellInfo.Value.WALL;
+import static player.PlayerRuleSet.CellInfo.Value.UNKNOWN;
+import static player.PlayerRuleSet.CellInfo.Value.WALL;
 
 public class PlayerRuleSet implements Player {
 
@@ -165,7 +165,53 @@ public class PlayerRuleSet implements Player {
         }
     }
 
-     void setState(State newState){
+    void setState(State newState){
         state = newState;
+    }
+
+    private class RuleSet {
+
+        private final Move firstDirection;
+        private final Move secondDirection;
+
+        public RuleSet(Move firstDirection, Move secondDirection) {
+            this.firstDirection = firstDirection;
+            this.secondDirection = secondDirection;
+        }
+
+        public Move getFirstDirection() {
+            return firstDirection;
+        }
+
+        public Move getSecondDirection() {
+            return secondDirection;
+        }
+    }
+
+    protected static class CellInfo {
+
+        private int bookmarkSequence;
+        private CellInfo.Value value = CellInfo.Value.SPACE;
+
+        enum Value{
+            SPACE,
+            WALL,
+            UNKNOWN
+        }
+        public void setValue(CellInfo.Value value) {
+            this.value = value;
+        }
+
+        public void setBookmarkSequence(int bookmarkSequence) {
+            this.bookmarkSequence = bookmarkSequence;
+        }
+
+        public int getBookmarkSequence() {
+            return bookmarkSequence;
+        }
+
+        public CellInfo.Value getValue() {
+            return value;
+        }
     }
 }

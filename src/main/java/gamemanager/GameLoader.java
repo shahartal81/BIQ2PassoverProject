@@ -2,8 +2,8 @@ package gamemanager;
 
 import additionalclasses.Maze;
 import filehandling.ErrorsSingleton;
-import filehandling.LinesReader;
-import filehandling.MazeDefinitionParser;
+import filehandling.MazeFileReader;
+import filehandling.MazeParser;
 import player.PlayerFactory;
 
 import java.io.BufferedWriter;
@@ -15,9 +15,6 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.groupingBy;
@@ -29,14 +26,23 @@ public class GameLoader {
     List<Maze> mazes = new ArrayList<>();
     List<GameManager> gameManagers = new ArrayList<>();
 
-    public boolean validateArguments(String inputFile, String outputFile) {
+    public boolean validateArguments(String[] args) {
 
-        File fileIn = new File(inputFile);
+        if (args.length == 0){
+            ErrorsSingleton.instance().addToErrorList("Missing maze file argument in command line");
+            return false;
+        }
+        if (args.length < 2) {
+            ErrorsSingleton.instance().addToErrorList("Missing output file argument in command line");
+            return false;
+        }
+
+        File fileIn = new File(args[0]);
         if (!fileIn.isFile() || !fileIn.exists()){
             ErrorsSingleton.instance().addToErrorList("Command line argument for maze: " +  fileIn + " doesn't lead to a maze file or leads to a file that cannot be opened");
         }
 
-        File fileOut = new File(outputFile);
+        File fileOut = new File(args[1]);
         if (fileOut.exists()) {
             ErrorsSingleton.instance().addToErrorList("Command line argument for output file: " + fileOut + " points to a bad path or to a file that already exists");
         }
@@ -45,16 +51,15 @@ public class GameLoader {
         return ErrorsSingleton.instance().getErrorsList().isEmpty();
     }
 
-    public void parseMaze(String inputFile, MazeDefinitionParser inputFileParser) {
+    public void parseMaze(String inputFile, MazeParser inputFileParser) {
         File fileIn = new File(inputFile);
-        Maze maze = inputFileParser.getMaze(new LinesReader().readFromFile(fileIn));
+        Maze maze = inputFileParser.getMaze(new MazeFileReader().readFromFile(fileIn));
         if (maze != null) {
             mazes.add(maze);
         }
     }
 
-
-    public void parseMazes(List<String> mazeList, MazeDefinitionParser inputFileParser) {
+    public void parseMazes(List<String> mazeList, MazeParser inputFileParser) {
         for (String maze: mazeList) {
             parseMaze(maze, inputFileParser);
         }
@@ -76,21 +81,16 @@ public class GameLoader {
         }
     }
 
-    public void startGames(List<String> playerList, int numOfThreads) throws IllegalAccessException, InstantiationException, ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InterruptedException {
+    public void startGames(GameManagerFactory gameManagerFactory, List<Class<?>> playerList, int numOfThreads) throws IllegalAccessException, InstantiationException, ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InterruptedException {
         for (Maze maze : mazes) {
-            for (String player : playerList) {
+            for (Class<?> player : playerList) {
                 GameManager gameManager = new GameManager(player, maze);
                 gameManagers.add(gameManager);
             }
         }
-        ExecutorService threadPool = Executors.newFixedThreadPool(numOfThreads);
-        for (GameManager gameManager : gameManagers) {
-                GameManagerRunner gameManagerRunner = new GameManagerRunner(gameManager);
-                threadPool.execute(gameManagerRunner);
-        }
 
-        threadPool.shutdown();
-        threadPool.awaitTermination(120, TimeUnit.SECONDS);
+        GameManagerStrategy gameManagerStrategy = gameManagerFactory.chooseGameManagerStrategy(gameManagers, numOfThreads);
+        gameManagerStrategy.start();
     }
 
 

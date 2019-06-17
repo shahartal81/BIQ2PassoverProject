@@ -1,35 +1,26 @@
 package enums;
 
-import additionalclasses.Position;
-
 public enum Move {
-    UP ('U', +1, 0),
-    DOWN ('D', -1, 0),
-    LEFT ('L', 0, -1),
-    RIGHT ('R', 0, +1),
-    BOOKMARK ('B', 0, 0);
+    UP('U', new int[]{-1, 0}),
+    DOWN('D', new int[]{1, 0}),
+    LEFT('L', new int[]{0, -1}),
+    RIGHT('R', new int[]{0, 1}),
+    BOOKMARK('B', new int[]{0, 0});
 
-    private char value;
+    private char abr;
+    private int[] value;
 
-    public int getRow() {
-        return row;
-    }
-
-    public int getColomn() {
-        return colomn;
-    }
-
-    private int row;
-    private int colomn;
-
-    Move(char value, int row, int colomn) {
-        this.value = value;
-        this.row = row;
-        this.colomn = colomn;
-    }
-
-    public char getValue(){
+    public int[] getValue(){
         return this.value;
+    }
+
+    public char getAbr() {
+        return abr;
+    }
+
+    Move(char abr, int[] value){
+        this.abr = abr;
+        this.value = value;
     }
 
     public Move getOpposite(){
@@ -46,8 +37,4 @@ public enum Move {
         throw new IllegalArgumentException("No opposite move for this move : " + getValue());
     }
 
-
-    Move (char value){
-        this.value = value;
-    }
 }
