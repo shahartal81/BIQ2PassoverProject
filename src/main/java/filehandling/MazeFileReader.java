@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LinesReader {
+public class MazeFileReader {
 
     public List<String> readFromFile(File fileIn){
         try(BufferedReader readFile = new BufferedReader(new FileReader(fileIn))){

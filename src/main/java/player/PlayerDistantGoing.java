@@ -129,6 +129,8 @@ public class PlayerDistantGoing implements Player {
     }
 
     private Position byMove(Position position, Move move) {
-        return new Position(position.getRow() + move.getRow(), position.getColumn() + move.getColomn());
+        return new Position(
+                position.getRow() + (move.getValue()[0] * -1),
+                position.getColumn() + move.getValue()[1]);
     }
 }
