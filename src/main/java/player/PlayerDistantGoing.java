@@ -1,12 +1,21 @@
 package player;
 
 import additionalclasses.Position;
-import cucumber.api.java.bs.I;
 import enums.Move;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
-import static enums.Move.*;
+import static enums.Move.BOOKMARK;
+import static enums.Move.DOWN;
+import static enums.Move.LEFT;
+import static enums.Move.RIGHT;
+import static enums.Move.UP;
 
 public class PlayerDistantGoing implements Player {
     private static final List<Move> MOVES = Arrays.asList(UP, DOWN, RIGHT, LEFT);
