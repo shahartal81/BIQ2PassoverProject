@@ -32,6 +32,7 @@ public class PlayerDistantGoing implements Player {
 
     private Position curPosition;
     private Move nextMove;
+    private Move firstMove;
     private boolean isMovingBack = false;
 
     @Override
@@ -39,12 +40,20 @@ public class PlayerDistantGoing implements Player {
         advancePosition();
 
         nextMove = chooseMove();
-        if (nextMove == null){
-            // pop will throw exception if route is empty, in case there are no more options to proceed
-            Move lastMove = routeList.remove(routeList.size() - 1);
-            nextMove = lastMove.getOpposite();
+        if (routeList.isEmpty() && visited.size() == 1) {
+            firstMove = nextMove;
+        }
 
-            isMovingBack = true;
+        if (nextMove == null){
+            if (!routeList.isEmpty()) {
+                // pop will throw exception if route is empty, in case there are no more options to proceed
+                Move lastMove = routeList.remove(routeList.size() - 1);
+                nextMove = lastMove.getOpposite();
+
+                isMovingBack = true;
+            } else {
+                nextMove = firstMove.getOpposite();
+            }
         }
 
         return nextMove;
