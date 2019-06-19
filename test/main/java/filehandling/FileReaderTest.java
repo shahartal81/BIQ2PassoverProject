@@ -48,11 +48,14 @@ public class FileReaderTest {
         MazeFileReader testSubject = new MazeFileReader();
         BufferedReader bufferedReader = Mockito.mock(BufferedReader.class);
         when(bufferedReader.readLine()).thenReturn
-                ("\n","Simple maze", "\n", "MaxSteps = 10", "\n", null);
+                ("Simple maze", "MaxSteps = 10", "\n", "##### \t", "\n", null);
         List<String> result = testSubject.readFromFile(bufferedReader);
-        Assert.assertEquals(2, result.size());
+        Assert.assertEquals(5, result.size());
         Assert.assertEquals("Simple maze", result.get(0));
         Assert.assertEquals("MaxSteps = 10", result.get(1));
+        Assert.assertEquals("\n", result.get(2));
+        Assert.assertEquals("##### \t", result.get(3));
+        Assert.assertEquals("\n", result.get(4));
     }
 
     @Test (expected = FileNotFoundException.class)
