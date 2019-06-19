@@ -1,11 +1,17 @@
 package filehandling;
 
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.util.List;
 
 public class CommandLineParserTest {
+
+    @Before
+    public void setUp() {
+        ErrorsSingleton.instance().clean();
+    }
 
     @Test
     public void validateArgumentsHappyPathTest() {
@@ -86,6 +92,6 @@ public class CommandLineParserTest {
         CommandLineParser commandLineParser = new CommandLineParser();
         commandLineParser.validateAndParseArguments(arguments);
         List<Class<?>> playersList = commandLineParser.parsePlayersPackage();
-        Assert.assertEquals("Players list size is not correct", 2, playersList.size());
+        Assert.assertEquals("Players list size is not correct", 3, playersList.size());
     }
 }
