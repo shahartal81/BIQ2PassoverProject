@@ -99,6 +99,7 @@ public class GameLoader {
                 mapping(GameManager::getGameResult, toList())));
       boolean didPrintHeaders = false;
       for(Map.Entry<Maze, List<GameResult>> entry : results.entrySet()) {
+          //sorting by players so that the same player will be shown on the same column
           entry.getValue().sort(Comparator.comparing(gameResult -> gameResult.getPlayer().getPlayerName()));
 
           if(!didPrintHeaders){
@@ -116,7 +117,7 @@ public class GameLoader {
     }
 
     private String getPaddedString(String string) {
-        return String.format(" %-30s\t", string);
+        return String.format(" %-50s\t", string);
     }
 
     private String getResultSummary(GameResult gameResult) {
