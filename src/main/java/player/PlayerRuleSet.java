@@ -18,9 +18,10 @@ public class PlayerRuleSet implements Player {
     private int bookmarkSequence = 0;
     private RuleSet[] ruleSets = {
             new RuleSet(Move.RIGHT, Move.DOWN),
-            new RuleSet(Move.LEFT, Move.UP),
+            new RuleSet(Move.UP, Move.LEFT),
             new RuleSet(Move.DOWN, Move.LEFT),
-            new RuleSet(Move.UP, Move.RIGHT)};
+            new RuleSet(Move.UP, Move.RIGHT),
+            new RuleSet(Move.LEFT, Move.UP)};
     private int ruleSetIndex = 0;
     private boolean shouldBookmark = true;
     private State state = State.MOVED;

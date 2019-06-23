@@ -59,7 +59,7 @@ public class PlayerRuleSetTest {
         actualMoves.add(player.move());
         player.hitBookmark(1);
         actualMoves.add(player.move());
-        expectedMoves = Arrays.asList(Move.BOOKMARK, Move.RIGHT,Move.RIGHT, Move.DOWN, Move.LEFT, Move.UP);
+        expectedMoves = Arrays.asList(Move.BOOKMARK, Move.RIGHT,Move.RIGHT, Move.DOWN, Move.UP, Move.LEFT);
         Assert.assertEquals(expectedMoves,actualMoves);
     }
 
@@ -88,7 +88,7 @@ public class PlayerRuleSetTest {
     public void hitWallAfterBookmark_shouldMoveLeft(){
         player.move();
         player.setState(PlayerRuleSet.State.HIT_WALL_AFTER_BOOKMARK);
-        Assert.assertEquals(Move.LEFT, player.move());
+        Assert.assertEquals(Move.UP, player.move());
     }
 
     @Test
@@ -98,7 +98,7 @@ public class PlayerRuleSetTest {
         player.setState(PlayerRuleSet.State.CHANGED_DIRECTION_AFTER_BOOKMARK);
         player.hitWall();
         actualMoves.add(player.move());
-        expectedMoves = Arrays.asList(Move.BOOKMARK, Move.RIGHT, Move.LEFT);
+        expectedMoves = Arrays.asList(Move.BOOKMARK, Move.RIGHT, Move.UP);
         Assert.assertEquals(expectedMoves,actualMoves);
     }
 
@@ -112,7 +112,7 @@ public class PlayerRuleSetTest {
         player.hitWall();
         actualMoves.add(player.move());
         actualMoves.add(player.move());
-        expectedMoves = Arrays.asList(Move.BOOKMARK, Move.RIGHT,Move.RIGHT, Move.DOWN, Move.LEFT, Move.LEFT);
+        expectedMoves = Arrays.asList(Move.BOOKMARK, Move.RIGHT,Move.RIGHT, Move.DOWN, Move.UP, Move.UP);
         Assert.assertEquals(expectedMoves,actualMoves);
     }
 
@@ -128,7 +128,7 @@ public class PlayerRuleSetTest {
         actualMoves.add(player.move());
         player.hitWall();
         actualMoves.add(player.move());
-        expectedMoves = Arrays.asList(Move.BOOKMARK, Move.RIGHT,Move.DOWN, Move.LEFT, Move.UP, Move.UP);
+        expectedMoves = Arrays.asList(Move.BOOKMARK, Move.RIGHT,Move.DOWN, Move.UP, Move.LEFT, Move.UP);
         Assert.assertEquals(expectedMoves,actualMoves);
     }
 
