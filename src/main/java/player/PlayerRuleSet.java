@@ -11,7 +11,7 @@ import static player.PlayerRuleSet.CellInfo.Value.WALL;
 
 public class PlayerRuleSet implements Player {
 
-    private Position previousPosition;
+    private Position previousPosition = new Position(0,0);;
     private Position currentPosition = new Position(0,0);
     private Map<Integer, Position> bookmarkToPositionMap = new HashMap<>();
     private Map<Position, CellInfo> positionCellInfoMap = new HashMap<Position, CellInfo>() {{put(currentPosition, new CellInfo());}};
