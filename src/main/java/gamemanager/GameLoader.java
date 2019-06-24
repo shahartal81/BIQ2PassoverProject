@@ -26,6 +26,10 @@ public class GameLoader {
     List<Maze> mazes = new ArrayList<>();
     List<GameManager> gameManagers = new ArrayList<>();
 
+    public List<Maze> getMazes() {
+        return mazes;
+    }
+
     public boolean validateArguments(String[] args) {
 
         if (args.length == 0){
@@ -94,7 +98,7 @@ public class GameLoader {
     }
 
 
-    public void printResults() {
+    public Map<Maze, List<GameResult>> printResults() {
       Map<Maze, List<GameResult>> results = gameManagers.stream().collect(groupingBy(GameManager::getMaze,
                 mapping(GameManager::getGameResult, toList())));
       boolean didPrintHeaders = false;
@@ -114,6 +118,7 @@ public class GameLoader {
                   .collect(Collectors.joining("|"));
           System.out.println(getPaddedString(entry.getKey().getMazeName()) + "|" + paddedResults);
       }
+      return results;
     }
 
     private String getPaddedString(String string) {
