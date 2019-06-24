@@ -9,7 +9,7 @@ Feature: E2E test
     And we get game results
     Then results for "Another working maze!!" are
       | PlayerDistantGoing       | true    | 12 |
-      | PlayerRuleSet            | false   | 50 |
+      | PlayerRuleSet            | true   | 16 |
     And results for "A maze ing !!" are
       | PlayerDistantGoing       | true   | 8 |
       | PlayerRuleSet            | true   | 7 |
