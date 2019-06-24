@@ -11,16 +11,17 @@ import static player.PlayerRuleSet.CellInfo.Value.WALL;
 
 public class PlayerRuleSet implements Player {
 
-    private Position previousPosition;
+    private Position previousPosition = new Position(0,0);
     private Position currentPosition = new Position(0,0);
     private Map<Integer, Position> bookmarkToPositionMap = new HashMap<>();
     private Map<Position, CellInfo> positionCellInfoMap = new HashMap<Position, CellInfo>() {{put(currentPosition, new CellInfo());}};
     private int bookmarkSequence = 0;
     private RuleSet[] ruleSets = {
             new RuleSet(Move.RIGHT, Move.DOWN),
-            new RuleSet(Move.LEFT, Move.UP),
+            new RuleSet(Move.UP, Move.LEFT),
             new RuleSet(Move.DOWN, Move.LEFT),
-            new RuleSet(Move.UP, Move.RIGHT)};
+            new RuleSet(Move.UP, Move.RIGHT),
+            new RuleSet(Move.LEFT, Move.UP)};
     private int ruleSetIndex = 0;
     private boolean shouldBookmark = true;
     private State state = State.MOVED;
