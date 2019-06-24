@@ -101,7 +101,6 @@ public class GameLoader {
       for(Map.Entry<Maze, List<GameResult>> entry : results.entrySet()) {
           //sorting by players so that the same player will be shown on the same column
           entry.getValue().sort(Comparator.comparing(gameResult -> gameResult.getPlayer().getPlayerName()));
-
           if(!didPrintHeaders){
               String paddedPlayersNames = entry.getValue().stream()
                       .map(gameResult -> getPaddedString(gameResult.getPlayer().getPlayerName()))
@@ -116,6 +115,7 @@ public class GameLoader {
       }
     }
 
+    //TODO: Calculate the Max(playerName, mazeName) and use that as padding instead of hardcoded 50
     private String getPaddedString(String string) {
         return String.format(" %-50s\t", string);
     }
