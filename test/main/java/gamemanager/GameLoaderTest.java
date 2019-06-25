@@ -33,7 +33,7 @@ public class GameLoaderTest {
 
     private File inputFile;
     private File outputFile;
-    private GameLoader gameLoader = new GameLoader();
+    private MatchManager matchManager = new MatchManager();
     private String[] paths;
 
     @Rule
@@ -68,7 +68,7 @@ public class GameLoaderTest {
         } catch (IOException e) {
             throw new Exception("failed to create inputFile for test " + e);
         }
-        gameLoader.validateArguments(paths);
+        matchManager.validateArguments(paths);
         Assert.assertTrue(ErrorsSingleton.instance().getErrorsList().isEmpty());
 
     }
@@ -83,7 +83,7 @@ public class GameLoaderTest {
         } catch (IOException e) {
             throw new Exception("failed to create inputFile for test " + e);
         }
-        gameLoader.validateArguments(paths);
+        matchManager.validateArguments(paths);
         List<String> errorsList = ErrorsSingleton.instance().getErrorsList();
         Assert.assertEquals(errorsList.get(0), "Command line argument for maze: " + inputFile + " doesn't lead to a maze file or leads to a file that cannot be opened");
     }
@@ -93,7 +93,7 @@ public class GameLoaderTest {
         paths = new String[]{"test/resources/validInputFile.txt", "test/resources/validOutputFile.txt"};
         inputFile = new File(paths[0]);
         outputFile = new File(paths[1]);
-        gameLoader.validateArguments(paths);
+        matchManager.validateArguments(paths);
         List<String> errorsList = ErrorsSingleton.instance().getErrorsList();
         Assert.assertEquals(errorsList.get(0), "Command line argument for maze: " + inputFile + " doesn't lead to a maze file or leads to a file that cannot be opened");
     }
@@ -114,7 +114,7 @@ public class GameLoaderTest {
             throw new Exception("failed to create outputFile for test" + e);
         }
 
-        gameLoader.validateArguments(paths);
+        matchManager.validateArguments(paths);
         List<String> errorsList = ErrorsSingleton.instance().getErrorsList();
         Assert.assertEquals(errorsList.get(0), "Command line argument for output file: " + outputFile + " points to a bad path or to a file that already exists");
     }
@@ -123,7 +123,7 @@ public class GameLoaderTest {
     public void outputFileBadPathTest() {
         String path = "test/kuku/validOutputFile.txt";
         outputFile = new File(path);
-        gameLoader.start(path);
+        matchManager.start(path);
         List<String> errorsList = ErrorsSingleton.instance().getErrorsList();
         Assert.assertEquals(errorsList.get(0), "Command line argument for output file: " + outputFile + " points to a bad path or to a file that already exists");
     }
@@ -158,8 +158,8 @@ public class GameLoaderTest {
             when(gameManager1.getMaze()).thenReturn(maze1);
             when(gameManager2.getMaze()).thenReturn(maze1);
             when(gameManager3.getMaze()).thenReturn(maze1);
-            gameLoader.gameManagers = Arrays.asList(gameManager1, gameManager2, gameManager3);
-            gameLoader.printResults();
+            matchManager.gameManagers = Arrays.asList(gameManager1, gameManager2, gameManager3);
+            matchManager.printResults();
             data = new String(byteArrayOutputStream.toByteArray(), StandardCharsets.UTF_8);
         } finally {
             System.setOut(previousPrintStream);
@@ -179,8 +179,8 @@ public class GameLoaderTest {
         inputFile = new File(paths[0]);
         outputFile = new File(paths[1]);
         when(fileParser.getMaze(any())).thenReturn(null);
-        gameLoader.parseMaze(paths[0], fileParser);
-        Assert.assertEquals("Mazes list should be empty", 0, gameLoader.getMazesNumber());
+        matchManager.parseMaze(paths[0], fileParser);
+        Assert.assertEquals("Mazes list should be empty", 0, matchManager.getMazesNumber());
     }
 
     @Test
@@ -193,8 +193,8 @@ public class GameLoaderTest {
         outputFile = new File(paths[1]);
         when(fileParser.getMaze(any())).thenReturn(null);
         Mockito.doAnswer((answer) -> null).when(fileParser).getMaze(Mockito.any());
-        gameLoader.parseMazes(mazes, fileParser);
+        matchManager.parseMazes(mazes, fileParser);
         verify(fileParser, Mockito.times(2)).getMaze(Mockito.any());
-        Assert.assertEquals("Mazes list should be empty", 0, gameLoader.getMazesNumber());
+        Assert.assertEquals("Mazes list should be empty", 0, matchManager.getMazesNumber());
     }
 }

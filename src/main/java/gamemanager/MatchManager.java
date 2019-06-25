@@ -21,7 +21,7 @@ import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.mapping;
 import static java.util.stream.Collectors.toList;
 
-public class GameLoader {
+public class MatchManager {
 
     List<Maze> mazes = new ArrayList<>();
     List<GameManager> gameManagers = new ArrayList<>();

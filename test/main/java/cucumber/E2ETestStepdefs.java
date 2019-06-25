@@ -4,14 +4,12 @@ import additionalclasses.Maze;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
-import cucumber.api.java.en.When;
 import filehandling.CommandLineParser;
 import filehandling.MazeParser;
-import gamemanager.GameLoader;
+import gamemanager.MatchManager;
 import gamemanager.GameManagerFactory;
 import gamemanager.GameResult;
 import org.junit.Assert;
-import player.PlayerBookmarkEachStep;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -25,7 +23,7 @@ public class E2ETestStepdefs {
     private List<Maze> mazes = new ArrayList<>();
     private List<String> mazesFiles = new ArrayList<>();
     private List<Class<?>> players = new ArrayList<>();
-    private GameLoader gameLoader = new GameLoader();
+    private MatchManager matchManager = new MatchManager();
     private MazeParser mazeParser = new MazeParser();
     private Map<String, List<List<String>>> resultsByMazeName = new HashMap<>();
 
@@ -35,9 +33,9 @@ public class E2ETestStepdefs {
         for (String file : files){
             mazesFiles.add(file);
         }
-        gameLoader.parseMazes(mazesFiles, mazeParser);
+        matchManager.parseMazes(mazesFiles, mazeParser);
 
-        for (Maze maze : gameLoader.getMazes()){
+        for (Maze maze : matchManager.getMazes()){
             mazes.add(maze);
         }
     }
@@ -52,12 +50,12 @@ public class E2ETestStepdefs {
     @And("we start a game for multiple players in {int} threads")
     public void weStartAGameForMultiplePlayers(int threads) throws IllegalAccessException, InvocationTargetException, InstantiationException, InterruptedException, NoSuchMethodException, ClassNotFoundException {
         GameManagerFactory gameManagerFactory = new GameManagerFactory();
-        gameLoader.startGames(gameManagerFactory, players, threads);
+        matchManager.startGames(gameManagerFactory, players, threads);
     }
 
     @Then("we get game results")
     public void weGetGameResults() {
-        Map<Maze, List<GameResult>> allGamesResults = gameLoader.printResults();
+        Map<Maze, List<GameResult>> allGamesResults = matchManager.printResults();
         for (Map.Entry<Maze, List<GameResult>> gamesPerMaze: allGamesResults.entrySet()){
             List<GameResult> gamesResults = gamesPerMaze.getValue();
             List<List<String>> resultsWithPlayerName = new ArrayList<>();
