@@ -31,7 +31,7 @@ public class E2ETestStepdefs {
     @Given ("we have mazes from following files")
     public void weParseMases(List<String> files){
         for (String file : files){
-            mazesFiles.add(file);
+            mazesFiles.add(System.getProperty("user.dir") + "/test/resources/" + file);
         }
         matchManager.parseMazes(mazesFiles, mazeParser);
 
