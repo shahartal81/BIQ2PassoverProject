@@ -132,4 +132,14 @@ public class MatchManager {
             return "X";
         }
     }
+
+    public void clearOutPutFiles() {
+        File directory = new File(System.getProperty("user.dir") + "/out/");
+
+        File[] files = directory.listFiles();
+        for (File file : files)
+        {
+            file.delete();
+        }
+    }
 }

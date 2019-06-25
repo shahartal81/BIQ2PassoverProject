@@ -15,7 +15,7 @@ public class GameManagerRunner implements Runnable {
 
     @Override
     public void run() {
-        File fileOut = new File(gameManager.toString() + ".out");
+        File fileOut = new File(System.getProperty("user.dir") + "/out/" + gameManager.toString() + ".out");
         try (BufferedWriter fileWriter = new BufferedWriter(new FileWriter(fileOut))) {
             gameManager.createOutPutFile(fileWriter);
             gameManager.playGame();

@@ -16,6 +16,7 @@ public class MazeGameMultiThread {
             MazeParser inputFileParser = new MazeParser();
             MatchManager matchManager = new MatchManager();
             GameManagerFactory gameManagerFactory = new GameManagerFactory();
+            matchManager.clearOutPutFiles();
             matchManager.parseMazes(commandLineParser.parseMazesFolder(), inputFileParser);
             matchManager.startGames(gameManagerFactory, commandLineParser.parsePlayersPackage(), commandLineParser.getNumberOfThreads());
             matchManager.printResults();
