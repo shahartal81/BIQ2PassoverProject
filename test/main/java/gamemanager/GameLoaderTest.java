@@ -169,8 +169,8 @@ public class GameLoaderTest {
         for (int i = 0; i < lines.length; i++) {
             lines[i] = lines[i].replace("\t", "");
         }
-        Assert.assertEquals(" Maze Name                     | Player 1                      | Player 2                      | Player 3                      ", lines[0]);
-        Assert.assertEquals(" maze1                         | ✔ - 15                        | X                             | ✔ - 55                        ", lines[1]);
+        Assert.assertEquals(" Maze Name                                         | Player 1                                          | Player 2                                          | Player 3                                          ", lines[0]);
+        Assert.assertEquals(" maze1                                             | ✔ - 15                                            | X                                                 | ✔ - 55                                            ", lines[1]);
     }
 
     @Test
